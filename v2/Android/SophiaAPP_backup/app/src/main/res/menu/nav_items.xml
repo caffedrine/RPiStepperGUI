@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_auto"
+        android:icon="@drawable/baseline_ballot_black_24dp"
+        android:title="@string/nav_button_auto" />
+    <item
+        android:id="@+id/nav_manual"
+        android:icon="@drawable/baseline_control_camera_black_24dp"
+        android:title="@string/nav_button_manual" />
+    <item
+        android:id="@+id/nav_connection"
+        android:icon="@drawable/baseline_wifi_black_24dp"
+        android:title="@string/nav_button_connection" />
+</menu>

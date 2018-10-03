@@ -8,10 +8,11 @@
     <!-- TODO: Update blank fragment layout -->
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/testBox_dimenssion"
         style="@style/Widget.MaterialComponents.TextInputEditText.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="122dp"
+        android:layout_alignParentTop="true"
         android:ems="10"
         android:importantForAutofill="no"
         android:inputType="numberDecimal"
@@ -19,4 +20,34 @@
         android:text="1234"
         android:textAlignment="center"
         android:textSize="80sp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="bottom">
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/default_gap"
+            android:gravity="center|bottom"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/button_start"
+                android:layout_width="150dp"
+                android:layout_height="80dp"
+                android:text="START" />
+
+            <Button
+                android:id="@+id/button_stop"
+                android:layout_width="150dp"
+                android:layout_height="80dp"
+                android:text="STOP" />
+
+        </LinearLayout>
+    </RelativeLayout>
+
 </FrameLayout>

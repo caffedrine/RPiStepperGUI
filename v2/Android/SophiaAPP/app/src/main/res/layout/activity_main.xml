@@ -22,6 +22,7 @@
             android:id="@+id/status_text"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/default_gap"
             android:text="Status: Waiting for connection..."
             app:layout_column="1"
             app:layout_row="1" />
@@ -30,6 +31,7 @@
             android:id="@+id/status_current_position"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/default_gap"
             android:text="Current position: unknown..."
             app:layout_column="1"
             app:layout_row="2" />

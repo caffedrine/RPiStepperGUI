@@ -8,11 +8,62 @@
 
     <!-- TODO: Update blank fragment layout -->
 
-    <Switch
-        android:id="@+id/switch1"
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Switch" />
+        android:layout_marginTop="20dp">
+
+        <LinearLayout
+            android:id="@+id/layout_switches"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="top|center"
+            android:orientation="horizontal">
+
+            <Switch
+                android:id="@+id/switch3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="VALVS" />
+
+            <Switch
+                android:id="@+id/switch4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="CUTTER"
+                app:layout_column="1"
+                app:layout_row="0" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/buttons_feedback"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_below="@id/layout_switches"
+            android:layout_marginTop="15dp"
+            android:orientation="horizontal">
+
+            <Switch
+                android:id="@+id/switch7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:text="Horizontal" />
+
+            <Switch
+                android:id="@+id/switch6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Vertical" />
+
+            <Switch
+                android:id="@+id/switch5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Laser" />
+        </LinearLayout>
+    </RelativeLayout>
 
     <android.support.v7.widget.GridLayout
         android:id="@+id/control_buttons_layout"

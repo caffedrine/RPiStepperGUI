@@ -31,6 +31,8 @@ public class MainActivity extends AppCompatActivity
 		manualFragment = new ManualFragment();
 		connectionFragment = new ConnectionFragment();
 
+		setFragment(autoFragment);
+
 		mMainNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener()
 		{
 			@Override

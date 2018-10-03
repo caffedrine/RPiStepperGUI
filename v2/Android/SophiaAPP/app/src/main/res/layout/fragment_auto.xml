@@ -6,10 +6,17 @@
     tools:context=".AutoFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment"
-        tools:text="@string/nav_button_auto" />
 
+    <EditText
+        android:id="@+id/editText"
+        style="@style/Widget.MaterialComponents.TextInputEditText.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="122dp"
+        android:ems="10"
+        android:importantForAutofill="no"
+        android:inputType="numberDecimal"
+        android:selectAllOnFocus="true"
+        android:text="1234"
+        android:textAlignment="center"
+        android:textSize="80sp" />
 </FrameLayout>

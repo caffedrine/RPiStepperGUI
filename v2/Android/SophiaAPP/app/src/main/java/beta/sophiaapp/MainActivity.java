@@ -1,5 +1,6 @@
 package beta.sophiaapp;
 
+import android.content.pm.ActivityInfo;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
@@ -21,6 +22,9 @@ public class MainActivity extends AppCompatActivity
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
+		/* Allow only portrait mode */
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 

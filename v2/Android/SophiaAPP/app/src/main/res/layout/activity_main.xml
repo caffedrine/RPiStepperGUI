@@ -10,16 +10,14 @@
     <RelativeLayout
         android:id="@+id/header_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@drawable/gradient">
 
         <android.support.v7.widget.GridLayout
             android:id="@+id/status_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/sophia_logo"
-            android:layout_marginStart="0dp"
-            android:layout_marginTop="@dimen/default_gap"
-            android:background="@color/textBackground">
+            android:layout_below="@id/sophia_logo">
 
 
             <TextView
@@ -45,10 +43,11 @@
         <ImageView
             android:id="@+id/sophia_logo"
             android:layout_width="match_parent"
-            android:layout_height="99dp"
+            android:layout_height="84dp"
             android:layout_alignParentStart="true"
-            android:layout_marginTop="@dimen/default_gap"
+
             app:srcCompat="@drawable/sophia_logo" />
+
     </RelativeLayout>
 
     <FrameLayout
@@ -74,7 +73,7 @@
         android:layout_marginStart="0dp"
         android:layout_marginLeft="0dp"
         android:layout_marginTop="0dp"
-        app:itemBackground="@color/colorPrimary"
+        app:itemBackground="@color/colorPrimaryDark"
         app:itemIconTint="@color/nav_items_colors"
         app:itemTextColor="@color/nav_items_colors"
         app:menu="@menu/nav_items">

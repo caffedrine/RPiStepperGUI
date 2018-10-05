@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 
@@ -29,7 +30,7 @@ public class MainActivity extends AppCompatActivity
 		setContentView(R.layout.activity_main);
 
 		mMainFrame = (FrameLayout) findViewById(R.id.main_frame);
-		mMainNav = (BottomNavigationView)  findViewById(R.id.main_nav);
+		mMainNav = (BottomNavigationView) findViewById(R.id.main_nav);
 
 		autoFragment = new AutoFragment();
 		manualFragment = new ManualFragment();
@@ -68,10 +69,31 @@ public class MainActivity extends AppCompatActivity
 		});
 	}
 
+	// create an action bar button
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu)
+	{
+		getMenuInflater().inflate(R.menu.top_menu, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
+
+	// handle button activities
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item)
+	{
+		int id = item.getItemId();
+
+		if( id == R.id.reset_button )
+		{
+			// do something here
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
 
 	private void setFragment(Fragment fragment)
 	{
-		FragmentTransaction fragmentTransaction  = getSupportFragmentManager().beginTransaction();
+		FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
 		fragmentTransaction.replace(R.id.main_frame, fragment);
 		fragmentTransaction.commit();
 	}

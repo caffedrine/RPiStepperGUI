@@ -13,32 +13,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/gradient">
 
-        <android.support.v7.widget.GridLayout
-            android:id="@+id/status_bar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/sophia_logo">
 
-
-            <TextView
-                android:id="@+id/status_text"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="@dimen/default_gap"
-                android:text="Status: Waiting for connection..."
-                app:layout_column="1"
-                app:layout_row="1" />
-
-            <TextView
-                android:id="@+id/status_current_position"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="@dimen/default_gap"
-                android:text="Current position: unknown..."
-                app:layout_column="1"
-                app:layout_row="2" />
-
-        </android.support.v7.widget.GridLayout>
 
         <ImageView
             android:id="@+id/sophia_logo"
@@ -54,7 +29,7 @@
         android:id="@+id/main_frame"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/main_nav"
+        android:layout_above="@id/status_bar"
         android:layout_below="@id/header_layout"
         android:layout_alignParentStart="true"
         android:layout_marginStart="0dp"
@@ -62,6 +37,37 @@
         android:layout_marginBottom="0dp">
 
     </FrameLayout>
+
+
+    <android.support.v7.widget.GridLayout
+        android:id="@+id/status_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/gradient_status_text"
+        android:layout_marginBottom="1dp"
+        android:layout_above="@id/main_nav">
+
+        <TextView
+            android:id="@+id/status_text"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/default_gap"
+            android:text="Status: Waiting for connection..."
+            android:textSize="18sp"
+            app:layout_column="1"
+            app:layout_row="1" />
+
+        <TextView
+            android:id="@+id/status_current_position"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/default_gap"
+            android:text="Current position: unknown..."
+            android:textSize="18sp"
+            app:layout_column="1"
+            app:layout_row="2" />
+
+    </android.support.v7.widget.GridLayout>
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/main_nav"

@@ -49,7 +49,6 @@ public class TcpClient
 	 */
 	public void stopClient()
 	{
-
 		// send message that we are closing the connection
 		sendMessage("closed_connection");
 
@@ -97,14 +96,13 @@ public class TcpClient
 				while( mRun )
 				{
 
-					mServerMessage = mBufferIn.readLine();
+					mServerMessage = mBufferIn.read();
 
 					if( mServerMessage != null && mMessageListener != null )
 					{
 						//call the method messageReceived from MyActivity class
 						mMessageListener.messageReceived(mServerMessage);
 					}
-
 				}
 
 				Log.e("RESPONSE FROM SERVER", "S: Received Message: '" + mServerMessage + "'");
@@ -120,20 +118,17 @@ public class TcpClient
 				// after it is closed, which means a new socket instance has to be created.
 				socket.close();
 			}
-
-		} catch( Exception e )
-		{
-
-			Log.e("TCP", "C: Error", e);
-
 		}
-
+		catch( Exception e )
+		{
+			Log.e("TCP", "C: Error", e);
+		}
 	}
 
 	//Declare the interface. The method messageReceived(String message) will must be implemented in the MyActivity
 	//class at on asynckTask doInBackground
 	public interface OnMessageReceived
 	{
-		public void messageReceived(String message);
+		public void messageReceived(byte[] recv_bytes);
 	}
 }

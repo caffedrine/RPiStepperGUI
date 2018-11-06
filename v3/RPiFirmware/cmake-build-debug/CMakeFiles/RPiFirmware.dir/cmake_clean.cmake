@@ -1,5 +1,9 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/RPiFirmware.dir/main.cpp.o"
+  "CMakeFiles/RPiFirmware.dir/src/drivers/Gpio.cpp.o"
+  "CMakeFiles/RPiFirmware.dir/src/drivers/PushButton.cpp.o"
+  "CMakeFiles/RPiFirmware.dir/src/drivers/Stepper.cpp.o"
+  "CMakeFiles/RPiFirmware.dir/src/drivers/TcpServerAsync.cpp.o"
+  "CMakeFiles/RPiFirmware.dir/src/main.cpp.o"
   "RPiFirmware.pdb"
   "RPiFirmware"
 )

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd build
-cmake ../src
+cd ../build
+cmake ../
 make
 ./RPiFirmware

@@ -2,5 +2,5 @@
 
 cd ../build
 cmake ../
-make
-./RPiFirmware
+make -j4
+./RPiFirmwareExe

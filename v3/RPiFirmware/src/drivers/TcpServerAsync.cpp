@@ -10,7 +10,7 @@ TcpServerAsync::TcpServerAsync(uint16_t port, uint16_t max_clients)
 	/* Validate port */
 	if( port < 1024 || port > 65535 )
 	{
-		throw ("The listening port must be in interval [1024-65535]");
+		throw Exception("TcpServerAsync", "The listening port must be in interval [1024-65535]");
 	}
 	this->ServerPort = port;
 	
@@ -18,7 +18,7 @@ TcpServerAsync::TcpServerAsync(uint16_t port, uint16_t max_clients)
 	this->MaxClients = max_clients;
 	ClientsArray = new client_t[this->MaxClients];
 	for( int i = 0; i < this->MaxClients; i++ )
-		ClientsArray[i].Fd= 0;
+		ClientsArray[i].Fd = 0;
 	
 	/* Now just start server */
 	this->Start();
@@ -38,8 +38,7 @@ void TcpServerAsync::Start()
 	/* Create server socket handler */
 	if( (this->ServerSocket = socket(AF_INET, SOCK_STREAM, 0)) == 0 )
 	{
-		perror("socket failed");
-		throw ("Failed to create a new socket!");
+		throw Exception("Start->socket", strerror(errno));
 	}
 	
 	/* Allow multiple clients */
@@ -47,8 +46,7 @@ void TcpServerAsync::Start()
 	int optlen = sizeof(optval);
 	if( setsockopt(this->ServerSocket, SOL_SOCKET, SO_REUSEADDR, &optval, optlen) < 0 )
 	{
-		perror("setsockopt");
-		throw ("Failed to enable multiple clients opt");
+		throw Exception("Start()->setsockpt", strerror(errno));
 	}
 	
 	/* Create server IP structure */
@@ -60,8 +58,7 @@ void TcpServerAsync::Start()
 	/* Bind to localhost:ServerPort */
 	if( bind(this->ServerSocket, (const sockaddr *) &server, sizeof(server)) < 0 )
 	{
-		perror("bind failed");
-		throw ("Can't bind server socket! Port already in use?");
+		throw Exception("Start()->bind", strerror(errno));
 	}
 	
 	/* Set maximum pending connecions: 3 */
@@ -73,10 +70,9 @@ void TcpServerAsync::Start()
 	
 	Status = STARTED;
 	
-	BackgroundWorker = std::thread([this](){ BackgroundWork(); });
+	BackgroundWorker = std::thread([this]()
+								   { BackgroundWork(); });
 	BackgroundWorker.detach();
-	
-	std::cout << "Server started!" << std::endl;
 }
 
 void TcpServerAsync::Stop()
@@ -90,13 +86,13 @@ void TcpServerAsync::Stop()
 	this->ServerSocket = 0;
 	Status = STOPPED;
 	
-	std::cout << "Server stopped!" << std::endl;
+	//std::cout << "Server stopped!" << std::endl;
 }
 
-int TcpServerAsync::Write(const client_t *client, char *data)
+int TcpServerAsync::Write(const client_t *client, const char *data, int len)
 {
-	int SendResult = (int)send(client->Fd, data, strlen(data), 0);
-	DataSend(client, SendResult);
+	int SendResult = (int) send(client->Fd, data, (size_t) len, 0);
+	DataSend(client, data, SendResult);
 }
 
 void TcpServerAsync::BackgroundWork()
@@ -108,7 +104,7 @@ void TcpServerAsync::BackgroundWork()
 		this->max_sd = 0;
 		
 		/* Add serer socket socket to set only if it is open*/
-		if(this->ServerSocket > 0)
+		if( this->ServerSocket > 0 )
 		{
 			FD_SET(this->ServerSocket, &readfds);
 			this->max_sd = this->ServerSocket;
@@ -132,8 +128,7 @@ void TcpServerAsync::BackgroundWork()
 		
 		if( (activity < 0) && (errno != EINTR) )
 		{
-			printf("select error");
-			throw ("Select failed!");
+			throw Exception("select", strerror(errno));
 		}
 		
 		//If something happened on the master socket ,
@@ -143,7 +138,7 @@ void TcpServerAsync::BackgroundWork()
 			/* Retrieve a free slot for this client */
 			bool SlotsAvailable = false;
 			client_t *CurrentClientSlot;
-			for(int i = 0; i < this->MaxClients; i++)
+			for( int i = 0; i < this->MaxClients; i++ )
 			{
 				if( ClientsArray[i].Fd <= 0 )
 				{
@@ -163,8 +158,8 @@ void TcpServerAsync::BackgroundWork()
 				if( (tmp_sock = accept(this->ServerSocket, (struct sockaddr *) &tmp_addr, &tmp_add_len)) >= 0 )
 				{
 					char msg[] = "MAX_CONNECTION_REACHED\r\n";
-					if( send(tmp_sock, msg, strlen(msg), 0) != strlen(msg))
-						perror("send");
+					if( send(tmp_sock, msg, strlen(msg), 0) != strlen(msg) )
+						throw Exception("send", strerror(errno));
 					close(tmp_sock);
 				}
 			}
@@ -173,8 +168,7 @@ void TcpServerAsync::BackgroundWork()
 				int addrlen = sizeof(CurrentClientSlot->address);
 				if( (CurrentClientSlot->Fd = accept(this->ServerSocket, (struct sockaddr *) &CurrentClientSlot->address, (socklen_t *) &addrlen)) < 0 )
 				{
-					perror("accept");
-					throw("Error accepting a new connection!");
+					throw Exception("accept", strerror(errno));
 				}
 				
 				/* Set IP and port variables */
@@ -182,7 +176,7 @@ void TcpServerAsync::BackgroundWork()
 				strcpy(CurrentClientSlot->Ip, inet_ntoa(CurrentClientSlot->address.sin_addr));
 				
 				/* Send a notification callback */
-				ClientConnected( CurrentClientSlot );
+				ClientConnected(CurrentClientSlot);
 			}
 		}
 		
@@ -199,16 +193,14 @@ void TcpServerAsync::BackgroundWork()
 					close(ClientsArray[i].Fd);
 					ClientsArray[i].Fd = 0;
 					/* Push a notification */
-					ClientDisconnected( &ClientsArray[i] );
+					ClientDisconnected(&ClientsArray[i]);
 				}
-					
-					//Echo back the message that came in
 				else
 				{
 					//set the string terminating NULL byte on the end
 					//of the data read
 					RecvBuffer[this->Readbytes] = '\0';
-					DataReceived(&ClientsArray[i], RecvBuffer);
+					DataReceived(&ClientsArray[i], RecvBuffer, (int) this->Readbytes);
 				}
 			}
 		}
@@ -225,13 +217,12 @@ void TcpServerAsync::ClientDisconnected(const TcpServerAsync::client_t *client)
 	printf("[%d %s:%d] DISCONNECTED\n", client->Fd, client->Ip, client->Port);
 }
 
-void TcpServerAsync::DataReceived(const TcpServerAsync::client_t *client, char *data)
+void TcpServerAsync::DataReceived(const TcpServerAsync::client_t *client, char *data, int length)
 {
-	printf("[%d %s:%d] RECV: %s\n", client->Fd, client->Ip, client->Port, data);
-	//this->Write(client, data);
+	printf("[%d %s:%d] RECV  (%d bytes): %s\n", client->Fd, client->Ip, client->Port, length, data);
 }
 
-void TcpServerAsync::DataSend(const TcpServerAsync::client_t *client, int bytesSend)
+void TcpServerAsync::DataSend(const TcpServerAsync::client_t *client, const char *data, int bytesSend)
 {
-	printf("[%d %s:%d] SEND: %d bytes\n", client->Fd, client->Ip, client->Port, bytesSend);
+	printf("[%d %s:%d] SEND: (%d bytes): %s\n", client->Fd, client->Ip, client->Port, bytesSend, data);
 }

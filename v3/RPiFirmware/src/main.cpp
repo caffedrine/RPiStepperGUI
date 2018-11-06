@@ -7,11 +7,11 @@
 #include <spdlog/spdlog.h>
 
 #include "Common.h"
-#include "communication/ServerTCP.h"
 #include "drivers/hal.h"
 #include "peripherals/RightButton.h"
 #include "peripherals/LeftButton.h"
 #include "peripherals/Motor.h"
+#include "communication/ServerTCP.h"
 
 bool _ProgramContinue = true;
 
@@ -23,6 +23,7 @@ void OnExit()
 
 void SigHandler(int signum)
 {
+	std::cout << std::endl;
 	console->critical("Interrupt signal ({0} - {1}) received", strsignal(signum), signum);
 	OnExit();
 	_ProgramContinue = false;
@@ -38,16 +39,17 @@ void Initialize()
 }
 
 int main()
-{
-	console->info("---STARTED---");
+{	console->info("Started main()...");
 	Initialize();
 	
 	while( true )
 	{
-		if(!_ProgramContinue)
+		if( !_ProgramContinue )
 			break;
 		
-		std::this_thread::sleep_for( std::chrono::milliseconds(1) );
+		g_TcpServer.Send("Alex!", 5);
+		
+		std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 	}
 	return 0;
 }

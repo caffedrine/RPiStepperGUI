@@ -39,19 +39,19 @@ cmake_force:
 SHELL = /bin/sh
 
 # The CMake executable.
-CMAKE_COMMAND = /home/curiosul/.tools/IDEs/clion-2018.2.2/bin/cmake/linux/bin/cmake
+CMAKE_COMMAND = /home/curiosul/.Tools/IDEs/clion-2018.2.5/bin/cmake/linux/bin/cmake
 
 # The command to remove a file.
-RM = /home/curiosul/.tools/IDEs/clion-2018.2.2/bin/cmake/linux/bin/cmake -E remove -f
+RM = /home/curiosul/.Tools/IDEs/clion-2018.2.5/bin/cmake/linux/bin/cmake -E remove -f
 
 # Escaping for special characters.
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/curiosul/Workspaces/Projects/Sophia-Firmwares/v3/RPiFirmware
+CMAKE_SOURCE_DIR = /home/curiosul/Workspaces/Projects/Sophia/v3/RPiFirmware
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/curiosul/Workspaces/Projects/Sophia-Firmwares/v3/RPiFirmware/cmake-build-debug
+CMAKE_BINARY_DIR = /home/curiosul/Workspaces/Projects/Sophia/v3/RPiFirmware/cmake-build-debug
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -59,7 +59,7 @@ CMAKE_BINARY_DIR = /home/curiosul/Workspaces/Projects/Sophia-Firmwares/v3/RPiFir
 # Special rule for the target rebuild_cache
 rebuild_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
-	/home/curiosul/.tools/IDEs/clion-2018.2.2/bin/cmake/linux/bin/cmake -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+	/home/curiosul/.Tools/IDEs/clion-2018.2.5/bin/cmake/linux/bin/cmake -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
 .PHONY : rebuild_cache
 
 # Special rule for the target rebuild_cache
@@ -70,7 +70,7 @@ rebuild_cache/fast: rebuild_cache
 # Special rule for the target edit_cache
 edit_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
-	/home/curiosul/.tools/IDEs/clion-2018.2.2/bin/cmake/linux/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+	/home/curiosul/.Tools/IDEs/clion-2018.2.5/bin/cmake/linux/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
 .PHONY : edit_cache
 
 # Special rule for the target edit_cache
@@ -80,9 +80,9 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/curiosul/Workspaces/Projects/Sophia-Firmwares/v3/RPiFirmware/cmake-build-debug/CMakeFiles /home/curiosul/Workspaces/Projects/Sophia-Firmwares/v3/RPiFirmware/cmake-build-debug/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/curiosul/Workspaces/Projects/Sophia/v3/RPiFirmware/cmake-build-debug/CMakeFiles /home/curiosul/Workspaces/Projects/Sophia/v3/RPiFirmware/cmake-build-debug/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/curiosul/Workspaces/Projects/Sophia-Firmwares/v3/RPiFirmware/cmake-build-debug/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/curiosul/Workspaces/Projects/Sophia/v3/RPiFirmware/cmake-build-debug/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -258,6 +258,33 @@ src/main.cpp.s:
 	$(MAKE) -f CMakeFiles/RPiFirmwareExe.dir/build.make CMakeFiles/RPiFirmwareExe.dir/src/main.cpp.s
 .PHONY : src/main.cpp.s
 
+src/peripherals/CutterMotor.o: src/peripherals/CutterMotor.cpp.o
+
+.PHONY : src/peripherals/CutterMotor.o
+
+# target to build an object file
+src/peripherals/CutterMotor.cpp.o:
+	$(MAKE) -f CMakeFiles/RPiFirmwareExe.dir/build.make CMakeFiles/RPiFirmwareExe.dir/src/peripherals/CutterMotor.cpp.o
+.PHONY : src/peripherals/CutterMotor.cpp.o
+
+src/peripherals/CutterMotor.i: src/peripherals/CutterMotor.cpp.i
+
+.PHONY : src/peripherals/CutterMotor.i
+
+# target to preprocess a source file
+src/peripherals/CutterMotor.cpp.i:
+	$(MAKE) -f CMakeFiles/RPiFirmwareExe.dir/build.make CMakeFiles/RPiFirmwareExe.dir/src/peripherals/CutterMotor.cpp.i
+.PHONY : src/peripherals/CutterMotor.cpp.i
+
+src/peripherals/CutterMotor.s: src/peripherals/CutterMotor.cpp.s
+
+.PHONY : src/peripherals/CutterMotor.s
+
+# target to generate assembly for a file
+src/peripherals/CutterMotor.cpp.s:
+	$(MAKE) -f CMakeFiles/RPiFirmwareExe.dir/build.make CMakeFiles/RPiFirmwareExe.dir/src/peripherals/CutterMotor.cpp.s
+.PHONY : src/peripherals/CutterMotor.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -282,6 +309,9 @@ help:
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
+	@echo "... src/peripherals/CutterMotor.o"
+	@echo "... src/peripherals/CutterMotor.i"
+	@echo "... src/peripherals/CutterMotor.s"
 .PHONY : help
 
 

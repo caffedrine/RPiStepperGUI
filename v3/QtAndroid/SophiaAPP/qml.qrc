@@ -20,5 +20,10 @@
         <file>VirtualJoystick.qml</file>
         <file>resources/imgs/joystick/background.png</file>
         <file>resources/imgs/joystick/finger.png</file>
+        <file>resources/imgs/auto_frame/baseline_lock_black_24dp.png</file>
+        <file>resources/imgs/auto_frame/baseline_lock_open_black_24dp.png</file>
+        <file>resources/imgs/auto_frame/cut.png</file>
+        <file>resources/imgs/auto_frame/moveto.png</file>
+        <file>resources/imgs/auto_frame/reset.png</file>
     </qresource>
 </RCC>

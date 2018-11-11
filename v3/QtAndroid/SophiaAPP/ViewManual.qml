@@ -3,26 +3,31 @@ import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
 
 Page {
+    id: page_view_manual
     width: 600
     height: 400
 
-    GridLayout {
-        rows: 2
-        columns: 1
-        anchors.centerIn: parent
+    Column {
+        id: view_manual_main_layout
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.top: page_view_manual
+        anchors.topMargin: 25
+        spacing: 10
+
+        Rectangle{id: gap; width: 10; height: 8;}
 
         /* Sensors */
-        GridLayout {
-            rows: 1
-            columns: 3
+        Row {
+
+            id: column_buttons
+            anchors.top: gap.bottom
             anchors.horizontalCenter: parent.horizontalCenter
-            anchors.verticalCenter: parent.verticalCenter
+            anchors.topMargin: 25
+            spacing: 5
 
             RadioButton {
                 id: radioButton_Horizontal
-                x: 53
-                y: 85
-                width: 126
+                width: 110
                 height: 20
                 text: qsTr("Horizontal")
                 checkable: false
@@ -31,9 +36,7 @@ Page {
 
             RadioButton {
                 id: radioButton_Vertical
-                x: 164
-                y: 85
-                width: 126
+                width: 90
                 height: 20
                 text: qsTr("Vertical")
                 checkable: false
@@ -42,9 +45,7 @@ Page {
 
             RadioButton {
                 id: radioButton_Laser
-                x: 260
-                y: 85
-                width: 126
+                width: 80
                 height: 20
                 text: qsTr("Laser")
                 display: AbstractButton.TextBesideIcon
@@ -54,31 +55,31 @@ Page {
         }
 
         /* Manual control valves & cutters */
-        GridLayout {
-            rows: 1
-            columns: 2
+        Row {
+            id: manual_controls
             anchors.horizontalCenter: parent.horizontalCenter
+            anchors.top: column_buttons.bottom
+            anchors.topMargin: 20
+            spacing: 10
 
             Switch {
                 id: switch_Valvs
-                clip: true
-
                 text: qsTr("VALVS")
             }
 
             Switch {
                 id: switch_Cutter
-                clip: true
                 text: qsTr("CUTTER")
             }
         }
 
-        GridLayout
+        Row
         {
-            rows: 1
-            columns: 1
-            Layout.alignment: parent.horizontalCenter
-
+            id: joystick_button
+            anchors.horizontalCenter: parent.horizontalCenter
+            spacing: 10
+            anchors.topMargin: 80
+            anchors.top: manual_controls.bottom
             /* Manual control motors */
             VirtualJoystick
             {
@@ -88,3 +89,4 @@ Page {
 
     }
 }
+

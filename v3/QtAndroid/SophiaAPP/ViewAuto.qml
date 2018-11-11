@@ -7,15 +7,23 @@ Page {
     width: 600
     height: 400
 
+    Rectangle{id: gap; width: 10; height: 20;}
+
+
     RowLayout {
+
+        anchors.top: gap.bottom
         id: size_fields
         width: 300
         anchors.horizontalCenter: parent.horizontalCenter
+
+
         TextField {
             id: textField
             width: 190
 
             text: qsTr("0000")
+
             anchors.fill: parent
 
             font.pointSize: 50

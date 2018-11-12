@@ -1,29 +1,30 @@
 <RCC>
     <qresource prefix="/">
-        <file>main.qml</file>
-        <file>ViewAuto.qml</file>
-        <file>ViewManual.qml</file>
-        <file>qtquickcontrols2.conf</file>
-        <file>ViewConnection.qml</file>
-        <file>resources/imgs/tabs/baseline_ballot_black_24dp.png</file>
-        <file>resources/imgs/tabs/baseline_control_camera_black_24dp.png</file>
-        <file>resources/imgs/tabs/baseline_wifi_black_24dp.png</file>
-        <file>resources/imgs/baseline_ballot_black_24dp.png</file>
-        <file>resources/imgs/baseline_control_camera_black_24dp.png</file>
-        <file>resources/imgs/baseline_keyboard_arrow_down_black_36dp.png</file>
-        <file>resources/imgs/baseline_keyboard_arrow_left_black_36dp.png</file>
-        <file>resources/imgs/baseline_keyboard_arrow_right_black_36dp.png</file>
-        <file>resources/imgs/baseline_keyboard_arrow_up_black_36dp.png</file>
-        <file>resources/imgs/baseline_wifi_black_24dp.png</file>
-        <file>resources/imgs/circle_image.png</file>
-        <file>resources/imgs/sophia_logo.png</file>
-        <file>VirtualJoystick.qml</file>
-        <file>resources/imgs/joystick/background.png</file>
-        <file>resources/imgs/joystick/finger.png</file>
-        <file>resources/imgs/auto_frame/baseline_lock_black_24dp.png</file>
-        <file>resources/imgs/auto_frame/baseline_lock_open_black_24dp.png</file>
-        <file>resources/imgs/auto_frame/cut.png</file>
-        <file>resources/imgs/auto_frame/moveto.png</file>
-        <file>resources/imgs/auto_frame/reset.png</file>
+        <file>ui/main.qml</file>
+        <file>ui/ViewAuto.qml</file>
+        <file>ui/ViewManual.qml</file>
+        <file>ui/qtquickcontrols2.conf</file>
+        <file>ui/ViewConnection.qml</file>
+		<file>ui/VirtualJoystick.qml</file>
+
+        <file>ui/imgs/tabs/baseline_ballot_black_24dp.png</file>
+        <file>ui/imgs/tabs/baseline_control_camera_black_24dp.png</file>
+        <file>ui/imgs/tabs/baseline_wifi_black_24dp.png</file>
+        <file>ui/imgs/baseline_ballot_black_24dp.png</file>
+        <file>ui/imgs/baseline_control_camera_black_24dp.png</file>
+        <file>ui/imgs/baseline_keyboard_arrow_down_black_36dp.png</file>
+        <file>ui/imgs/baseline_keyboard_arrow_left_black_36dp.png</file>
+        <file>ui/imgs/baseline_keyboard_arrow_right_black_36dp.png</file>
+        <file>ui/imgs/baseline_keyboard_arrow_up_black_36dp.png</file>
+        <file>ui/imgs/baseline_wifi_black_24dp.png</file>
+        <file>ui/imgs/circle_image.png</file>
+        <file>ui/imgs/sophia_logo.png</file>        
+        <file>ui/imgs/joystick/background.png</file>
+        <file>ui/imgs/joystick/finger.png</file>
+        <file>ui/imgs/auto_frame/baseline_lock_black_24dp.png</file>
+        <file>ui/imgs/auto_frame/baseline_lock_open_black_24dp.png</file>
+        <file>ui/imgs/auto_frame/cut.png</file>
+        <file>ui/imgs/auto_frame/moveto.png</file>
+        <file>ui/imgs/auto_frame/reset.png</file>
     </qresource>
 </RCC>

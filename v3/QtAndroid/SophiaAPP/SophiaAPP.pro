@@ -1,4 +1,4 @@
-QT += quick
+QT += core quick network
 CONFIG += c++11
 
 # The following define makes your compiler emit warnings if you use
@@ -13,7 +13,9 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    main.cpp
+    main.cpp \
+    TcpClient.cpp \
+    MainClass.cpp
 
 RESOURCES += qml.qrc
 
@@ -29,3 +31,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 DISTFILES +=
+
+HEADERS += \
+    TcpClient.h \
+    MainClass.h

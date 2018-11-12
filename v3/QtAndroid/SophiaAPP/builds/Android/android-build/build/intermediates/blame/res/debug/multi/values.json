@@ -54,7 +54,15 @@
                     "endOffset": 92687
                 },
                 "from": {
-                    "file": "/home/curiosul/Workspaces/Projects/Sophia/v3/QtAndroid/SophiaAPP/builds/Android/android-build/res/values/libs.xml"
+                    "file": "/home/curiosul/Workspaces/Projects/Sophia/v3/QtAndroid/SophiaAPP/builds/Android/android-build/res/values/libs.xml",
+                    "position": {
+                        "startLine": 9,
+                        "startColumn": 4,
+                        "startOffset": 291,
+                        "endLine": 11,
+                        "endColumn": 12,
+                        "endOffset": 340
+                    }
                 }
             },
             {
@@ -67,7 +75,15 @@
                     "endOffset": 92966
                 },
                 "from": {
-                    "file": "/home/curiosul/Workspaces/Projects/Sophia/v3/QtAndroid/SophiaAPP/builds/Android/android-build/res/values/libs.xml"
+                    "file": "/home/curiosul/Workspaces/Projects/Sophia/v3/QtAndroid/SophiaAPP/builds/Android/android-build/res/values/libs.xml",
+                    "position": {
+                        "startLine": 13,
+                        "startColumn": 5,
+                        "startOffset": 347,
+                        "endLine": 24,
+                        "endColumn": 13,
+                        "endOffset": 621
+                    }
                 }
             },
             {
@@ -80,7 +96,15 @@
                     "endOffset": 93081
                 },
                 "from": {
-                    "file": "/home/curiosul/Workspaces/Projects/Sophia/v3/QtAndroid/SophiaAPP/builds/Android/android-build/res/values/libs.xml"
+                    "file": "/home/curiosul/Workspaces/Projects/Sophia/v3/QtAndroid/SophiaAPP/builds/Android/android-build/res/values/libs.xml",
+                    "position": {
+                        "startLine": 2,
+                        "startColumn": 4,
+                        "startOffset": 55,
+                        "endLine": 4,
+                        "endColumn": 12,
+                        "endOffset": 165
+                    }
                 }
             },
             {
@@ -92,7 +116,14 @@
                     "endOffset": 93189
                 },
                 "from": {
-                    "file": "/home/curiosul/.Tools/IDEs/Qt/5.11.2/android_armv7/src/android/java/res/values/strings.xml"
+                    "file": "/home/curiosul/.Tools/IDEs/Qt/5.11.2/android_armv7/src/android/java/res/values/strings.xml",
+                    "position": {
+                        "startLine": 5,
+                        "startColumn": 4,
+                        "startOffset": 319,
+                        "endColumn": 107,
+                        "endOffset": 422
+                    }
                 }
             },
             {
@@ -104,7 +135,14 @@
                     "endOffset": 93311
                 },
                 "from": {
-                    "file": "/home/curiosul/.Tools/IDEs/Qt/5.11.2/android_armv7/src/android/java/res/values/strings.xml"
+                    "file": "/home/curiosul/.Tools/IDEs/Qt/5.11.2/android_armv7/src/android/java/res/values/strings.xml",
+                    "position": {
+                        "startLine": 4,
+                        "startColumn": 4,
+                        "startOffset": 197,
+                        "endColumn": 121,
+                        "endOffset": 314
+                    }
                 }
             },
             {
@@ -116,7 +154,14 @@
                     "endOffset": 93423
                 },
                 "from": {
-                    "file": "/home/curiosul/.Tools/IDEs/Qt/5.11.2/android_armv7/src/android/java/res/values/strings.xml"
+                    "file": "/home/curiosul/.Tools/IDEs/Qt/5.11.2/android_armv7/src/android/java/res/values/strings.xml",
+                    "position": {
+                        "startLine": 3,
+                        "startColumn": 4,
+                        "startOffset": 85,
+                        "endColumn": 111,
+                        "endOffset": 192
+                    }
                 }
             },
             {
@@ -128,7 +173,14 @@
                     "endOffset": 93508
                 },
                 "from": {
-                    "file": "/home/curiosul/.Tools/IDEs/Qt/5.11.2/android_armv7/src/android/java/res/values/strings.xml"
+                    "file": "/home/curiosul/.Tools/IDEs/Qt/5.11.2/android_armv7/src/android/java/res/values/strings.xml",
+                    "position": {
+                        "startLine": 6,
+                        "startColumn": 4,
+                        "startOffset": 427,
+                        "endColumn": 84,
+                        "endOffset": 507
+                    }
                 }
             }
         ]

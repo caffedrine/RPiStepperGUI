@@ -67,11 +67,21 @@ Page {
             Switch {
                 id: switch_Valvs
                 text: qsTr("VALVS")
+
+                onClicked:
+                {
+                    cpp.onSwitchChanged_Valves(switch_Valvs.checked);
+                }
             }
 
             Switch {
                 id: switch_Cutter
                 text: qsTr("CUTTER")
+
+                onClicked:
+                {
+                    cpp.onSwitchChanged_Cutter(switch_Cutter.checked);
+                }
             }
         }
 

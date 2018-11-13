@@ -1,14 +1,21 @@
 import QtQuick 2.8
 import QtQuick.Controls 2.1
+import QmlInterface 1.0
+import QtQuick.Window 2.1
 
 
 ApplicationWindow
 {
+    id: root
     visible: true
     width: 640
     height: 480
     title: qsTr("Sophia APP Controller")
 
+    QmlInterface
+    {
+        id: cpp
+    }
 
     header: Rectangle
     {
@@ -27,6 +34,11 @@ ApplicationWindow
             horizontalAlignment: Image.AlignHCenter
             verticalAlignment: Image.AlignVCenter
             source: "imgs/sophia_logo.png"
+
+            MouseArea {
+                 anchors.fill: parent
+                 onClicked: showMessage("TRalalala", "Title")
+            }
         }
     }
 
@@ -42,14 +54,31 @@ ApplicationWindow
 
         ViewAuto
         {
+            id: root_auto
         }
 
         ViewManual
         {
+            id: root_manual
         }
 
         ViewConnection
         {
+            id: root_connection
+        }
+    }
+
+
+    Rectangle
+    {
+        height: 30; width: root.width
+        color: "green"
+        anchors.bottom: tabBar.top
+        anchors.bottomMargin: 10
+        Text {
+            id: status_text
+            anchors.centerIn: parent
+            text: qsTr("This is the status text...")
         }
     }
 
@@ -60,7 +89,7 @@ ApplicationWindow
 
         property color tab_selected: "#627782"
         property color tab_unselected: "#c8ccce"
-        property int tabs_height: 40
+        property int tabs_height: 45
 
         TabButton
         {

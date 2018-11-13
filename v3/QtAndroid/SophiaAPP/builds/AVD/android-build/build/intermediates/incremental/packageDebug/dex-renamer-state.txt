@@ -1,4 +1,4 @@
-#Mon Nov 12 22:45:02 EET 2018
+#Wed Nov 14 00:11:55 EET 2018
 base.0=/home/curiosul/Workspaces/Projects/Sophia/v3/QtAndroid/SophiaAPP/builds/AVD/android-build/build/intermediates/transforms/dex/debug/folders/1000/1f/main
 renamed.0=classes.dex
 file.0=/home/curiosul/Workspaces/Projects/Sophia/v3/QtAndroid/SophiaAPP/builds/AVD/android-build/build/intermediates/transforms/dex/debug/folders/1000/1f/main/classes.dex

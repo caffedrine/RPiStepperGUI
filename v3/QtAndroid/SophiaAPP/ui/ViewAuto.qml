@@ -1,6 +1,7 @@
 import QtQuick 2.9
 import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
+import QmlInterface 1.0
 
 Page {
     id: page
@@ -9,6 +10,10 @@ Page {
 
     Rectangle{id: gap; width: 10; height: 20;}
 
+    QmlInterface
+    {
+        id: cpp
+    }
 
     RowLayout {
 
@@ -19,7 +24,7 @@ Page {
 
 
         TextField {
-            id: textField
+            id: input_size_field
             width: 190
 
             text: qsTr("0000")
@@ -39,61 +44,6 @@ Page {
         }
     }
 
-//    GridLayout
-//    {
-//        id: grid_layout
-
-//        rows: 2
-//        width: 301
-//        height: 133
-//        anchors.top: parent.top
-//        anchors.topMargin: 134
-//        anchors.verticalCenterOffset: 20
-//        anchors.centerIn: parent
-//        flow: GridLayout.TopToBottom
-
-
-//        GridLayout
-//        {
-//            rows: 1
-//            anchors.centerIn: parent
-//            Button
-//            {
-
-//                id: button_auto_reset
-//                anchors.top: parent.top
-//                anchors.centerIn: parent
-//                width: 40
-//                height: 10
-//                text: qsTr("Reset")
-//            }
-//        }
-
-//        GridLayout
-//        {
-//            rows: 2
-//            anchors.topMargin: 10
-//            anchors.centerIn: parent
-//            anchors.top: button_auto_reset.bottom
-
-//            Button {
-//                id: button_auto_stop
-//                width: 20
-//                height: 10
-//                text: qsTr("Stop")
-
-//                //onClicked: signal test_sig()
-//            }
-
-//            Button {
-//                id: button_auto_start
-//                width: 20
-//                height: 10
-//                text: qsTr("Start")
-//            }
-    //        }
-
-    //    }
     Column
     {
         id: column_buttons
@@ -114,6 +64,10 @@ Page {
                 text: qsTr("RESET")
                 width: 145; height: 50
                 icon.source: "imgs/auto_frame/reset.png"
+
+                onPressed: {
+                    cpp.onButtonPressed_Reset();
+                }
             }
             Button
             {
@@ -121,9 +75,12 @@ Page {
                 text: qsTr("Move to")
                 width: 145; height: 50
                 icon.source: "imgs/auto_frame/moveto.png"
+
+                onPressed: {
+                    cpp.onButtonPressed_MoveTo( parseInt(input_size_field.getText(0, 4)) );
+                }
             }
         }
-
 
         Row
         {
@@ -139,6 +96,10 @@ Page {
                 text: qsTr("Lock")
                 width: 145; height: 50
                 icon.source: "imgs/auto_frame/baseline_lock_black_24dp.png"
+
+                onPressed: {
+                    cpp.onButtonPressed_Lock();
+                }
             }
             Button
             {
@@ -146,6 +107,9 @@ Page {
                 text: qsTr("Unlock")
                 width: 145; height: 50
                 icon.source: "imgs/auto_frame/baseline_lock_open_black_24dp.png"
+                onPressed: {
+                    cpp.onButtonPressed_Unlock();
+                }
             }
         }
 
@@ -163,6 +127,10 @@ Page {
                 text: qsTr("Cut")
                 width: 300; height: 50
                 icon.source: "imgs/auto_frame/cut.png"
+
+                onPressed: {
+                    cpp.onButtonPressed_Cut();
+                }
             }
         }
     }

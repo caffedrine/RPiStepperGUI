@@ -1,16 +1,22 @@
 import QtQuick 2.9
 import QtQuick.Controls 2.2
+import QmlInterface 1.0
 
 Page {
     width: 600
     height: 400
+
+    QmlInterface
+    {
+        id: cpp
+    }
 
     Column
     {
         id: main_column
         anchors.topMargin: 100
         anchors.horizontalCenter: parent.horizontalCenter
-        spacing: 15
+        spacing: 10
 
         Rectangle{id: gap; width: 10; height: 5;}
 
@@ -21,22 +27,23 @@ Page {
             width: 300
             Text {
                 id: howto
-                text: qsTr("How to connect:")
+                text: qsTr("Connection info:")
                 font.bold: true
             }
 
             TextArea {
                 width: 300
                 height: 160
-                text: qsTr("1. Create an AP Hotspot with the following:
-    o AP Name: SophiaController
-    o Passwd : soPhiA2018!
- 2. Power on machinery then wait for the green light
+                text: qsTr("1. Connect to RPi hotspot:
+        o AP Name: SophiaController
+        o Passwd : soPhiA2018!
+ 2. Connect to RPi:
+        o IP Address: 192.168.1.1
+        o Port  1337
  3. Click CONNECT then wait for result! ")
                 wrapMode: Text.WordWrap
             }
         }
-
 
         Row
         {
@@ -58,8 +65,6 @@ Page {
             }
         }
 
-
-        signal onButtonPressed(QString button_id);
         Button
         {
             id: button_connect
@@ -67,7 +72,7 @@ Page {
             text: "Connect"
 
             onPressed: {
-                onButtonPress_Connect();
+                 cpp.onButtonPressed_Connect("127.0.0.1", 1337);
             }
 
             onReleased: {

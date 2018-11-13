@@ -12,23 +12,11 @@ public:
     MainClass();
     ~MainClass();
 
-    void Start()
-    {
-        while(true)
-        {
-            qDebug() << "Hello!";
-            QThread::msleep(500);
-        }
-
-    }
-
 private:
 
 public slots:
-    void onButtonPress_Connect()
-    {
-
-    }
+    void MainLoop();
+    void buttonPress(QString button_id);
 };
 
 #endif // MAINCLASS_H

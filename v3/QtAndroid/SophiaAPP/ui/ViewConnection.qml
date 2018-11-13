@@ -59,13 +59,19 @@ Page {
         }
 
 
-
+        signal onButtonPressed(QString button_id);
         Button
         {
             id: button_connect
             anchors.horizontalCenter: parent.horizontalCenter
             text: "Connect"
 
+            onPressed: {
+                onButtonPress_Connect();
+            }
+
+            onReleased: {
+            }
         }
 
     }

@@ -7,7 +7,7 @@
 #include <QObject>
 
 #include "MainClass.h"
-
+#include "MainWindow.h"
 
 int main(int argc, char *argv[])
 {
@@ -15,21 +15,18 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
 
     //call before any qml may use the custom component
-    qmlRegisterType<MainClass>("QmlInterface",1,0,"QmlInterface");
+    qmlRegisterType<MainWindow>("QmlInterface",1,0,"QmlInterface");
 
-    QQmlApplicationEngine engine;
-    engine.load(QUrl(QStringLiteral("qrc:/ui/main.qml")));
-    if (engine.rootObjects().isEmpty())
-        return -1;
+    /* Load GUI */
+    MainWindow ui;
+    ui.SetupUI();
 
     /* Launch work on a separate thread to keep UI thread free */
-    QThread thread;
-    MainClass work;
-    work.SetQmlEngine(&engine);
-    work.moveToThread(&thread);
-    QObject::connect(&thread, SIGNAL(started()), &work, SLOT(MainLoop()) );
-
-    thread.start();
+    QThread main_work_thread;
+    MainClass MainWork(&ui);
+    MainWork.moveToThread(&main_work_thread);
+    QObject::connect(&main_work_thread, SIGNAL(started()), &MainWork, SLOT(MainLoop()) );
+    main_work_thread.start();
 
     return app.exec();
 }

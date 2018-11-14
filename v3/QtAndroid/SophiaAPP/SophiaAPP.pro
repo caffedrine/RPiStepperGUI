@@ -15,7 +15,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     main.cpp \
     TcpClient.cpp \
-    MainClass.cpp
+    MainClass.cpp \
+    MainWindow.cpp
 
 RESOURCES += qml.qrc
 
@@ -34,4 +35,5 @@ DISTFILES +=
 
 HEADERS += \
     TcpClient.h \
-    MainClass.h
+    MainClass.h \
+    MainWindow.h

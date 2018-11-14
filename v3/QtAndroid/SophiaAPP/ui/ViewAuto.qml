@@ -1,7 +1,7 @@
 import QtQuick 2.9
 import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
-import QmlInterface 1.0
+import QmlMainClass 1.0
 
 Page {
     id: page
@@ -10,7 +10,7 @@ Page {
 
     Rectangle{id: gap; width: 10; height: 20;}
 
-    QmlInterface
+    QmlMainClass
     {
         id: cpp
     }

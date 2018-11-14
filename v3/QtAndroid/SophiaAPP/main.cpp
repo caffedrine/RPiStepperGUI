@@ -15,7 +15,7 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
 
     //call before any qml may use the custom component
-    qmlRegisterType<MainWindow>("QmlInterface",1,0,"QmlInterface");
+    qmlRegisterType<MainClass>("QmlMainClass",1,0,"QmlMainClass");
 
     /* Load GUI */
     MainWindow ui;
@@ -23,7 +23,8 @@ int main(int argc, char *argv[])
 
     /* Launch work on a separate thread to keep UI thread free */
     QThread main_work_thread;
-    MainClass MainWork(&ui);
+    MainClass MainWork;
+    MainWork.SetUi(&ui);
     MainWork.moveToThread(&main_work_thread);
     QObject::connect(&main_work_thread, SIGNAL(started()), &MainWork, SLOT(MainLoop()) );
     main_work_thread.start();

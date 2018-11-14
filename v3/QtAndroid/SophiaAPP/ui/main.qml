@@ -1,6 +1,6 @@
 import QtQuick 2.8
 import QtQuick.Controls 2.1
-import QmlInterface 1.0
+import QmlMainClass 1.0
 import QtQuick.Window 2.1
 
 
@@ -14,7 +14,7 @@ ApplicationWindow
 
     property string statusText: "This is the status text..."
 
-    QmlInterface
+    QmlMainClass
     {
         id: cpp
     }
@@ -39,7 +39,9 @@ ApplicationWindow
 
             MouseArea {
                  anchors.fill: parent
-                 onClicked: showMessage("TRalalala", "Title")
+                 onClicked: {
+                     cpp.test()
+                 }
             }
         }
     }

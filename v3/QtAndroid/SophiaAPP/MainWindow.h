@@ -7,6 +7,13 @@
 #include <QGuiApplication>
 #include <QCoreApplication>
 
+enum class UiStatusType
+{
+    SUCCESS = 0,
+    ERROR = 1,
+    PENDING = 2
+};
+
 class MainWindow : public QObject
 {
     Q_OBJECT
@@ -14,18 +21,11 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     void SetupUI();
     void SetProperty(const char* property, const QVariant value);
+    void SetStatus(QString text, UiStatusType status);
 
 signals:
 
 public slots:    
-    Q_INVOKABLE void onButtonPressed_Connect(QString ip, int port);
-    Q_INVOKABLE void onSwitchChanged_Valves(bool checked);
-    Q_INVOKABLE void onSwitchChanged_Cutter(bool checked);
-    Q_INVOKABLE void onButtonPressed_Reset();
-    Q_INVOKABLE void onButtonPressed_Lock();
-    Q_INVOKABLE void onButtonPressed_Unlock();
-    Q_INVOKABLE void onButtonPressed_Cut();
-    Q_INVOKABLE void onButtonPressed_MoveTo(int size);
 
 private:
     QQmlApplicationEngine *engine;

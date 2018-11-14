@@ -1,12 +1,12 @@
 import QtQuick 2.9
 import QtQuick.Controls 2.2
-import QmlInterface 1.0
+import QmlMainClass 1.0
 
 Page {
     width: 600
     height: 400
 
-    QmlInterface
+    QmlMainClass
     {
         id: cpp
     }

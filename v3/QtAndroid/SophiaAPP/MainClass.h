@@ -11,26 +11,38 @@
 
 #include "MainWindow.h"
 
-enum class StatusType
-{
-    SUCCESS = 0,
-    ERROR = 1,
-    PENDING = 2
-};
+
 
 class MainClass: public QObject
 {
     Q_OBJECT
 public:
-    MainClass(MainWindow *_ui);
+    MainClass();
     ~MainClass();
-    void SetStatus(QString text, StatusType status);
+    void SetUi(MainWindow *_ui);
 
 private:
     MainWindow *ui;
 
 public slots:
     void MainLoop();
+    Q_INVOKABLE void onSwitchChanged_Valves(bool checked);
+    Q_INVOKABLE void onSwitchChanged_Cutter(bool checked);
+
+    Q_INVOKABLE void onButtonPressed_Connect(QString ip, int port);
+    Q_INVOKABLE void onButtonPressed_Reset();
+    Q_INVOKABLE void onButtonPressed_Lock();
+    Q_INVOKABLE void onButtonPressed_Unlock();
+    Q_INVOKABLE void onButtonPressed_Cut();
+    Q_INVOKABLE void onButtonPressed_MoveTo(int size);
+    Q_INVOKABLE void onButtonPressed_Up();
+    Q_INVOKABLE void onButtonPressed_Down();
+    Q_INVOKABLE void onButtonPressed_Right();
+    Q_INVOKABLE void onbuttonpressed_Left();
+    Q_INVOKABLE void onButtonReleased_Up();
+    Q_INVOKABLE void onButtonReleased_Down();
+    Q_INVOKABLE void onButtonReleased_Right();
+    Q_INVOKABLE void onButtonReleased_Left();
 };
 
 #endif // MAINCLASS_H

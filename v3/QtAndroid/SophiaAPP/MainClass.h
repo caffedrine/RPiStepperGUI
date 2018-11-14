@@ -38,7 +38,7 @@ public slots:
     Q_INVOKABLE void onButtonPressed_Up();
     Q_INVOKABLE void onButtonPressed_Down();
     Q_INVOKABLE void onButtonPressed_Right();
-    Q_INVOKABLE void onbuttonpressed_Left();
+    Q_INVOKABLE void onButtonPressed_Left();
     Q_INVOKABLE void onButtonReleased_Up();
     Q_INVOKABLE void onButtonReleased_Down();
     Q_INVOKABLE void onButtonReleased_Right();

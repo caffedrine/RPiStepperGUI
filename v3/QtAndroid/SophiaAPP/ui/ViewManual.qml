@@ -17,12 +17,10 @@ Page {
 
         /* Sensors */
         Row {
-
-            id: column_buttons
+            id: column_sensors
             anchors.top: gap.bottom
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.topMargin: 25
-            spacing: 5
 
             RadioButton {
                 id: radioButton_Horizontal
@@ -58,9 +56,9 @@ Page {
 
         /* Manual control valves & cutters */
         Row {
-            id: manual_controls
+            id: column_manuals
             anchors.horizontalCenter: parent.horizontalCenter
-            anchors.top: column_buttons.bottom
+            anchors.top: column_sensors.bottom
             anchors.topMargin: 20
             spacing: 10
 
@@ -85,20 +83,81 @@ Page {
             }
         }
 
-        Row
-        {
-            id: joystick_button
-            anchors.horizontalCenter: parent.horizontalCenter
-            spacing: 10
-            anchors.topMargin: 80
-            anchors.top: manual_controls.bottom
-            /* Manual control motors */
-            VirtualJoystick
-            {
-                anchors.horizontalCenter: parent.horizontalCenter
-            }
-        }
 
-    }
-}
+                Button{
+                    id: button_up
+                    anchors.top: column_manuals.bottom
+                    anchors.topMargin: 15
+                    width: 80; height: 40
+                    text: "UP"
+                    anchors.horizontalCenter: parent.horizontalCenter
+
+                    onPressed: {
+                        cpp.onButtonPressed_Up();
+                    }
+
+                    onReleased: {
+                        cpp.onButtonReleased_Up();
+                    }
+                }
+
+            Row
+            {
+                id: row_middle
+                anchors.top: button_up.bottom
+                anchors.topMargin: 4
+                anchors.horizontalCenter: parent.horizontalCenter
+
+                Button
+                {
+                    width: 80; height: 40
+                    text: "LEFT"
+                    onPressed: {
+                        cpp.onButtonPressed_Left();
+                    }
+
+                    onReleased: {
+                        cpp.onButtonReleased_Left();
+                    }
+                }
+                Image
+                {
+                    width: 84; height: 40
+                    fillMode: Image.PreserveAspectFit
+                    source: "imgs/circle_image.png"
+                }
+                Button
+                {
+                    width: 80; height: 40
+                    text: "RIGHT"
+                    onPressed: {
+                        cpp.onButtonPressed_Right();
+                    }
+
+                    onReleased: {
+                        cpp.onButtonReleased_Right();
+                    }
+                }
+            }
+
+
+
+                Button{
+                    width: 80; height: 40
+                    anchors.top: row_middle.bottom
+                    anchors.topMargin: 4
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    text: "DOWN"
+                    onPressed: {
+                        cpp.onButtonPressed_Down();
+                    }
+
+                    onReleased: {
+                        cpp.onButtonReleased_Down();
+                    }
+                }
+
+
+    }/* Main column */
+}/* Page */
 

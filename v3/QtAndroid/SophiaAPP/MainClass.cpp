@@ -72,40 +72,40 @@ void MainClass::onButtonPressed_MoveTo(int size)
 
 void MainClass::onButtonPressed_Up()
 {
-
+    qDebug() << "UP pressed";
 }
 
 void MainClass::onButtonPressed_Down()
 {
-
+    qDebug() << "DOWN pressed";
 }
 
 void MainClass::onButtonPressed_Right()
 {
-
+    qDebug() << "RIGHT pressed";
 }
 
-void MainClass::onbuttonpressed_Left()
+void MainClass::onButtonPressed_Left()
 {
-
+    qDebug() << "LEFT pressed";
 }
 
 void MainClass::onButtonReleased_Up()
 {
-
+    qDebug() << "UP released";
 }
 
 void MainClass::onButtonReleased_Down()
 {
-
+    qDebug() << "DOWN released";
 }
 
 void MainClass::onButtonReleased_Right()
 {
-
+    qDebug() << "RIGHT released";
 }
 
 void MainClass::onButtonReleased_Left()
 {
-
+    qDebug() << "LEFT released";
 }

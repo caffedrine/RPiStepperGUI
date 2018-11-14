@@ -1,6 +1,9 @@
 #ifndef MAINCLASS_H
 #define MAINCLASS_H
 
+#include <QQmlApplicationEngine>
+#include <QGuiApplication>
+
 #include <QObject>
 #include <QDebug>
 #include <QThread>
@@ -19,9 +22,11 @@ public:
     MainClass();
     ~MainClass();
 
+    void SetQmlEngine(QQmlApplicationEngine *engine);
     void SetStatus(QString text, StatusType status);
 
 private:
+   QObject *ui;
 
 public slots:
     void MainLoop();

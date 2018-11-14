@@ -2,11 +2,16 @@
 
 MainClass::MainClass()
 {
-
 }
 
 MainClass::~MainClass()
 {
+
+}
+
+void MainClass::SetQmlEngine(QQmlApplicationEngine *engine)
+{
+    this->ui = engine->rootObjects()[0];
 
 }
 
@@ -27,6 +32,8 @@ void MainClass::MainLoop()
 void MainClass::onButtonPressed_Connect(QString ip, int port)
 {
     qDebug() << "Connecting to " << ip << ":" << port;
+
+    this->ui->setProperty("statusText", "Hello!");
 }
 
 void MainClass::onSwitchChanged_Valves(bool checked)

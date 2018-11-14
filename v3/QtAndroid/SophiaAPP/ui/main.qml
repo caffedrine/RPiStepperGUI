@@ -12,6 +12,8 @@ ApplicationWindow
     height: 480
     title: qsTr("Sophia APP Controller")
 
+    property string statusText: "This is the status text..."
+
     QmlInterface
     {
         id: cpp
@@ -78,7 +80,7 @@ ApplicationWindow
         Text {
             id: status_text
             anchors.centerIn: parent
-            text: qsTr("This is the status text...")
+            text: qsTr(statusText)
         }
     }
 

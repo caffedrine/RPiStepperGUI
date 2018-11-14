@@ -22,11 +22,10 @@ int main(int argc, char *argv[])
     if (engine.rootObjects().isEmpty())
         return -1;
 
-
-
     /* Launch work on a separate thread to keep UI thread free */
     QThread thread;
     MainClass work;
+    work.SetQmlEngine(&engine);
     work.moveToThread(&thread);
     QObject::connect(&thread, SIGNAL(started()), &work, SLOT(MainLoop()) );
 

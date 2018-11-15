@@ -1,6 +1,8 @@
 #ifndef LOCKHELPER_H
 #define LOCKHELPER_H
 
+#ifdef __ANDROID__
+
 #include <QAndroidJniObject>
 
 class KeepAwakeHelper
@@ -13,4 +15,5 @@ private:
     QAndroidJniObject m_wakeLock;
 };
 
+#endif
 #endif // LOCKHELPER_H

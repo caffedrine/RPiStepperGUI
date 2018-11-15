@@ -22,8 +22,10 @@ void MainClass::SetStatus(QString description, UiStatusType status)
 
 void MainClass::MainLoop()
 {
+    #ifdef Q_OS_ANDROID
     /* Prevent screen from turning off */
     KeepAwakeHelper helper;
+    #endif
 
     while(true)
     {

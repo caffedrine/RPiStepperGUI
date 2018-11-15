@@ -1,5 +1,9 @@
 QT += core quick network
+
+android {
 QT += androidextras
+}
+
 CONFIG += c++11
 
 # The following define makes your compiler emit warnings if you use
@@ -17,8 +21,7 @@ SOURCES += \
     main.cpp \
     TcpClient.cpp \
     MainClass.cpp \
-    MainWindow.cpp \
-    LockHelper.cpp
+    MainWindow.cpp
 
 RESOURCES += qml.qrc
 
@@ -33,14 +36,7 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-DISTFILES += \
-    android/AndroidManifest.xml \
-    android/gradle/wrapper/gradle-wrapper.jar \
-    android/gradlew \
-    android/res/values/libs.xml \
-    android/build.gradle \
-    android/gradle/wrapper/gradle-wrapper.properties \
-    android/gradlew.bat
+DISTFILES =
 
 HEADERS += \
     TcpClient.h \
@@ -49,4 +45,19 @@ HEADERS += \
     ../../Shared/packet.h \
     LockHelper.h
 
-ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
+android {
+    SOURCES += LockHelper.cpp
+
+    DISTFILES += \
+        android/AndroidManifest.xml \
+        android/gradle/wrapper/gradle-wrapper.jar \
+        android/gradlew \
+        android/res/values/libs.xml \
+        android/build.gradle \
+        android/gradle/wrapper/gradle-wrapper.properties \
+        android/gradlew.bat
+
+    HEADERS += ../../Shared/packet.h
+
+    ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
+}

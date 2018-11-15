@@ -1,3 +1,5 @@
+#ifdef __ANDROID__
+
 #include "LockHelper.h"
 #include <QAndroidJniObject>
 #include <QDebug>
@@ -42,3 +44,5 @@ KeepAwakeHelper::~KeepAwakeHelper()
         qDebug() << "Unlocked device, can now go to standby";
     }
 }
+
+#endif

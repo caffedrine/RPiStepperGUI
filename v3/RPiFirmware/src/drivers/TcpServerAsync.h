@@ -28,10 +28,22 @@ public:
 	
 	typedef struct Client
 	{
-		int Fd = 0;
+		int Fd = -1;
 		uint16_t Port = 0;
 		char Ip[16] = {'\0'};
 		struct sockaddr_in address;
+		
+		void Disconnect()
+		{
+			close(Fd);
+			Fd = -1;
+		}
+		
+		bool IsConnected()
+		{
+			return (Fd > 0);
+		}
+		
 	}client_t;
 	
 	struct Exception : public std::exception
@@ -52,7 +64,7 @@ public:
 
 protected:
 	int Write(const client_t *client, const char *data, int len);
-	virtual void ClientConnected(const client_t *client);
+	virtual void ClientConnected(client_t *client);
 	virtual void ClientDisconnected(const client_t *client);
 	virtual void DataReceived(const client_t *client, char *data, int len);
 	virtual void DataSend(const client_t *client, const char *data, int bytesSend);

@@ -7,11 +7,12 @@
 
 #include "Common.h"
 #include "drivers/TcpServerAsync.h"
+#include "utils/time_utils.h"
 
 class ServerTCP : public TcpServerAsync
 {
 public:
-	client_t client;
+	client_t *client = NULL;
 	
 	ServerTCP() : TcpServerAsync(1337, 1)
 	{
@@ -20,27 +21,31 @@ public:
 	
 	int Send(const char *data, int len)
 	{
-		if(client.Fd > 0)
+		if( client != NULL && client->IsConnected())
 		{
-			Write(&client, data, len);
+			Write(client, data, len);
 		}
 	}
 	
 private:
-	void ClientConnected(const TcpServerAsync::client_t *_client) override
+	void ClientConnected(TcpServerAsync::client_t *_client) override
 	{
-		client = *_client;
+		g_TcpRecvLastMillis = TimeUtils::millis();
+		client = _client;
 		console->info("[{0} {1}:{2}] CONNECTED", _client->Fd, _client->Ip, _client->Port);
 	}
 	
 	void ClientDisconnected(const TcpServerAsync::client_t *_client) override
 	{
-		client.Fd = 0;
+		client = nullptr;
 		console->info("[{0} {1}:{2}] DISCONNECTED", _client->Fd, _client->Ip, _client->Port);
 	}
 	
 	void DataReceived(const TcpServerAsync::client_t *client, char *data, int len) override
 	{
+		/* Update variable to know exactly when was last packet received from client */
+		g_TcpRecvLastMillis = TimeUtils::millis();
+		
 		console->info("[{0} {1}:{2}] RECV({3} bytes): {4}", client->Fd, client->Ip, client->Port, len, data);
 	}
 	

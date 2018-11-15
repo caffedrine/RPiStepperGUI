@@ -9,7 +9,7 @@ void MainWindow::SetupUI()
 {
     qDebug() << "Setting up UI...";
     this->engine = new QQmlApplicationEngine();
-    engine->load(QUrl(QStringLiteral("qrc:/ui/main.qml")));
+    this->engine->load(QUrl(QStringLiteral("qrc:/ui/main.qml")));
     if (engine->rootObjects().isEmpty())
     {
         qDebug() << "Failed to load qml ui!";
@@ -25,5 +25,6 @@ void MainWindow::SetupUI()
 
 void MainWindow::SetProperty(const char* property, const QVariant value)
 {
+    qDebug() << "Setting up property from thread: " << QThread::currentThreadId();
     this->ui->setProperty(property, value);
 }

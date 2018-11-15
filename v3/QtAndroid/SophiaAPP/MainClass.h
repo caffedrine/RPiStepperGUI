@@ -10,6 +10,7 @@
 #include <QDebug>
 #include <QThread>
 
+#include "LockHelper.h"
 #include "MainWindow.h"
 #include "TcpClient.h"
 #include "../../Shared/packet.h"
@@ -33,6 +34,9 @@ public:
 private:
     MainWindow *ui;
     TcpClient *rpi;
+
+signals:
+    void UiSetProperty(const char* property, QVariant value);
 
 public slots:
     void MainLoop();

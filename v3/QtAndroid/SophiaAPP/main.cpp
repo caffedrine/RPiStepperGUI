@@ -24,8 +24,9 @@ int main(int argc, char *argv[])
     /* Launch work on a separate thread to keep UI thread free */
     QThread main_work_thread;
     MainClass MainWork;
-    MainWork.SetUi(&ui);
+    QObject::connect(&MainWork, SIGNAL(UiSetProperty(const char *, QVariant)), &ui, SLOT(SetProperty(const char *, QVariant)));
     MainWork.moveToThread(&main_work_thread);
+    MainWork.SetUi(&ui);
     QObject::connect(&main_work_thread, SIGNAL(started()), &MainWork, SLOT(MainLoop()) );
     main_work_thread.start();
 

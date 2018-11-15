@@ -15,6 +15,7 @@ ApplicationWindow
     property string statusText: "Waiting for actions..."
     property string connection_status_label: "NOT connected!"
 
+
     QmlMainClass
     {
         id: cpp

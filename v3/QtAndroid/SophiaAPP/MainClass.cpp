@@ -22,13 +22,16 @@ void MainClass::SetStatus(QString description, UiStatusType status)
 
 void MainClass::MainLoop()
 {
+    /* Prevent screen from turning off */
+    KeepAwakeHelper helper;
+
     while(true)
     {
         static int i = 0;
         QString tmp = QString::number(i++) + ". Ciao!";
 
-        qDebug() << tmp;
-        ui->SetProperty("statusText", tmp);
+        //qDebug() << tmp;
+        //ui->SetProperty("statusText", tmp);
 
         QThread::msleep(1000);
     }
@@ -85,6 +88,9 @@ void MainClass::onButtonPressed_Connect(QString ip, int port)
 
     if(!rpi->is_alive())
     {
+        QString tmp = "connected";
+        emit UiSetProperty("statusText", tmp);
+
         this->SetStatus(rpi->getLastError(), UiStatusType::ERROR);
         this->rpi = nullptr;
     }

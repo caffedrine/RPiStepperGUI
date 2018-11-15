@@ -6,10 +6,25 @@
 #define RPIFIRMWARE_SENSORLASER_H
 
 
-class SensorLaser
-{
+#include "Config.h"
+#include "drivers/Gpio.h"
+#include "communication/ServerTCP.h"
 
+class SensorLaser : public Gpio
+{
+public:
+	SensorLaser(uint8_t _gpio) : Gpio(_gpio)
+	{
+	}
+
+private:
+	void onStateChanged(LogicalLevel newState) override
+	{
+		console->info("Laser init button: {0}", (bool)newState);
+	}
 };
+
+SensorLaser g_SensorLaser(SENSOR_LASER_CUT);
 
 
 #endif //RPIFIRMWARE_SENSORLASER_H

@@ -5,6 +5,7 @@
 
 #include "hal.h"
 
+
 typedef void (*level_changed_cb_t)(LogicalLevel);
 
 class Gpio
@@ -33,6 +34,9 @@ private:
 	void internal_gpio_callback(int pin, int NewLevel, uint32_t CurrentTick);
 	
 	void Init();
+
+protected:
+	virtual void onStateChanged(LogicalLevel newState);
 };
 
 

@@ -16,7 +16,6 @@ public:
 	{
 		std::cout << "Motor steps done: " << StepsDone << std::endl;
 	}
-	
 private:
 };
 

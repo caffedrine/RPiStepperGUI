@@ -5,11 +5,20 @@
 #ifndef RPIFIRMWARE_SLAVEENCODER_H
 #define RPIFIRMWARE_SLAVEENCODER_H
 
+#include "Config.h"
+#include "drivers/Encoder.h"
 
-class SlaveEncoder
+class SlaveEncoder : Encoder
 {
-
+public:
+	SlaveEncoder(uint8_t gpio_pin) : Encoder(gpio_pin)
+	{
+	
+	}
+	
+private:
 };
 
+SlaveEncoder g_SlaveEncoder(ENCODER_SLAVE_GPIO);
 
 #endif //RPIFIRMWARE_SLAVEENCODER_H

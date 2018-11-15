@@ -80,9 +80,16 @@ void Gpio::internal_gpio_callback(int pin, int NewLevel, uint32_t CurrentTicks)
 			if(this->LevelChangedCbFunc > 0)
 				this->LevelChangedCbFunc(CurrentState);
 			
+			onStateChanged(CurrentState);
+			
 			LastTicks = CurrentTicks;
 		}
 	}
+}
+
+void Gpio::onStateChanged(LogicalLevel newLevel)
+{
+
 }
 
 

@@ -103,7 +103,7 @@ void TcpServerAsync::BackgroundWork()
 		FD_ZERO(&this->readfds);
 		this->max_sd = 0;
 		
-		/* Add serer socket socket to set only if it is open*/
+		/* Add server socket socket to set only if it is open*/
 		if( this->ServerSocket > 0 )
 		{
 			FD_SET(this->ServerSocket, &readfds);
@@ -207,7 +207,7 @@ void TcpServerAsync::BackgroundWork()
 	}
 }
 
-void TcpServerAsync::ClientConnected(const TcpServerAsync::client_t *client)
+void TcpServerAsync::ClientConnected(TcpServerAsync::client_t *client)
 {
 	printf("[%d %s:%d] CONNECTED\n", client->Fd, client->Ip, client->Port);
 }

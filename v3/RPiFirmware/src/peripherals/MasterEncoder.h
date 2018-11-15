@@ -5,11 +5,17 @@
 #ifndef RPIFIRMWARE_MASTERENCODER_H
 #define RPIFIRMWARE_MASTERENCODER_H
 
+#include "Config.h"
+#include "drivers/Encoder.h"
 
-class MasterEncoder
+class MasterEncoder : public Encoder
 {
-
+public:
+	MasterEncoder(uint8_t gpio) : Encoder(gpio)
+	{
+	}
 };
 
+MasterEncoder g_MasterEncoder(ENCODER_MASTER_GPIO);
 
 #endif //RPIFIRMWARE_MASTERENCODER_H

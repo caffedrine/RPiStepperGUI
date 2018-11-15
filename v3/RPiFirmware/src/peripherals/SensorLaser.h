@@ -20,7 +20,7 @@ public:
 private:
 	void onStateChanged(LogicalLevel newState) override
 	{
-		console->info("Laser init button: {0}", (bool)newState);
+		console->info("Laser button: {0}", (bool)newState);
 	}
 };
 

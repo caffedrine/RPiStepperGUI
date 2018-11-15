@@ -36,4 +36,5 @@ DISTFILES +=
 HEADERS += \
     TcpClient.h \
     MainClass.h \
-    MainWindow.h
+    MainWindow.h \
+    ../../Shared/packet.h

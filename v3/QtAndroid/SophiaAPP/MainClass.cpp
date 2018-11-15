@@ -2,8 +2,6 @@
 
 MainClass::MainClass()
 {
-    /* Connect signals */
-    //connect(ui, SIGNAL(test()), this, SLOT(Test()));
 }
 
 MainClass::~MainClass()
@@ -14,6 +12,12 @@ MainClass::~MainClass()
 void MainClass::SetUi(MainWindow *_ui)
 {
     this->ui = _ui;
+}
+
+void MainClass::SetStatus(QString description, UiStatusType status)
+{
+    QString statusStr = (status==UiStatusType::SUCCESS?"SUCCESS":(status==UiStatusType::ERROR?"ERROR":"PENDING"));
+    qDebug() << "[" + statusStr + "] " + description;
 }
 
 void MainClass::MainLoop()
@@ -30,9 +34,64 @@ void MainClass::MainLoop()
     }
 }
 
+void MainClass::onTcpReadyRead()
+{
+
+}
+
+
+void MainClass::onTcpConnectionChanged(bool connected)
+{
+    qDebug() << "Connected slot triggered!";
+
+    try
+    {
+        ui->SetProperty("statusText", "connected");
+    }
+    catch (std::exception &e)
+    {
+        qDebug() << e.what();
+    }
+}
+
+void MainClass::onTcpPacketReceived(packet_t packet)
+{
+
+}
+
+//     _   _ ___    ____  _                   _
+//    | | | |_ _|  / ___|(_) __ _ _ __   __ _| |___
+//    | | | || |   \___ \| |/ _` | '_ \ / _` | / __|
+//    | |_| || |    ___) | | (_| | | | | (_| | \__ \
+//     \___/|___|  |____/|_|\__, |_| |_|\__,_|_|___/
+//                         |___/
 void MainClass::onButtonPressed_Connect(QString ip, int port)
 {
-    qDebug() << "Connecting too " << ip << ":" << port;
+    this->SetStatus("Connecting to " + ip + ":" + QString::number(port), UiStatusType::PENDING);
+    if(this->rpi != nullptr && this->rpi->is_alive())
+    {
+        this->SetStatus("Already connected!", UiStatusType::ERROR);
+        return;
+    }
+
+    rpi = nullptr;
+    rpi = new TcpClient();
+    rpi->setHostname(ip);
+    rpi->setPort(port);
+    connect(rpi, SIGNAL(onConnectionChanged(bool)), this, SLOT(onTcpConnectionChanged(bool)) );
+    connect(rpi, SIGNAL(onReadyRead()), this, SLOT(onTcpReadyRead()) );
+
+    rpi->doConnect();
+
+    if(!rpi->is_alive())
+    {
+        this->SetStatus(rpi->getLastError(), UiStatusType::ERROR);
+        this->rpi = nullptr;
+    }
+    else
+    {
+        this->SetStatus("Connected to " + ip + ":" + QString::number(port), UiStatusType::SUCCESS);
+    }
 }
 
 void MainClass::onSwitchChanged_Valves(bool checked)

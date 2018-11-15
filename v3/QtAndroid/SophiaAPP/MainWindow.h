@@ -7,12 +7,7 @@
 #include <QGuiApplication>
 #include <QCoreApplication>
 
-enum class UiStatusType
-{
-    SUCCESS = 0,
-    ERROR = 1,
-    PENDING = 2
-};
+
 
 class MainWindow : public QObject
 {
@@ -21,7 +16,7 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     void SetupUI();
     void SetProperty(const char* property, const QVariant value);
-    void SetStatus(QString text, UiStatusType status);
+    //void SetStatus(QString text, UiStatusType status);
 
 signals:
 

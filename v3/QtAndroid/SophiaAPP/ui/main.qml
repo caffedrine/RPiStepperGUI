@@ -12,7 +12,8 @@ ApplicationWindow
     height: 480
     title: qsTr("Sophia APP Controller")
 
-    property string statusText: "This is the status text..."
+    property string statusText: "Waiting for actions..."
+    property string connection_status_label: "NOT connected!"
 
     QmlMainClass
     {

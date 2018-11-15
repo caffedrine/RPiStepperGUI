@@ -5,13 +5,21 @@
 #include <QGuiApplication>
 #include <QCoreApplication>
 
+
 #include <QObject>
 #include <QDebug>
 #include <QThread>
 
 #include "MainWindow.h"
+#include "TcpClient.h"
+#include "../../Shared/packet.h"
 
-
+enum class UiStatusType
+{
+    SUCCESS = 0,
+    ERROR = 1,
+    PENDING = 2
+};
 
 class MainClass: public QObject
 {
@@ -20,12 +28,18 @@ public:
     MainClass();
     ~MainClass();
     void SetUi(MainWindow *_ui);
+    void SetStatus(QString description, UiStatusType);
 
 private:
     MainWindow *ui;
+    TcpClient *rpi;
 
 public slots:
     void MainLoop();
+    void onTcpReadyRead();
+    void onTcpPacketReceived(packet_t packet);
+    void onTcpConnectionChanged(bool connected);
+
     Q_INVOKABLE void onSwitchChanged_Valves(bool checked);
     Q_INVOKABLE void onSwitchChanged_Cutter(bool checked);
 

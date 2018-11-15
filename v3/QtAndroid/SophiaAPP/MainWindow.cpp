@@ -18,10 +18,10 @@ void MainWindow::SetupUI()
     this->ui = engine->rootObjects()[0];
 }
 
-void MainWindow::SetStatus(QString text, UiStatusType status)
-{
+//void MainWindow::SetStatus(QString text, UiStatusType status)
+//{
 
-}
+//}
 
 void MainWindow::SetProperty(const char* property, const QVariant value)
 {

@@ -64,7 +64,7 @@ void TcpClient::doConnect()
 	socket->connectToHost(this->hostname, this->port);
 
 	// we need to wait...
-	if(!socket->waitForConnected(10000))
+    if(!socket->waitForConnected(5000))
 	{
         this->lastError = socket->errorString();
         this->socket->disconnectFromHost();

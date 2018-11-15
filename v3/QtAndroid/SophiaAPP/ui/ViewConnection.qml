@@ -11,6 +11,7 @@ Page {
         id: cpp
     }
 
+
     Column
     {
         id: main_column
@@ -61,7 +62,7 @@ Page {
             Label
             {
                 id: status_label
-                text: "NOT connected"
+                text: root.connection_status_label
             }
         }
 

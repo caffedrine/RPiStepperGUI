@@ -24,7 +24,7 @@ private:
 	}
 };
 
-SensorLaser g_SensorLaser(SENSOR_LASER_CUT);
+SensorLaser g_SensorLaser(SENSOR_LASER_CUT_GPIO);
 
 
 #endif //RPIFIRMWARE_SENSORLASER_H

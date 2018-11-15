@@ -23,6 +23,6 @@ private:
 	}
 };
 
-SensorHorizontal g_SensorHorizontal(SENSOR_INIT_HORIZONTAL);
+SensorHorizontal g_SensorHorizontal(SENSOR_INIT_HORIZONTAL_GPIO);
 
 #endif //RPIFIRMWARE_SENSORHORIZONTAL_H

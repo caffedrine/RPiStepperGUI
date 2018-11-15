@@ -14,15 +14,14 @@ typedef enum Params
     SENSOR_CUTTER,
     SENSOR_INIT_VERTICAL,
     SENSOR_INIT_CUTTER,
-
     ACK,
     ACK_OK
-}param_t;
+} param_t;
 
 typedef struct Packet
 {
-    param_t param;
+    //param_t param;
     uint8_t value;
-}packet_t;
+} packet_t;
 
 #endif // PACKET_H

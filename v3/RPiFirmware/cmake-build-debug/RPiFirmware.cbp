@@ -8,128 +8,128 @@
 		<Option virtualFolders="CMake Files\;"/>
 		<Build>
 			<Target title="all">
-				<Option working_dir="/home/curiosul/Workspaces/Projects/Sophia-Firmwares/v3/RPiFirmware/cmake-build-debug"/>
+				<Option working_dir="/home/curiosul/Workspaces/Projects/Sophia/v3/RPiFirmware/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j4 -f &quot;/home/curiosul/Workspaces/Projects/Sophia-Firmwares/v3/RPiFirmware/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
-					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/curiosul/Workspaces/Projects/Sophia-Firmwares/v3/RPiFirmware/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j4 -f &quot;/home/curiosul/Workspaces/Projects/Sophia-Firmwares/v3/RPiFirmware/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j4 -f &quot;/home/curiosul/Workspaces/Projects/Sophia-Firmwares/v3/RPiFirmware/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/curiosul/Workspaces/Projects/Sophia/v3/RPiFirmware/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/curiosul/Workspaces/Projects/Sophia/v3/RPiFirmware/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/curiosul/Workspaces/Projects/Sophia/v3/RPiFirmware/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/curiosul/Workspaces/Projects/Sophia/v3/RPiFirmware/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="rebuild_cache">
-				<Option working_dir="/home/curiosul/Workspaces/Projects/Sophia-Firmwares/v3/RPiFirmware/cmake-build-debug"/>
+				<Option working_dir="/home/curiosul/Workspaces/Projects/Sophia/v3/RPiFirmware/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j4 -f &quot;/home/curiosul/Workspaces/Projects/Sophia-Firmwares/v3/RPiFirmware/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
-					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/curiosul/Workspaces/Projects/Sophia-Firmwares/v3/RPiFirmware/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j4 -f &quot;/home/curiosul/Workspaces/Projects/Sophia-Firmwares/v3/RPiFirmware/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j4 -f &quot;/home/curiosul/Workspaces/Projects/Sophia-Firmwares/v3/RPiFirmware/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/curiosul/Workspaces/Projects/Sophia/v3/RPiFirmware/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/curiosul/Workspaces/Projects/Sophia/v3/RPiFirmware/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/curiosul/Workspaces/Projects/Sophia/v3/RPiFirmware/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/curiosul/Workspaces/Projects/Sophia/v3/RPiFirmware/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="edit_cache">
-				<Option working_dir="/home/curiosul/Workspaces/Projects/Sophia-Firmwares/v3/RPiFirmware/cmake-build-debug"/>
+				<Option working_dir="/home/curiosul/Workspaces/Projects/Sophia/v3/RPiFirmware/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j4 -f &quot;/home/curiosul/Workspaces/Projects/Sophia-Firmwares/v3/RPiFirmware/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
-					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/curiosul/Workspaces/Projects/Sophia-Firmwares/v3/RPiFirmware/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j4 -f &quot;/home/curiosul/Workspaces/Projects/Sophia-Firmwares/v3/RPiFirmware/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j4 -f &quot;/home/curiosul/Workspaces/Projects/Sophia-Firmwares/v3/RPiFirmware/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/curiosul/Workspaces/Projects/Sophia/v3/RPiFirmware/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/curiosul/Workspaces/Projects/Sophia/v3/RPiFirmware/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/curiosul/Workspaces/Projects/Sophia/v3/RPiFirmware/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/curiosul/Workspaces/Projects/Sophia/v3/RPiFirmware/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="RPiFirmwareExe">
-				<Option output="/home/curiosul/Workspaces/Projects/Sophia-Firmwares/v3/RPiFirmware/cmake-build-debug/RPiFirmwareExe" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/home/curiosul/Workspaces/Projects/Sophia-Firmwares/v3/RPiFirmware/cmake-build-debug"/>
+				<Option output="/home/curiosul/Workspaces/Projects/Sophia/v3/RPiFirmware/cmake-build-debug/RPiFirmwareExe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/curiosul/Workspaces/Projects/Sophia/v3/RPiFirmware/cmake-build-debug"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
 				<Option compiler="gcc"/>
 				<Compiler>
-					<Add directory="/home/curiosul/Workspaces/Projects/Sophia-Firmwares/v3/RPiFirmware/include"/>
-					<Add directory="/home/curiosul/Workspaces/Projects/Sophia-Firmwares/v3/RPiFirmware/src"/>
-					<Add directory="/home/curiosul/Workspaces/Projects/Sophia-Firmwares/v3/RPiFirmware/src/communication"/>
-					<Add directory="/home/curiosul/Workspaces/Projects/Sophia-Firmwares/v3/RPiFirmware/src/drivers"/>
-					<Add directory="/home/curiosul/Workspaces/Projects/Sophia-Firmwares/v3/RPiFirmware/src/peripherals"/>
-					<Add directory="/home/curiosul/Workspaces/Projects/Sophia-Firmwares/v3/RPiFirmware/src/utils"/>
-					<Add directory="/usr/include/c++/7"/>
-					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
-					<Add directory="/usr/include/c++/7/backward"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/home/curiosul/Workspaces/Projects/Sophia/v3/RPiFirmware/include"/>
+					<Add directory="/home/curiosul/Workspaces/Projects/Sophia/v3/RPiFirmware/src"/>
+					<Add directory="/home/curiosul/Workspaces/Projects/Sophia/v3/RPiFirmware/src/communication"/>
+					<Add directory="/home/curiosul/Workspaces/Projects/Sophia/v3/RPiFirmware/src/drivers"/>
+					<Add directory="/home/curiosul/Workspaces/Projects/Sophia/v3/RPiFirmware/src/peripherals"/>
+					<Add directory="/home/curiosul/Workspaces/Projects/Sophia/v3/RPiFirmware/src/utils"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
 					<Add directory="/usr/local/include"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
 					<Add directory="/usr/include/x86_64-linux-gnu"/>
 					<Add directory="/usr/include"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j4 -f &quot;/home/curiosul/Workspaces/Projects/Sophia-Firmwares/v3/RPiFirmware/cmake-build-debug/Makefile&quot;  VERBOSE=1 RPiFirmwareExe"/>
-					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/curiosul/Workspaces/Projects/Sophia-Firmwares/v3/RPiFirmware/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j4 -f &quot;/home/curiosul/Workspaces/Projects/Sophia-Firmwares/v3/RPiFirmware/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j4 -f &quot;/home/curiosul/Workspaces/Projects/Sophia-Firmwares/v3/RPiFirmware/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/curiosul/Workspaces/Projects/Sophia/v3/RPiFirmware/cmake-build-debug/Makefile&quot;  VERBOSE=1 RPiFirmwareExe"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/curiosul/Workspaces/Projects/Sophia/v3/RPiFirmware/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/curiosul/Workspaces/Projects/Sophia/v3/RPiFirmware/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/curiosul/Workspaces/Projects/Sophia/v3/RPiFirmware/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="RPiFirmwareExe/fast">
-				<Option output="/home/curiosul/Workspaces/Projects/Sophia-Firmwares/v3/RPiFirmware/cmake-build-debug/RPiFirmwareExe" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/home/curiosul/Workspaces/Projects/Sophia-Firmwares/v3/RPiFirmware/cmake-build-debug"/>
+				<Option output="/home/curiosul/Workspaces/Projects/Sophia/v3/RPiFirmware/cmake-build-debug/RPiFirmwareExe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/curiosul/Workspaces/Projects/Sophia/v3/RPiFirmware/cmake-build-debug"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
 				<Option compiler="gcc"/>
 				<Compiler>
-					<Add directory="/home/curiosul/Workspaces/Projects/Sophia-Firmwares/v3/RPiFirmware/include"/>
-					<Add directory="/home/curiosul/Workspaces/Projects/Sophia-Firmwares/v3/RPiFirmware/src"/>
-					<Add directory="/home/curiosul/Workspaces/Projects/Sophia-Firmwares/v3/RPiFirmware/src/communication"/>
-					<Add directory="/home/curiosul/Workspaces/Projects/Sophia-Firmwares/v3/RPiFirmware/src/drivers"/>
-					<Add directory="/home/curiosul/Workspaces/Projects/Sophia-Firmwares/v3/RPiFirmware/src/peripherals"/>
-					<Add directory="/home/curiosul/Workspaces/Projects/Sophia-Firmwares/v3/RPiFirmware/src/utils"/>
-					<Add directory="/usr/include/c++/7"/>
-					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
-					<Add directory="/usr/include/c++/7/backward"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/home/curiosul/Workspaces/Projects/Sophia/v3/RPiFirmware/include"/>
+					<Add directory="/home/curiosul/Workspaces/Projects/Sophia/v3/RPiFirmware/src"/>
+					<Add directory="/home/curiosul/Workspaces/Projects/Sophia/v3/RPiFirmware/src/communication"/>
+					<Add directory="/home/curiosul/Workspaces/Projects/Sophia/v3/RPiFirmware/src/drivers"/>
+					<Add directory="/home/curiosul/Workspaces/Projects/Sophia/v3/RPiFirmware/src/peripherals"/>
+					<Add directory="/home/curiosul/Workspaces/Projects/Sophia/v3/RPiFirmware/src/utils"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
 					<Add directory="/usr/local/include"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
 					<Add directory="/usr/include/x86_64-linux-gnu"/>
 					<Add directory="/usr/include"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j4 -f &quot;/home/curiosul/Workspaces/Projects/Sophia-Firmwares/v3/RPiFirmware/cmake-build-debug/Makefile&quot;  VERBOSE=1 RPiFirmwareExe/fast"/>
-					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/curiosul/Workspaces/Projects/Sophia-Firmwares/v3/RPiFirmware/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j4 -f &quot;/home/curiosul/Workspaces/Projects/Sophia-Firmwares/v3/RPiFirmware/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j4 -f &quot;/home/curiosul/Workspaces/Projects/Sophia-Firmwares/v3/RPiFirmware/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/curiosul/Workspaces/Projects/Sophia/v3/RPiFirmware/cmake-build-debug/Makefile&quot;  VERBOSE=1 RPiFirmwareExe/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/curiosul/Workspaces/Projects/Sophia/v3/RPiFirmware/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/curiosul/Workspaces/Projects/Sophia/v3/RPiFirmware/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/curiosul/Workspaces/Projects/Sophia/v3/RPiFirmware/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="/home/curiosul/Workspaces/Projects/Sophia-Firmwares/v3/RPiFirmware/src/drivers/Encoder.cpp">
+		<Unit filename="/home/curiosul/Workspaces/Projects/Sophia/v3/RPiFirmware/src/drivers/Encoder.cpp">
 			<Option target="RPiFirmwareExe"/>
 		</Unit>
-		<Unit filename="/home/curiosul/Workspaces/Projects/Sophia-Firmwares/v3/RPiFirmware/src/drivers/Encoder.h">
+		<Unit filename="/home/curiosul/Workspaces/Projects/Sophia/v3/RPiFirmware/src/drivers/Encoder.h">
 			<Option target="RPiFirmwareExe"/>
 		</Unit>
-		<Unit filename="/home/curiosul/Workspaces/Projects/Sophia-Firmwares/v3/RPiFirmware/src/drivers/Gpio.cpp">
+		<Unit filename="/home/curiosul/Workspaces/Projects/Sophia/v3/RPiFirmware/src/drivers/Gpio.cpp">
 			<Option target="RPiFirmwareExe"/>
 		</Unit>
-		<Unit filename="/home/curiosul/Workspaces/Projects/Sophia-Firmwares/v3/RPiFirmware/src/drivers/Gpio.h">
+		<Unit filename="/home/curiosul/Workspaces/Projects/Sophia/v3/RPiFirmware/src/drivers/Gpio.h">
 			<Option target="RPiFirmwareExe"/>
 		</Unit>
-		<Unit filename="/home/curiosul/Workspaces/Projects/Sophia-Firmwares/v3/RPiFirmware/src/drivers/PushButton.cpp">
+		<Unit filename="/home/curiosul/Workspaces/Projects/Sophia/v3/RPiFirmware/src/drivers/PushButton.cpp">
 			<Option target="RPiFirmwareExe"/>
 		</Unit>
-		<Unit filename="/home/curiosul/Workspaces/Projects/Sophia-Firmwares/v3/RPiFirmware/src/drivers/PushButton.h">
+		<Unit filename="/home/curiosul/Workspaces/Projects/Sophia/v3/RPiFirmware/src/drivers/PushButton.h">
 			<Option target="RPiFirmwareExe"/>
 		</Unit>
-		<Unit filename="/home/curiosul/Workspaces/Projects/Sophia-Firmwares/v3/RPiFirmware/src/drivers/Stepper.cpp">
+		<Unit filename="/home/curiosul/Workspaces/Projects/Sophia/v3/RPiFirmware/src/drivers/Stepper.cpp">
 			<Option target="RPiFirmwareExe"/>
 		</Unit>
-		<Unit filename="/home/curiosul/Workspaces/Projects/Sophia-Firmwares/v3/RPiFirmware/src/drivers/Stepper.h">
+		<Unit filename="/home/curiosul/Workspaces/Projects/Sophia/v3/RPiFirmware/src/drivers/Stepper.h">
 			<Option target="RPiFirmwareExe"/>
 		</Unit>
-		<Unit filename="/home/curiosul/Workspaces/Projects/Sophia-Firmwares/v3/RPiFirmware/src/drivers/TcpServerAsync.cpp">
+		<Unit filename="/home/curiosul/Workspaces/Projects/Sophia/v3/RPiFirmware/src/drivers/TcpServerAsync.cpp">
 			<Option target="RPiFirmwareExe"/>
 		</Unit>
-		<Unit filename="/home/curiosul/Workspaces/Projects/Sophia-Firmwares/v3/RPiFirmware/src/drivers/TcpServerAsync.h">
+		<Unit filename="/home/curiosul/Workspaces/Projects/Sophia/v3/RPiFirmware/src/drivers/TcpServerAsync.h">
 			<Option target="RPiFirmwareExe"/>
 		</Unit>
-		<Unit filename="/home/curiosul/Workspaces/Projects/Sophia-Firmwares/v3/RPiFirmware/src/main.cpp">
+		<Unit filename="/home/curiosul/Workspaces/Projects/Sophia/v3/RPiFirmware/src/main.cpp">
 			<Option target="RPiFirmwareExe"/>
 		</Unit>
-		<Unit filename="/home/curiosul/Workspaces/Projects/Sophia-Firmwares/v3/RPiFirmware/CMakeLists.txt">
+		<Unit filename="/home/curiosul/Workspaces/Projects/Sophia/v3/RPiFirmware/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>
 	</Project>

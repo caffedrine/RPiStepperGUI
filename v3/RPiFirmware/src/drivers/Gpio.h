@@ -5,7 +5,6 @@
 
 #include "hal.h"
 
-
 typedef void (*level_changed_cb_t)(LogicalLevel);
 
 class Gpio
@@ -21,10 +20,13 @@ public:
 	~Gpio();
 	
 	LogicalLevel Read();
+	void Write(LogicalLevel new_level);
+	
+	void SetMode(PinMode new_mode);
 	void SetPullState(PullState);
 	void SetReversedPolarity(bool reveresed);
 	void SetStateChangedCallback( level_changed_cb_t );
-
+	
 private:
 	/* State changed callback function*/
 	level_changed_cb_t  LevelChangedCbFunc = NULL;

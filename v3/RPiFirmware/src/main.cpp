@@ -11,7 +11,7 @@
 #include "peripherals/CutterDC.h"
 #include "peripherals/CutterRelay.h"
 #include "peripherals/ElectroValves.h"
-#include "peripherals/Led.h"
+#include "peripherals/LedConnection.h"
 #include "peripherals/MasterDC.h"
 #include "peripherals/SlaveDC.h"
 #include "peripherals/SensorHorizontal.h"

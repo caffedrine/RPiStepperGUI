@@ -1,6 +1,6 @@
-/home/curiosul/.Tools/IDEs/clion-2018.2.5/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /home/curiosul/Workspaces/Projects/Sophia/v3/RPiFirmware
--- The C compiler identification is GNU 5.4.0
--- The CXX compiler identification is GNU 5.4.0
+/home/curiosul/.tools/IDEs/clion-2018.2.2/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /home/curiosul/Workspaces/Projects/Sophia-Firmwares/v3/RPiFirmware
+-- The C compiler identification is GNU 7.3.0
+-- The CXX compiler identification is GNU 7.3.0
 -- Check for working C compiler: /usr/bin/cc
 -- Check for working C compiler: /usr/bin/cc -- works
 -- Detecting C compiler ABI info
@@ -15,4 +15,4 @@
 -- Detecting CXX compile features - done
 -- Configuring done
 -- Generating done
--- Build files have been written to: /home/curiosul/Workspaces/Projects/Sophia/v3/RPiFirmware/cmake-build-debug
+-- Build files have been written to: /home/curiosul/Workspaces/Projects/Sophia-Firmwares/v3/RPiFirmware/cmake-build-debug

@@ -27,7 +27,12 @@ enum class LogicalLevel
 enum class PinMode
 {
     OUTPUT = 1,
-    INPUT = 0
+    INPUT = 0,
+    ALT0,
+    ALT1,
+    ALT2,
+    ALT3,
+    ALT4
 };
 
 enum class PullState

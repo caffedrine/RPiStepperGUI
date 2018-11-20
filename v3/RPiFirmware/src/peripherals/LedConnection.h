@@ -5,9 +5,10 @@
 #ifndef RPIFIRMWARE_LED_H
 #define RPIFIRMWARE_LED_H
 
+#include "Config.h"
 #include <drivers/Gpio.h>
 
-class Led : public Gpio
+class LedConnection : public Gpio
 {
 
 };

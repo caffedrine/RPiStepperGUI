@@ -27,6 +27,9 @@
 #define RIGHT_BUTTON_PIN		19
 #define LEFT_BUTTON_PIN			20
 
+#define LED_TRAFFIC				21
+#define LED_CONNECTION			22
+
 
 #define TCP_ACK_INTERVAL_MS		3000
 

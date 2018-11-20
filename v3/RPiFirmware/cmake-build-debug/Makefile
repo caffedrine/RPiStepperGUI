@@ -39,19 +39,19 @@ cmake_force:
 SHELL = /bin/sh
 
 # The CMake executable.
-CMAKE_COMMAND = /home/curiosul/.Tools/IDEs/clion-2018.2.5/bin/cmake/linux/bin/cmake
+CMAKE_COMMAND = /home/curiosul/.tools/IDEs/clion-2018.2.2/bin/cmake/linux/bin/cmake
 
 # The command to remove a file.
-RM = /home/curiosul/.Tools/IDEs/clion-2018.2.5/bin/cmake/linux/bin/cmake -E remove -f
+RM = /home/curiosul/.tools/IDEs/clion-2018.2.2/bin/cmake/linux/bin/cmake -E remove -f
 
 # Escaping for special characters.
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/curiosul/Workspaces/Projects/Sophia/v3/RPiFirmware
+CMAKE_SOURCE_DIR = /home/curiosul/Workspaces/Projects/Sophia-Firmwares/v3/RPiFirmware
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/curiosul/Workspaces/Projects/Sophia/v3/RPiFirmware/cmake-build-debug
+CMAKE_BINARY_DIR = /home/curiosul/Workspaces/Projects/Sophia-Firmwares/v3/RPiFirmware/cmake-build-debug
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -59,7 +59,7 @@ CMAKE_BINARY_DIR = /home/curiosul/Workspaces/Projects/Sophia/v3/RPiFirmware/cmak
 # Special rule for the target rebuild_cache
 rebuild_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
-	/home/curiosul/.Tools/IDEs/clion-2018.2.5/bin/cmake/linux/bin/cmake -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+	/home/curiosul/.tools/IDEs/clion-2018.2.2/bin/cmake/linux/bin/cmake -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
 .PHONY : rebuild_cache
 
 # Special rule for the target rebuild_cache
@@ -70,7 +70,7 @@ rebuild_cache/fast: rebuild_cache
 # Special rule for the target edit_cache
 edit_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
-	/home/curiosul/.Tools/IDEs/clion-2018.2.5/bin/cmake/linux/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+	/home/curiosul/.tools/IDEs/clion-2018.2.2/bin/cmake/linux/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
 .PHONY : edit_cache
 
 # Special rule for the target edit_cache
@@ -80,9 +80,9 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/curiosul/Workspaces/Projects/Sophia/v3/RPiFirmware/cmake-build-debug/CMakeFiles /home/curiosul/Workspaces/Projects/Sophia/v3/RPiFirmware/cmake-build-debug/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/curiosul/Workspaces/Projects/Sophia-Firmwares/v3/RPiFirmware/cmake-build-debug/CMakeFiles /home/curiosul/Workspaces/Projects/Sophia-Firmwares/v3/RPiFirmware/cmake-build-debug/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/curiosul/Workspaces/Projects/Sophia/v3/RPiFirmware/cmake-build-debug/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/curiosul/Workspaces/Projects/Sophia-Firmwares/v3/RPiFirmware/cmake-build-debug/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -177,6 +177,33 @@ src/drivers/Gpio.cpp.s:
 	$(MAKE) -f CMakeFiles/RPiFirmwareExe.dir/build.make CMakeFiles/RPiFirmwareExe.dir/src/drivers/Gpio.cpp.s
 .PHONY : src/drivers/Gpio.cpp.s
 
+src/drivers/Led.o: src/drivers/Led.cpp.o
+
+.PHONY : src/drivers/Led.o
+
+# target to build an object file
+src/drivers/Led.cpp.o:
+	$(MAKE) -f CMakeFiles/RPiFirmwareExe.dir/build.make CMakeFiles/RPiFirmwareExe.dir/src/drivers/Led.cpp.o
+.PHONY : src/drivers/Led.cpp.o
+
+src/drivers/Led.i: src/drivers/Led.cpp.i
+
+.PHONY : src/drivers/Led.i
+
+# target to preprocess a source file
+src/drivers/Led.cpp.i:
+	$(MAKE) -f CMakeFiles/RPiFirmwareExe.dir/build.make CMakeFiles/RPiFirmwareExe.dir/src/drivers/Led.cpp.i
+.PHONY : src/drivers/Led.cpp.i
+
+src/drivers/Led.s: src/drivers/Led.cpp.s
+
+.PHONY : src/drivers/Led.s
+
+# target to generate assembly for a file
+src/drivers/Led.cpp.s:
+	$(MAKE) -f CMakeFiles/RPiFirmwareExe.dir/build.make CMakeFiles/RPiFirmwareExe.dir/src/drivers/Led.cpp.s
+.PHONY : src/drivers/Led.cpp.s
+
 src/drivers/PushButton.o: src/drivers/PushButton.cpp.o
 
 .PHONY : src/drivers/PushButton.o
@@ -203,6 +230,33 @@ src/drivers/PushButton.s: src/drivers/PushButton.cpp.s
 src/drivers/PushButton.cpp.s:
 	$(MAKE) -f CMakeFiles/RPiFirmwareExe.dir/build.make CMakeFiles/RPiFirmwareExe.dir/src/drivers/PushButton.cpp.s
 .PHONY : src/drivers/PushButton.cpp.s
+
+src/drivers/Relay.o: src/drivers/Relay.cpp.o
+
+.PHONY : src/drivers/Relay.o
+
+# target to build an object file
+src/drivers/Relay.cpp.o:
+	$(MAKE) -f CMakeFiles/RPiFirmwareExe.dir/build.make CMakeFiles/RPiFirmwareExe.dir/src/drivers/Relay.cpp.o
+.PHONY : src/drivers/Relay.cpp.o
+
+src/drivers/Relay.i: src/drivers/Relay.cpp.i
+
+.PHONY : src/drivers/Relay.i
+
+# target to preprocess a source file
+src/drivers/Relay.cpp.i:
+	$(MAKE) -f CMakeFiles/RPiFirmwareExe.dir/build.make CMakeFiles/RPiFirmwareExe.dir/src/drivers/Relay.cpp.i
+.PHONY : src/drivers/Relay.cpp.i
+
+src/drivers/Relay.s: src/drivers/Relay.cpp.s
+
+.PHONY : src/drivers/Relay.s
+
+# target to generate assembly for a file
+src/drivers/Relay.cpp.s:
+	$(MAKE) -f CMakeFiles/RPiFirmwareExe.dir/build.make CMakeFiles/RPiFirmwareExe.dir/src/drivers/Relay.cpp.s
+.PHONY : src/drivers/Relay.cpp.s
 
 src/drivers/Stepper.o: src/drivers/Stepper.cpp.o
 
@@ -300,9 +354,15 @@ help:
 	@echo "... src/drivers/Gpio.o"
 	@echo "... src/drivers/Gpio.i"
 	@echo "... src/drivers/Gpio.s"
+	@echo "... src/drivers/Led.o"
+	@echo "... src/drivers/Led.i"
+	@echo "... src/drivers/Led.s"
 	@echo "... src/drivers/PushButton.o"
 	@echo "... src/drivers/PushButton.i"
 	@echo "... src/drivers/PushButton.s"
+	@echo "... src/drivers/Relay.o"
+	@echo "... src/drivers/Relay.i"
+	@echo "... src/drivers/Relay.s"
 	@echo "... src/drivers/Stepper.o"
 	@echo "... src/drivers/Stepper.i"
 	@echo "... src/drivers/Stepper.s"

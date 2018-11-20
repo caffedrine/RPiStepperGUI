@@ -20,12 +20,6 @@ enum class MotorDcState
 	RUNNING = 1
 };
 
-enum class MotorDcEnable
-{
-	ENABLED = 1,
-	DISABLED = 0
-};
-
 class DcMotor
 {
 public:
@@ -41,12 +35,14 @@ public:
 	void Disable();
 	void SetSpeed(uint8_t speed);
 	void SetDirection(MotorDcDirection new_direction);
+	void SetEnableReversed(bool enb_reversed);
 	
 	bool IsRunning();
 	long PwmConfig(unsigned FrequencyHz, uint8_t DutyProcents);
 	
 private:
 	void Init();
+	bool EnbReversed = false;
 	unsigned PwmFreqHz = 1000;
 	uint8_t PwmDuty = 128;	// 50% default pwm duty
 	uint8_t GpioPulse = 0, GpioDirection = 0, GpioEnable = 0;

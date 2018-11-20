@@ -106,13 +106,18 @@ void DcMotor::Run()
 void DcMotor::Enable()
 {
 	if(this->GpioEnable > 0)
-		Vfb_WriteGpio(this->GpioEnable, LogicalLevel::HIGH);
+		Vfb_WriteGpio(this->GpioEnable, (!this->EnbReversed)?LogicalLevel::HIGH:LogicalLevel::LOW);
 }
 
 void DcMotor::Disable()
 {
 	if(this->GpioEnable > 0)
-		Vfb_WriteGpio(this->GpioEnable, LogicalLevel::HIGH);
+		Vfb_WriteGpio(this->GpioEnable, (this->EnbReversed)?LogicalLevel::HIGH:LogicalLevel::LOW);
+}
+
+void DcMotor::SetEnableReversed(bool enb_reversed)
+{
+	this->EnbReversed = enb_reversed;
 }
 
 

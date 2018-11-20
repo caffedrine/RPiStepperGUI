@@ -5,7 +5,7 @@
 #ifndef DRIVERSCONTAINER_SERVERTCP_H
 #define DRIVERSCONTAINER_SERVERTCP_H
 
-#include "Common.h"
+#include "Globals.h"
 #include "drivers/TcpServerAsync.h"
 #include "utils/time_utils.h"
 #include "peripherals/LedConnection.h"
@@ -31,6 +31,12 @@ public:
 			Write(client, data, len);
 			g_LedTraffic.Off();
 		}
+	}
+	
+	bool SendPacket(Packet packet)
+	{
+		g_LedTraffic.On();
+		g_LedTraffic.Off();
 	}
 	
 private:

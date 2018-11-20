@@ -24,7 +24,7 @@ private:
 	}
 };
 
-SensorVertical g_SensorVertical(SENSOR_INIT_VERTICAL);
+SensorVertical g_SensorVertical(SENSOR_INIT_VERTICAL_GPIO);
 
 
 #endif //RPIFIRMWARE_SENSORVERTICAL_H

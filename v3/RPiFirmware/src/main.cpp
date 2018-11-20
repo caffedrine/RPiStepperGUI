@@ -6,10 +6,10 @@
 #include <spdlog/spdlog.h>
 
 #include "utils/time_utils.h"
-#include "Common.h"
+#include "Globals.h"
 #include "drivers/hal.h"
 #include "peripherals/CutterDC.h"
-#include "peripherals/CutterRelay.h"
+#include "peripherals/Cutter.h"
 #include "peripherals/ElectroValves.h"
 #include "peripherals/LedConnection.h"
 #include "peripherals/MasterDC.h"
@@ -58,7 +58,6 @@ int main()
 	console->info("Started main()...");
 	Initialize();
 	
-	
 	while( true )
 	{
 		if( !_ProgramContinue )
@@ -69,13 +68,61 @@ int main()
 		{
 			console->warn("Client ACK timeout reached", TCP_ACK_INTERVAL_MS);
 			console->warn("Dropped {0}:{1}", g_TcpServer.client->Ip, g_TcpServer.client->Port);
-			/* Try send null packet to inform about disconnect */
+			/* Drop client connection socket */
 			g_TcpServer.client->Disconnect();
+			/* Go to emergency stop until next client is connected */
+			g_State.Set(States::EMERGENCY_STOP);
 		}
-
-		g_TcpServer.Send("Alex!", 5);
 		
-		std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+		/* Handle EMERGENCY_STOP state */
+		if(g_State.Current.Val == States::EMERGENCY_STOP)
+		{
+			g_Cutter.Off();
+			g_CutterDC.Stop();
+			g_MasterDC.Stop();
+			g_SlaveDC.Stop();
+			
+			g_State.Set(States::STANDBY);;
+		}
+		
+		/* Handle WAIT_RESET state */
+		else if(g_State.Current.Val == States::WAIT_RESET)
+		{
+		
+		}
+		
+		/* Handle WAIT_MOVETO state */
+		else if(g_State.Current.Val == States::WAIT_MOVETO)
+		{
+		
+		}
+		
+		/* Handle WAIT_CUT state */
+		else if(g_State.Current.Val == States::WAIT_CUT)
+		{
+		
+		}
+		
+		/* Handle WAIT_CUTTER_INIT state */
+		else if(g_State.Current.Val == States::WAIT_CUTTER_INIT)
+		{
+		
+		}
+		
+		/* Handle WAIT_LOCK state */
+		else if(g_State.Current.Val == States::WAIT_LOCK)
+		{
+		
+		}
+		
+		/* Handle WAIT_UNLOCK state */
+		else if(g_State.Current.Val == States::WAIT_UNLOCK)
+		{
+		
+		}
+		
+		/* Prevent excessive CPU load */
+		std::this_thread::sleep_for(std::chrono::milliseconds(1));
 	}
 	return 0;
 }

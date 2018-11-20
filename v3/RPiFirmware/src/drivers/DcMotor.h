@@ -24,6 +24,7 @@ class DcMotor
 {
 public:
 	MotorDcState CurrentState;
+	MotorDcDirection CurrentDirection;
 	
 	DcMotor(uint8_t PulsePin);
 	DcMotor(uint8_t PulsePin, uint8_t Direction);

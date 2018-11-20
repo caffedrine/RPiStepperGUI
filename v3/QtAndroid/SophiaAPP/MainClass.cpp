@@ -20,6 +20,28 @@ void MainClass::SetStatus(QString description, UiStatusType status)
     qDebug() << "[" + statusStr + "] " + description;
 }
 
+bool MainClass::SendPacket(bool isAck)
+{
+    /* reset timer */
+    this->timeCounter.restart();
+
+    if(this->rpi != nullptr && this->rpi->is_alive())
+    {
+        QByteArray bytes;
+        /* Param byte */
+        //bytes.push_back( isAck?((uint8_t)PacketParams::ACK):((uint8_t)packet.param) );
+        bytes.push_back('a');
+        /* Value byte  - ignored for ack packet*/
+        //bytes.push_back( (uint8_t)packet.value );
+
+        if(rpi->write(bytes) < bytes.length())
+            qDebug() << "Failed to send data to rpi: " << rpi->getLastError();
+        else
+            qDebug() << "SEND " << bytes.length();
+    }
+    return false;
+}
+
 void MainClass::MainLoop()
 {
     #ifdef Q_OS_ANDROID
@@ -27,36 +49,63 @@ void MainClass::MainLoop()
     KeepAwakeHelper helper;
     #endif
 
+    timeCounter.restart();
+
     while(true)
     {
-        static int i = 0;
-        QString tmp = QString::number(i++) + ". Ciao!";
+        /* Send ACK package every 3 seconds */
+        if(timeCounter.elapsed() > 2000)
+            SendPacket(true);
 
-        //qDebug() << tmp;
-        //ui->SetProperty("statusText", tmp);
+        /* Update GUI */
+        //qApp->processEvents();
 
-        QThread::msleep(1000);
+        /* Prevent high CPU load */
+        QThread::msleep(1);
+    }
+}
+
+void MainClass::run()
+{
+    #ifdef Q_OS_ANDROID
+    /* Prevent screen from turning off */
+    KeepAwakeHelper helper;
+    #endif
+
+    timeCounter.restart();
+
+    while(true)
+    {
+        /* Send ACK package every 3 seconds */
+        if(timeCounter.elapsed() > 2000)
+            SendPacket(true);
+
+        /* Update GUI */
+        //qApp->processEvents();
+
+        /* Prevent high CPU load */
+        QThread::msleep(1);
     }
 }
 
 void MainClass::onTcpReadyRead()
 {
-
 }
 
 
 void MainClass::onTcpConnectionChanged(bool connected)
 {
-    qDebug() << "Connected slot triggered!";
+    if(!connected)
+        this->SetStatus("Disconnected from RPi server", UiStatusType::ERROR);
 
-    try
-    {
-        ui->SetProperty("statusText", "connected");
-    }
-    catch (std::exception &e)
-    {
-        qDebug() << e.what();
-    }
+//    try
+//    {
+//        ui->SetProperty("statusText", "connected");
+//    }
+//    catch (std::exception &e)
+//    {
+//        qDebug() << e.what();
+//    }
 }
 
 void MainClass::onTcpPacketReceived(packet_t packet)
@@ -70,109 +119,154 @@ void MainClass::onTcpPacketReceived(packet_t packet)
 //    | |_| || |    ___) | | (_| | | | | (_| | \__ \
 //     \___/|___|  |____/|_|\__, |_| |_|\__,_|_|___/
 //                         |___/
-void MainClass::onButtonPressed_Connect(QString ip, int port)
+void MainClass::onButtonPressed_Connect()
 {
-    this->SetStatus("Connecting to " + ip + ":" + QString::number(port), UiStatusType::PENDING);
+
+    qDebug() << "Slot triggered";
+
+    this->SetStatus("Connecting to " + QString(RPI_IP_ADDRESS) + ":" + QString::number(RPI_PORT), UiStatusType::PENDING);
     if(this->rpi != nullptr && this->rpi->is_alive())
     {
         this->SetStatus("Already connected!", UiStatusType::ERROR);
         return;
     }
 
-    rpi = nullptr;
-    rpi = new TcpClient();
-    rpi->setHostname(ip);
-    rpi->setPort(port);
+    this->rpi = nullptr;
+    this->rpi = new TcpClient();
+    this->rpi->setHostname(RPI_IP_ADDRESS);
+    this->rpi->setPort(RPI_PORT);
     connect(rpi, SIGNAL(onConnectionChanged(bool)), this, SLOT(onTcpConnectionChanged(bool)) );
     connect(rpi, SIGNAL(onReadyRead()), this, SLOT(onTcpReadyRead()) );
 
-    rpi->doConnect();
+    this->rpi->doConnect();
 
-    if(!rpi->is_alive())
+    if(!this->rpi->is_alive())
     {
-        QString tmp = "connected";
-        emit UiSetProperty("statusText", tmp);
+        emit UiSetProperty("statusText", "NOT connected");
 
-        this->SetStatus(rpi->getLastError(), UiStatusType::ERROR);
+        this->SetStatus(this->rpi->getLastError(), UiStatusType::ERROR);
         this->rpi = nullptr;
     }
     else
     {
-        this->SetStatus("Connected to " + ip + ":" + QString::number(port), UiStatusType::SUCCESS);
+        this->SetStatus("Connected to " + QString(RPI_IP_ADDRESS) + ":" + QString::number(RPI_PORT), UiStatusType::SUCCESS);
     }
 }
 
 void MainClass::onSwitchChanged_Valves(bool checked)
 {
     qDebug() << "Valves: " << (checked?"ON":"OFF");
+    packet.param = PacketParams::ELECTROVALVES;
+    packet.value = (checked?(TRUE):(FALSE));
+    SendPacket();
 }
 
 void MainClass::onSwitchChanged_Cutter(bool checked)
 {
     qDebug() << "Cutter: " << (checked?"ON":"OFF");
+    packet.param = PacketParams::CUTTER;
+    packet.value = (checked?(TRUE):(FALSE));
+    SendPacket();
 }
 
 void MainClass::onButtonPressed_Reset()
 {
     qDebug() << "RESET request";
+    packet.param = PacketParams::RESET;
+    SendPacket();
 }
 
 void MainClass::onButtonPressed_Lock()
 {
     qDebug() << "LOCK request";
+    packet.param = PacketParams::ELECTROVALVES;
+    packet.value = TRUE;
+    SendPacket();
 }
 
 void MainClass::onButtonPressed_Unlock()
 {
     qDebug() << "UNLOCK request";
+    packet.param = PacketParams::ELECTROVALVES;
+    packet.value = FALSE;
+    SendPacket();
 }
 
 void MainClass::onButtonPressed_Cut()
 {
     qDebug() << "CUT request";
+    packet.param = PacketParams::CUT;
+    SendPacket();
 }
 
 void MainClass::onButtonPressed_MoveTo(int size)
 {
     qDebug() << "MOVETO " << size << " request";
+    packet.param = PacketParams::MOVETO;
+    packet.value = TRUE;
+    SendPacket();
 }
 
 void MainClass::onButtonPressed_Up()
 {
     qDebug() << "UP pressed";
+    packet.param = PacketParams::UP;
+    packet.value = TRUE;
+    SendPacket();
 }
 
 void MainClass::onButtonPressed_Down()
 {
     qDebug() << "DOWN pressed";
+    packet.param = PacketParams::DOWN;
+    packet.value = TRUE;
+    SendPacket();
 }
 
 void MainClass::onButtonPressed_Right()
 {
     qDebug() << "RIGHT pressed";
+    packet.param = PacketParams::RIGHT;
+    packet.value = TRUE;
+    SendPacket();
 }
 
 void MainClass::onButtonPressed_Left()
 {
     qDebug() << "LEFT pressed";
+    packet.param = PacketParams::LEFT;
+    packet.value = TRUE;
+    SendPacket();
 }
 
 void MainClass::onButtonReleased_Up()
 {
     qDebug() << "UP released";
+    packet.param = PacketParams::UP;
+    packet.value = FALSE;
+    SendPacket();
 }
 
 void MainClass::onButtonReleased_Down()
 {
-    qDebug() << "DOWN released";
+    qDebug() << "UP released";
+    packet.param = PacketParams::DOWN;
+    packet.value = FALSE;
+    SendPacket();
 }
 
 void MainClass::onButtonReleased_Right()
 {
-    qDebug() << "RIGHT released";
+    qDebug() << "UP released";
+    packet.param = PacketParams::RIGHT;
+    packet.value = FALSE;
+    SendPacket();
 }
 
 void MainClass::onButtonReleased_Left()
 {
-    qDebug() << "LEFT released";
+    qDebug() << "UP released";
+    packet.param = PacketParams::LEFT;
+    packet.value = FALSE;
+    SendPacket();
 }

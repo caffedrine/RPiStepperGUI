@@ -3,25 +3,41 @@
 
 #include <stdint.h>
 
-typedef enum Params
+enum class PacketParams
 {
+	/* Peripherals */
     SENZOR_LEFT,
     SENZOR_RIGHT,
-    MOTOR_LEFT,
-    MOTOR_RIGHT,
     CUTTER,
     MOTOR_CUTTER,
     SENSOR_CUTTER,
     SENSOR_INIT_VERTICAL,
     SENSOR_INIT_CUTTER,
+	ELECTROVALVES,
+
+	/* Commands */
+	RESET,
+	STOP,
+	CUT,
+	MOVETO,
+	UP,
+	DOWN,
+	RIGHT,
+	LEFT,
+
+	/* Protocol commands */
     ACK,
     ACK_OK
-} param_t;
+};
 
+
+
+#pragma pack(push, 1)
 typedef struct Packet
 {
-    //param_t param;
-    uint8_t value;
+	PacketParams param;
+	uint16_t value;
 } packet_t;
+#pragma pack(pop)
 
 #endif // PACKET_H

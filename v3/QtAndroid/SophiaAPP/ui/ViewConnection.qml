@@ -34,24 +34,56 @@ Page {
 
             TextArea {
                 width: 300
-                height: 160
+                height: 110
                 text: qsTr("1. Connect to RPi hotspot:
         o AP Name: SophiaController
         o Passwd : soPhiA2018!
- 2. Connect to RPi:
-        o IP Address: 192.168.1.1
-        o Port  1337
- 3. Click CONNECT then wait for result! ")
+ 2. When GREEN led is ON just press CONNECT then wait for result! ")
                 wrapMode: Text.WordWrap
             }
         }
 
         Row
         {
+            id: connection_ip
+            anchors.topMargin: 10
+            spacing: 10
+
+            Label
+            {
+                text: "IP Address:"
+                font.bold: true
+            }
+
+            Label
+            {
+                id: connection_ip_label
+                text: root.ip_address
+            }
+        }
+
+        Row
+        {
+            id: connection_port
+            spacing: 10
+
+            Label
+            {
+                text: "Port:"
+                font.bold: true
+            }
+
+            Label
+            {
+                id: connection_port_label
+                text: root.port
+            }
+        }
+        Row
+        {
             id: connection_status
-            anchors.topMargin: 20
-            anchors.horizontalCenter: parent.horizontalCenter
-            spacing: 5
+            anchors.topMargin: 10
+            spacing: 10
 
             Label
             {
@@ -73,11 +105,14 @@ Page {
             text: "Connect"
 
             onPressed: {
-                 cpp.onButtonPressed_Connect("127.0.0.1", 1337);
+                 cpp.connectButtonPressed();
             }
 
-            onReleased: {
+            onReleased:
+            {
+                cpp.connectButtonReleased();
             }
+
         }
 
     }

@@ -18,10 +18,15 @@ public:
     void SetupUI();
 
 signals:
+    void onConnectButtonPressed();
+    void onConnectButtonReleased();
 
 public slots:    
     void SetProperty(const char* property, const QVariant value);
     //void SetStatus(QString text, UiStatusType status);
+
+    Q_INVOKABLE void connectButtonPressed();
+    Q_INVOKABLE void connectButtonReleased();
 
 private:
     QQmlApplicationEngine *engine;

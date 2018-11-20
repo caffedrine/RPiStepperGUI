@@ -25,6 +25,16 @@ void MainWindow::SetupUI()
 
 void MainWindow::SetProperty(const char* property, const QVariant value)
 {
-    qDebug() << "Setting up property from thread: " << QThread::currentThreadId();
     this->ui->setProperty(property, value);
+}
+
+void MainWindow::connectButtonPressed()
+{
+    qDebug() << "Connect button pressed!";
+    emit onConnectButtonPressed();
+}
+
+void MainWindow::connectButtonReleased()
+{
+    emit onConnectButtonReleased();
 }

@@ -9,11 +9,21 @@
 #include <QObject>
 #include <QDebug>
 #include <QThread>
+#include <QElapsedTimer>
 
 #include "LockHelper.h"
 #include "MainWindow.h"
 #include "TcpClient.h"
 #include "../../Shared/packet.h"
+
+#define RPI_IP_ADDRESS  "127.0.0.1"
+#define RPI_PORT        1337
+
+enum
+{
+    TRUE,
+    FALSE
+};
 
 enum class UiStatusType
 {
@@ -22,7 +32,7 @@ enum class UiStatusType
     PENDING = 2
 };
 
-class MainClass: public QObject
+class MainClass: public QThread
 {
     Q_OBJECT
 public:
@@ -30,16 +40,23 @@ public:
     ~MainClass();
     void SetUi(MainWindow *_ui);
     void SetStatus(QString description, UiStatusType);
+    void MainLoop();
+
 
 private:
-    MainWindow *ui;
-    TcpClient *rpi;
+    MainWindow *ui = nullptr;
+    TcpClient *rpi = nullptr;
+    Packet packet;
+    QElapsedTimer timeCounter;
+
+    void run();
+    bool SendPacket(bool isAck = false);
+
 
 signals:
     void UiSetProperty(const char* property, QVariant value);
 
 public slots:
-    void MainLoop();
     void onTcpReadyRead();
     void onTcpPacketReceived(packet_t packet);
     void onTcpConnectionChanged(bool connected);
@@ -47,7 +64,7 @@ public slots:
     Q_INVOKABLE void onSwitchChanged_Valves(bool checked);
     Q_INVOKABLE void onSwitchChanged_Cutter(bool checked);
 
-    Q_INVOKABLE void onButtonPressed_Connect(QString ip, int port);
+    void onButtonPressed_Connect();
     Q_INVOKABLE void onButtonPressed_Reset();
     Q_INVOKABLE void onButtonPressed_Lock();
     Q_INVOKABLE void onButtonPressed_Unlock();

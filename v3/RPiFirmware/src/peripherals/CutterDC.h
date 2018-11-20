@@ -5,7 +5,9 @@
 #ifndef RPIFIRMWARE_CUTTERDC_H
 #define RPIFIRMWARE_CUTTERDC_H
 
-class CutterDC
+#include "drivers/DcMotor.h"
+
+class CutterDC : public DcMotor
 {
 
 };

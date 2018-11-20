@@ -7,13 +7,16 @@
 
 #include "Gpio.h"
 
-class Led : Gpio
+class Led : private Gpio
 {
+public:
 	Led(uint8_t _gpio_pin);
 	
 	void SetReversedPolarity(bool reversed);
 	void On();
 	void Off();
+private:
+
 };
 
 

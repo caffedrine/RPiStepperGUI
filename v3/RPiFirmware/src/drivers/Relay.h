@@ -7,13 +7,15 @@
 
 #include "Gpio.h"
 
-class Relay : Gpio
+class Relay : private Gpio
 {
+public:
 	Relay(uint8_t _gpio_pin);
 	
 	void SetReversedPolarity(bool reversed);
 	void CloseCircuit();
 	void OpenCircuit();
+private:
 };
 
 #endif //_RELAY_H

@@ -19,7 +19,6 @@
 #include "peripherals/SensorLaser.h"
 #include "peripherals/MasterEncoder.h"
 #include "peripherals/SlaveEncoder.h"
-
 #include "communication/ServerTCP.h"
 
 bool _ProgramContinue = true;
@@ -36,6 +35,8 @@ void SigHandler(int signum)
 	console->critical("Interrupt signal ({0} - {1}) received", strsignal(signum), signum);
 	OnExit();
 	_ProgramContinue = false;
+	g_LedConnection.Off();
+	g_LedTraffic.Off();
 	exit(signum);
 }
 

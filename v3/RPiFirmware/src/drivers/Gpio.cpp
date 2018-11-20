@@ -29,6 +29,11 @@ void Gpio::Init()
 	Vfb_SetGpioCallbackFunc(this->Pin, &Gpio::static_internal_gpio_callback, this );
 }
 
+void Gpio::Write(LogicalLevel new_level)
+{
+	Vfb_WriteGpio(this->Pin, new_level);
+}
+
 LogicalLevel Gpio::Read()
 {
 	this->PreviousState = this->CurrentState;
@@ -41,6 +46,11 @@ LogicalLevel Gpio::Read()
 	}
 	
 	return CurrentState;
+}
+
+void Gpio::SetMode(PinMode)
+{
+	Vfb_SetPinMode(this->Pin, PinMode::OUTPUT);
 }
 
 void Gpio::SetPullState(PullState ps)
@@ -91,6 +101,7 @@ void Gpio::onStateChanged(LogicalLevel newLevel)
 {
 
 }
+
 
 
 

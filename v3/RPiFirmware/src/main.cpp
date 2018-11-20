@@ -6,12 +6,12 @@
 #include <spdlog/spdlog.h>
 
 #include "utils/time_utils.h"
-#include "Common.h"
+#include "Globals.h"
 #include "drivers/hal.h"
 #include "peripherals/CutterDC.h"
-#include "peripherals/CutterRelay.h"
+#include "peripherals/Cutter.h"
 #include "peripherals/ElectroValves.h"
-#include "peripherals/Led.h"
+#include "peripherals/LedConnection.h"
 #include "peripherals/MasterDC.h"
 #include "peripherals/SlaveDC.h"
 #include "peripherals/SensorHorizontal.h"
@@ -19,7 +19,6 @@
 #include "peripherals/SensorLaser.h"
 #include "peripherals/MasterEncoder.h"
 #include "peripherals/SlaveEncoder.h"
-
 #include "communication/ServerTCP.h"
 
 bool _ProgramContinue = true;
@@ -36,6 +35,8 @@ void SigHandler(int signum)
 	console->critical("Interrupt signal ({0} - {1}) received", strsignal(signum), signum);
 	OnExit();
 	_ProgramContinue = false;
+	g_LedConnection.Off();
+	g_LedTraffic.Off();
 	exit(signum);
 }
 
@@ -57,24 +58,71 @@ int main()
 	console->info("Started main()...");
 	Initialize();
 	
-	
 	while( true )
 	{
 		if( !_ProgramContinue )
 			break;
 	
-//		/* Check for client's responsiveness */
-//		if(g_TcpServer.client != NULL && g_TcpServer.client->IsConnected() > 0 && TimeUtils::millis() - g_TcpRecvLastMillis > TCP_ACK_INTERVAL_MS)
-//		{
-//			console->warn("Client ACK timeout reached", TCP_ACK_INTERVAL_MS);
-//			console->warn("Dropped {0}:{1}", g_TcpServer.client->Ip, g_TcpServer.client->Port);
-//			/* Try send null packet to inform about disconnect */
-//			g_TcpServer.client->Disconnect();
-//		}
-
-		g_TcpServer.Send("Alex!", 5);
+		/* Check for client's responsiveness */
+		if(g_TcpServer.client != NULL && g_TcpServer.client->IsConnected() > 0 && TimeUtils::millis() - g_TcpRecvLastMillis > TCP_ACK_INTERVAL_MS)
+		{
+			console->warn("Client ACK timeout reached", TCP_ACK_INTERVAL_MS);
+			console->warn("Dropped {0}:{1}", g_TcpServer.client->Ip, g_TcpServer.client->Port);
+			/* Drop client connection socket */
+			g_TcpServer.client->Disconnect();
+			/* Go to emergency stop until next client is connected */
+			g_State.Set(States::EMERGENCY_STOP);
+		}
 		
-		std::this_thread::sleep_for(std::chrono::milliseconds(2000));
+		/* Handle EMERGENCY_STOP state */
+		if(g_State.Current.Val == States::EMERGENCY_STOP)
+		{
+			g_Cutter.Off();
+			g_CutterDC.Stop();
+			g_MasterDC.Stop();
+			g_SlaveDC.Stop();
+			
+			g_State.Set(States::STANDBY);;
+		}
+		
+		/* Handle WAIT_RESET state */
+		else if(g_State.Current.Val == States::WAIT_RESET)
+		{
+		
+		}
+		
+		/* Handle WAIT_MOVETO state */
+		else if(g_State.Current.Val == States::WAIT_MOVETO)
+		{
+		
+		}
+		
+		/* Handle WAIT_CUT state */
+		else if(g_State.Current.Val == States::WAIT_CUT)
+		{
+		
+		}
+		
+		/* Handle WAIT_CUTTER_INIT state */
+		else if(g_State.Current.Val == States::WAIT_CUTTER_INIT)
+		{
+		
+		}
+		
+		/* Handle WAIT_LOCK state */
+		else if(g_State.Current.Val == States::WAIT_LOCK)
+		{
+		
+		}
+		
+		/* Handle WAIT_UNLOCK state */
+		else if(g_State.Current.Val == States::WAIT_UNLOCK)
+		{
+		
+		}
+		
+		/* Prevent excessive CPU load */
+		std::this_thread::sleep_for(std::chrono::milliseconds(1));
 	}
 	return 0;
 }

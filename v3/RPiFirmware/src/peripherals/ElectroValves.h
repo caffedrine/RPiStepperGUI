@@ -13,7 +13,7 @@ class ElectroValves : private Relay
 public:
 	ElectroValves(uint8_t gpio_pin) : Relay(gpio_pin)
 	{
-	
+		Relay::SetPullState(PullState::DOWN);
 	}
 	
 	void On()

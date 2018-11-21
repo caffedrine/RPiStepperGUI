@@ -7,26 +7,75 @@
 
 #include "utils/time_utils.h"
 #include "Globals.h"
-#include "interfaces/TcpPublisher.h"
+#include "communication/ServerTCP.h"
 #include "peripherals/CutterDC.h"
 #include "peripherals/Cutter.h"
 #include "peripherals/ElectroValves.h"
 #include "peripherals/LedConnection.h"
+#include "peripherals/LedTraffic.h"
 #include "peripherals/MasterDC.h"
 #include "peripherals/SlaveDC.h"
-#include "communication/ServerTCP.h"
 #include "peripherals/SensorVerticalMaster.h"
 #include "peripherals/SensorVerticalSlave.h"
-#include "peripherals/SensorHorizontal.h"
+#include "peripherals/SensorHorizontalLeft.h"
+#include "peripherals/SensorHorizontalRight.h"
 #include "peripherals/SensorLaser.h"
 #include "peripherals/MasterEncoder.h"
 #include "peripherals/SlaveEncoder.h"
 
 bool _ProgramContinue = true;
 
+/* Callbacks */
+void SensorVerticalSlaveCallback(PushButtonState new_state)
+{
+	console->info("Sensor VERTICAL SLAVE state: {0}", (bool)new_state);
+	static Packet packet = { .param = PacketParams::SENSOR_INIT_VERTICAL_SLAVE };
+	packet.value = (uint8_t)new_state;
+	g_TcpServer.SendPacket(&packet);
+}
+
+void SensorVerticalMasterCallback(PushButtonState new_state)
+{
+	console->info("Sensor VERTICAL MASTER state: {0}", (bool)new_state);
+	static Packet packet = { .param = PacketParams::SENSOR_INIT_VERTICAL_MASTER };
+	packet.value = (uint8_t)new_state;
+	g_TcpServer.SendPacket(&packet);
+}
+
+void SensorHorizontalLeftCallback(PushButtonState new_state)
+{
+	console->info("Sensor HORIZONTAL LEFT state: {0}", (bool)new_state);
+	static Packet packet = { .param = PacketParams::SENSOR_INIT_HORIZONTAL_LEFT };
+	packet.value = (uint8_t)new_state;
+	g_TcpServer.SendPacket(&packet);
+}
+
+void SensorHorizontalRightCallback(PushButtonState new_state)
+{
+	console->info("Sensor HORIZONTAL RIGHT state: {0}", (bool)new_state);
+	static Packet packet = { .param = PacketParams::SENSOR_INIT_HORIZONTAL_RIGHT };
+	packet.value = (uint8_t)new_state;
+	g_TcpServer.SendPacket(&packet);
+}
+
+void SensorLaserCallback(LogicalLevel new_level)
+{
+	console->info("Sensor LASER state: {0}", (bool)new_level);
+	static Packet packet = { .param = PacketParams::SENSOR_CUTTER_LASER };
+	packet.value = (uint8_t)new_level;
+	g_TcpServer.SendPacket(&packet);
+}
+
+
 void OnExit()
 {
-	//g_Motor.Stop();
+	g_LedConnection.Off();
+	g_LedTraffic.Off();
+	g_MasterDC.Stop();
+	g_SlaveDC.Stop();
+	g_CutterDC.Stop();
+	g_Cutter.Off();
+	
 	console->info("Executing STOP routine...");
 }
 
@@ -35,12 +84,6 @@ void SigHandler(int signum)
 	std::cout << std::endl;
 	console->critical("Interrupt signal ({0} - {1}) received", strsignal(signum), signum);
 	OnExit();
-	g_LedConnection.Off();
-	g_LedTraffic.Off();
-	g_MasterDC.Stop();
-	g_SlaveDC.Stop();
-	g_CutterDC.Stop();
-	g_Cutter.Off();
 	_ProgramContinue = false;
 	exit(signum);
 }
@@ -51,11 +94,13 @@ void Initialize()
 	signal(SIGINT, SigHandler);
 	signal(SIGQUIT, SigHandler);
 	signal(SIGTSTP, SigHandler);
-}
-
-void onCommandReceived()
-{
-
+	
+	/* Init callbacks */
+	g_SensorLaser.SetStateChangedCallback( SensorLaserCallback );
+	g_SensorHorizontalLeft.SetStateChangedCallback( SensorHorizontalLeftCallback );
+	g_SensorHorizontalRight.SetStateChangedCallback( SensorHorizontalRightCallback );
+	g_SensorVerticalMaster.SetStateChangedCallback( SensorVerticalMasterCallback );
+	g_SensorVerticalSlave.SetStateChangedCallback( SensorVerticalSlaveCallback );
 }
 
 

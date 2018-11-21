@@ -13,6 +13,7 @@ public:
 	Relay(uint8_t _gpio_pin);
 	
 	void SetReversedPolarity(bool reversed);
+	void SetPullState(PullState new_state);
 	void CloseCircuit();
 	void OpenCircuit();
 private:

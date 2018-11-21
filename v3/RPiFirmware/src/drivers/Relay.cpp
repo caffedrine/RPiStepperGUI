@@ -24,3 +24,8 @@ void Relay::OpenCircuit()
 {
 	Gpio::Write(LogicalLevel::LOW);
 }
+
+void Relay::SetPullState(PullState new_state)
+{
+	Gpio::SetPullState(new_state);
+}

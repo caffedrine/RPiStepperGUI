@@ -7,27 +7,14 @@
 
 #include "Config.h"
 #include "Globals.h"
-#include "drivers/Gpio.h"
-#include "communication/ServerTCP.h"
+#include "drivers/PushButton.h"
 
-class SensorVerticalMaster : public Gpio
+class SensorVerticalMaster : public PushButton
 {
 public:
-	
-	explicit SensorVerticalMaster(uint8_t _gpio) : Gpio(_gpio)
+	explicit SensorVerticalMaster(uint8_t _gpio) : PushButton(_gpio)
 	{
-	}
-	
-private:
-	void onStateChanged(LogicalLevel newState) override
-	{
-		console->info("Sensor init button horizontal master: {0}", (bool)newState);
-		static Packet packet = { .param = PacketParams::SENSOR_INIT_CUTTER };
-//		if(TcpSend != nullptr)
-//		{
-//			packet.value = (uint8_t) newState;
-//			TcpSend( &packet );
-//		}
+		PushButton::SetPullState(PullState::DOWN);
 	}
 };
 

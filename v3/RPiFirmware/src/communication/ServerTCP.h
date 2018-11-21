@@ -5,7 +5,7 @@
 #ifndef DRIVERSCONTAINER_SERVERTCP_H
 #define DRIVERSCONTAINER_SERVERTCP_H
 
-#include <peripherals/SensorHorizontal.h>
+#include <peripherals/SensorHorizontalLeft.h>
 #include "Globals.h"
 #include "drivers/TcpServerAsync.h"
 #include "utils/time_utils.h"
@@ -18,7 +18,7 @@
 #include "peripherals/ElectroValves.h"
 #include "peripherals/SensorVerticalMaster.h"
 #include "peripherals/SensorVerticalSlave.h"
-#include "peripherals/SensorHorizontal.h"
+#include "peripherals/SensorHorizontalLeft.h"
 #include "peripherals/SensorLaser.h"
 
 #include "../../../Shared/packet.h"
@@ -109,7 +109,7 @@ private:
 	{
 		/* Send back an acknowledgement */
 		SendAck();
-		console->info("New packet received: [{0} {1}]", packet->param, packet->value);
+		HandlePacketRecv(packet);
 	}
 
 protected:
@@ -136,58 +136,95 @@ protected:
 			case PacketParams::CUTTER:
 			{
 				if(packet->value == (uint8_t)LogicalLevel::HIGH)
+				{
+					console->info("[MANUAL] Cutter ON");
 					g_Cutter.On();
+				}
 				else
+				{
+					console->info("[MANUAL] Cutter OFF");
 					g_Cutter.Off();
+				}
 			}break;
 			
 			case PacketParams::ELECTROVALVES:
 			{
 				if(packet->value == (uint8_t)LogicalLevel::HIGH)
+				{
+					console->info("[MANUAL] Electrovalves ON");
 					g_ElectroValves.On();
+				}
 				else
+				{
+					console->info("[MANUAL] Electrovalves OFF");
 					g_ElectroValves.Off();
+				}
 			}break;
 			
 			case PacketParams::UP:
 			{
 				g_MasterDC.SetDirection(MotorDcDirection::FORWARD);
 				if(packet->value == (uint8_t)LogicalLevel::HIGH)
+				{
+					console->info("[MANUAL] Running UP");
 					g_MasterDC.Run();
+				}
 				else
+				{
+					console->info("[MANUAL] Stopped");
 					g_MasterDC.Stop();
+				}
 			}break;
 			
 			case PacketParams::DOWN:
 			{
 				g_MasterDC.SetDirection(MotorDcDirection::BACKWARD);
 				if(packet->value == (uint8_t)LogicalLevel::HIGH)
+				{
+					console->info("[MANUAL] Running down");
 					g_MasterDC.Run();
+				}
 				else
+				{
+					console->info("[MANUAL] Stopped");
 					g_MasterDC.Stop();
+				}
 			}break;
 			
 			case PacketParams::RIGHT:
 			{
 				g_CutterDC.SetDirection(MotorDcDirection::FORWARD);
 				if(packet->value == (uint8_t)LogicalLevel::HIGH)
+				{
+					console->info("[MANUAL] Running right");
 					g_CutterDC.Run();
+				}
 				else
+				{
+					console->info("[MANUAL] Stopped");
 					g_CutterDC.Stop();
+				}
 			}break;
 			
 			case PacketParams::LEFT:
 			{
 				g_CutterDC.SetDirection(MotorDcDirection::BACKWARD);
 				if(packet->value == (uint8_t)LogicalLevel::HIGH)
+				{
+					console->info("[MANUAL] Running left");
 					g_CutterDC.Run();
+				}
 				else
+				{
+					console->info("[MANUAL] Stopped");
 					g_CutterDC.Stop();
+				}
 			}break;
 			
 			case PacketParams::RESET:
 			{
-				if(g_SensorVerticalMaster.CurrentState == LogicalLevel::HIGH && g_SensorHorizontal.CurrentState == LogicalLevel::HIGH)
+				console->info("[MANUAL] Resetting");
+				if(g_SensorVerticalMaster.CurrentState == PushButtonState::DOWN && g_SensorHorizontalLeft.CurrentState == PushButtonState::DOWN)
 				{
 					/* Already reseted */
 					return;
@@ -204,8 +241,11 @@ protected:
 				g_State.Set(States::WAIT_RESET);
 			}break;
 			
-			
-			default: break;
+			default:
+			{
+				console->warn("Unknown packet: [{} {}]", packet->param, packet->value);
+				break;
+			}
 		}
 	} /* Method */
 }; /* Class */

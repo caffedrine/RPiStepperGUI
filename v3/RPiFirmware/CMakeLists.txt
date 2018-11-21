@@ -4,8 +4,8 @@ project(RPiFirmware)
 set(CMAKE_CXX_STANDARD 11)
 
 # Enable PiGPIO if installed
-#add_compile_definitions(PIGPIO)
-# add_definitions(-DPIGPIO=1)
+# add_compile_definitions(PIGPIO)
+add_definitions(-DPIGPIO=1)
 
 ######################################Include everuthing src##################################
 file(GLOB_RECURSE RPiFirmware_SOURCES "src/*.cpp")
@@ -19,13 +19,13 @@ endforeach()
 list(REMOVE_DUPLICATES RPiFirmware_INCLUDE_DIRS)
 ##############################################################################################
 
-add_executable (RPiFirmwareExe ${RPiFirmware_SOURCES})
+add_executable (RPiFirmwareExe ${RPiFirmware_SOURCES} src/peripherals/SensorHorizontalRight.h)
 target_include_directories(RPiFirmwareExe PRIVATE ${RPiFirmware_INCLUDE_DIRS})
 
 target_link_libraries(RPiFirmwareExe pthread)
 
 # Enable pigpio if on RPi
-if(DEFINED PIGPIO)
+#if(DEFINED PIGPIO)
     target_link_libraries(RPiFirmwareExe pigpio)
     target_link_libraries(RPiFirmwareExe rt)
-endif()
+#endif()

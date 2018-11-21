@@ -13,6 +13,7 @@ class MasterEncoder : public Encoder
 public:
 	MasterEncoder(uint8_t gpio) : Encoder(gpio)
 	{
+		Encoder::SetPullstate(PullState::DOWN);
 	}
 };
 

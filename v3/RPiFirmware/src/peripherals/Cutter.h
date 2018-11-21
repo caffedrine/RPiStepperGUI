@@ -13,7 +13,7 @@ class Cutter : private Relay
 public:
 	Cutter(uint8_t RelayPin) : Relay(RelayPin)
 	{
-	
+		Relay::SetPullState(PullState::DOWN);
 	}
 	
 	void On()

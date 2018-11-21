@@ -13,7 +13,7 @@ class SlaveEncoder : Encoder
 public:
 	SlaveEncoder(uint8_t gpio_pin) : Encoder(gpio_pin)
 	{
-	
+		Encoder::SetPullstate(PullState::DOWN);
 	}
 	
 private:

@@ -20,6 +20,9 @@ private:
 	void onStateChanged(LogicalLevel newState) override
 	{
 		console->info("Horizontal init button: {0}", (bool)newState);
+		static Packet packet = { .param = PacketParams::SENSOR_INIT_CUTTER };
+		packet.value = (uint8_t)newState;
+		g_TcpServer.SendPacket( &packet );
 	}
 };
 

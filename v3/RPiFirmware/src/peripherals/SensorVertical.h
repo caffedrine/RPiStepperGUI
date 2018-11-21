@@ -21,6 +21,9 @@ private:
 	void onStateChanged(LogicalLevel newState) override
 	{
 		console->info("Vertical init button: {0}", (bool)newState);
+		static Packet packet = { .param = PacketParams::SENSOR_INIT_VERTICAL };
+		packet.value = (uint8_t)newState;
+		g_TcpServer.SendPacket( &packet );
 	}
 };
 

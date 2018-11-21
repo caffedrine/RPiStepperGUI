@@ -21,8 +21,9 @@ private:
 	void onStateChanged(LogicalLevel newState) override
 	{
 		console->info("Laser button: {0}", (bool)newState);
-		//static Packet packet = { .value =  };
-		//g_TcpServer.SendPacket(  );
+		static Packet packet = { .param = PacketParams::SENSOR_CUTTER };
+		packet.value = (uint8_t)newState;
+		g_TcpServer.SendPacket( &packet );
 	}
 };
 

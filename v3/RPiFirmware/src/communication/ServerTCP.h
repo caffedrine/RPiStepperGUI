@@ -33,10 +33,17 @@ public:
 		}
 	}
 	
-	bool SendPacket(Packet packet)
+	bool SendPacket(const Packet *packet)
 	{
-		g_LedTraffic.On();
-		g_LedTraffic.Off();
+		char data[PACKET_SIZE];
+		int len = Serialize(packet, data);
+		Send(data, len);
+	}
+	
+	bool SendAck()
+	{
+		static Packet packet = { .param = PacketParams::ACK };
+		this->SendPacket( &packet );
 	}
 	
 private:
@@ -56,10 +63,28 @@ private:
 	void DataReceived(const TcpServerAsync::client_t *client, char *data, int len) override
 	{
 		g_LedTraffic.On();
+		/* is there a packet */
+		if(len < PACKET_SIZE)
+			return;
+		
 		/* Update variable to know exactly when was last packet received from client */
 		g_TcpRecvLastMillis = TimeUtils::millis();
+		//console->info("[{0} {1}:{2}] RECV({3} bytes): {4}", client->Fd, client->Ip, client->Port, len, data);
 		
-		console->info("[{0} {1}:{2}] RECV({3} bytes): {4}", client->Fd, client->Ip, client->Port, len, data);
+		/* If multiple packets were received */
+		for(int i = 0; i < len/PACKET_SIZE; i++)
+		{
+			static Packet recvPacket;
+			static char tmp[PACKET_SIZE];
+			memcpy(&tmp, data + (i*PACKET_SIZE), PACKET_SIZE);
+			
+			if( Deserialize(tmp, PACKET_SIZE, &recvPacket) >= 0 )
+			{
+				/* Push a message is the packet is valid and is not ACK */
+				if( recvPacket.param != PacketParams::ACK )
+					this->OnPacketReceived(&recvPacket);
+			}
+		}
 		g_LedTraffic.Off();
 	}
 	
@@ -68,9 +93,11 @@ private:
 		console->info("[{0} {1}:{2}] SEND({3} bytes): {4}", client->Fd, client->Ip, client->Port, bytesSend, data);
 	}
 	
-	virtual void OnPacketReceived(Packet packet)
+	virtual void OnPacketReceived(Packet *packet)
 	{
-		console->info("New packet received!");
+		/* Send back an acknowledgement */
+		SendAck();
+		console->info("New packet received: [{0} {1}]", packet->param, packet->value);
 	}
 };
 

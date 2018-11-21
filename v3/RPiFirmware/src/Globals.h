@@ -42,14 +42,14 @@ public:
 	/* Description of each state */
 	const char *states_description[STATES_NO] =
 			{
-					states_description[States::STANDBY] = "[STANDBY] Waiting for command",
-					states_description[States::WAIT_RESET] = "[WAIT_RESET] Waiting for motors reinitialization",
-					states_description[States::WAIT_MOVETO] = "[WAIT_MOVETO] Moving to target position",
-					states_description[States::WAIT_CUT] = "[WAIT_CUT] Waiting to cut the curtain",
-					states_description[States::WAIT_CUTTER_INIT] = "[WAIT_CUTTER_INIT] Waiting for cutter to come back",
-					states_description[States::WAIT_LOCK] = "[WAIT_LOCK] Waiting electrovalves to lock curtain",
-					states_description[States::WAIT_UNLOCK] = "[WAIT_UNLOCK] Wait for electrovalves to unlock curtain",
-					states_description[States::EMERGENCY_STOP] = "[EMERGENCY_STOP] Emergency stop triggered",
+					states_description[States::STANDBY] 		= "[STANDBY] Waiting for command",
+					states_description[States::WAIT_RESET] 		= "[WAIT_RESET] Waiting for motors reinitialization",
+					states_description[States::WAIT_MOVETO] 	= "[WAIT_MOVETO] Moving to target position",
+					states_description[States::WAIT_CUT] 		= "[WAIT_CUT] Waiting to cut the curtain",
+					states_description[States::WAIT_CUTTER_INIT]= "[WAIT_CUTTER_INIT] Waiting for cutter to come back",
+					states_description[States::WAIT_LOCK] 		= "[WAIT_LOCK] Waiting electrovalves to lock curtain",
+					states_description[States::WAIT_UNLOCK] 	= "[WAIT_UNLOCK] Wait for electrovalves to unlock curtain",
+					states_description[States::EMERGENCY_STOP] 	= "[EMERGENCY_STOP] Emergency stop triggered",
 			};
 	
 	States()

@@ -2,6 +2,7 @@
 #define MAINCLASS_H
 
 #include <QQmlApplicationEngine>
+#include <QMessageLogContext>
 #include <QGuiApplication>
 #include <QCoreApplication>
 

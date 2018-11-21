@@ -7,6 +7,7 @@
 #include <QQmlApplicationEngine>
 #include <QGuiApplication>
 #include <QCoreApplication>
+#include <QQmlContext>
 
 
 

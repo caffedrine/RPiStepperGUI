@@ -1,15 +1,13 @@
 import QtQuick 2.8
 import QtQuick.Controls 2.1
-import QmlMainClass 1.0
 import QtQuick.Window 2.1
-
 
 ApplicationWindow
 {
     id: root
     visible: true
-    width: 640
-    height: 480
+    width: 580
+    height: 580
     title: qsTr("Sophia APP Controller")
 
     property string statusText: "Waiting for actions..."
@@ -17,11 +15,6 @@ ApplicationWindow
 
     property string ip_address: "192.168.0.1"
     property int port: 1337
-
-    QmlMainClass
-    {
-        id: cpp
-    }
 
     header: Rectangle
     {

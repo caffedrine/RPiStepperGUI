@@ -15,9 +15,6 @@ int main(int argc, char *argv[])
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QGuiApplication app(argc, argv);
 
-    //call before any qml may use the custom component
-    qmlRegisterType<MainWindow>("QmlMainClass",1,0,"QmlMainClass");
-
     /* Load GUI */
     MainWindow ui;
     ui.SetupUI();
@@ -29,7 +26,7 @@ int main(int argc, char *argv[])
     /* Launch work on a separate thread to keep UI thread free */
     MainClass work;
     //QObject::connect(&MainWork, SIGNAL(UiSetProperty(const char *, QVariant)), &ui, SLOT(SetProperty(const char *, QVariant)));
-    QObject::connect(&ui, SIGNAL( onConnectButtonPressed() ), work, SLOT( onButtonPressed_Connect() ));
+    QObject::connect(&ui, SIGNAL( onConnectButtonPressed() ), &work, SLOT( onButtonPressed_Connect() ));
     //MainWork->SetUi(ui);
     work.start();
 

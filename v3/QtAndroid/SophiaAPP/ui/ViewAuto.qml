@@ -1,7 +1,6 @@
 import QtQuick 2.9
 import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
-import QmlMainClass 1.0
 
 Page {
     id: page
@@ -10,10 +9,6 @@ Page {
 
     Rectangle{id: gap; width: 10; height: 20;}
 
-    QmlMainClass
-    {
-        id: cpp
-    }
 
     RowLayout {
 
@@ -125,9 +120,21 @@ Page {
             {
                 id: button_cut
                 text: qsTr("Cut")
-                width: 300; height: 50
+                width: 145; height: 50
                 icon.source: "imgs/auto_frame/cut.png"
+                icon.color: "red"
+                onPressed: {
+                    cpp.onButtonPressed_Cut();
+                }
+            }
 
+            Button
+            {
+                id: button_stop
+                text: qsTr("STOP")
+                width: 145; height: 50
+                icon.source: "imgs/auto_frame/emergency_stop.png"
+                icon.color: "red"
                 onPressed: {
                     cpp.onButtonPressed_Cut();
                 }

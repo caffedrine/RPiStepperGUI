@@ -15,7 +15,11 @@ void MainWindow::SetupUI()
         qDebug() << "Failed to load qml ui!";
         QCoreApplication::quit();
     }
-    this->ui = engine->rootObjects()[0];
+    else
+    {
+        engine->rootContext()->setContextProperty("cpp", this);
+        this->ui = engine->rootObjects()[0];
+    }
 }
 
 //void MainWindow::SetStatus(QString text, UiStatusType status)

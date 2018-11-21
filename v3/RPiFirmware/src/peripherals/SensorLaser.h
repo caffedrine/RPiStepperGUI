@@ -7,6 +7,7 @@
 
 
 #include "Config.h"
+#include "Globals.h"
 #include "drivers/Gpio.h"
 #include "communication/ServerTCP.h"
 
@@ -23,7 +24,7 @@ private:
 		console->info("Laser button: {0}", (bool)newState);
 		static Packet packet = { .param = PacketParams::SENSOR_CUTTER };
 		packet.value = (uint8_t)newState;
-		g_TcpServer.SendPacket( &packet );
+		//g_TcpServer.SendPacket( &packet );
 	}
 };
 

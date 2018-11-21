@@ -5,12 +5,24 @@
 #ifndef DRIVERSCONTAINER_SERVERTCP_H
 #define DRIVERSCONTAINER_SERVERTCP_H
 
+#include <peripherals/SensorHorizontal.h>
 #include "Globals.h"
 #include "drivers/TcpServerAsync.h"
 #include "utils/time_utils.h"
-#include "peripherals/LedConnection.h"
-#include "peripherals/LedTraffic.h"
+//#include "peripherals/LedConnection.h"
+//#include "peripherals/LedTraffic.h"
+//#include "peripherals/MasterDC.h"
+//#include "peripherals/SlaveDC.h"
+//#include "peripherals/CutterDC.h"
+//#include "peripherals/Cutter.h"
+//#include "peripherals/ElectroValves.h"
+//#include "peripherals/SensorVerticalMaster.h"
+//#include "peripherals/SensorVerticalSlave.h"
+//#include "peripherals/SensorHorizontal.h"
+//#include "peripherals/SensorLaser.h"
+
 #include "../../../Shared/packet.h"
+
 
 class ServerTCP : public TcpServerAsync
 {
@@ -90,7 +102,7 @@ private:
 	
 	void DataSend(const TcpServerAsync::client_t *client, const char *data, int bytesSend) override
 	{
-		console->info("[{0} {1}:{2}] SEND({3} bytes): {4}", client->Fd, client->Ip, client->Port, bytesSend, data);
+		//console->info("[{0} {1}:{2}] SEND({3} bytes): {4}", client->Fd, client->Ip, client->Port, bytesSend, data);
 	}
 	
 	virtual void OnPacketReceived(Packet *packet)
@@ -99,7 +111,104 @@ private:
 		SendAck();
 		console->info("New packet received: [{0} {1}]", packet->param, packet->value);
 	}
-};
+
+protected:
+	void HandlePacketRecv(Packet *packet)
+	{
+		
+		/* Handle emergency stop first */
+		if(packet->param == PacketParams::EMERGENCY_STOP)
+		{
+			console->warn("Emergency stop request received!");
+			g_State.Set(States::EMERGENCY_STOP);
+			return;
+		}
+		
+		/* Only if application is not already running */
+		if(g_State.Current.Val != States::STANDBY)
+		{
+			console->warn("Wait for current action to finish or press STOP");
+			return;
+		}
+		
+		switch(packet->param)
+		{
+			case PacketParams::CUTTER:
+			{
+				if(packet->value == (uint8_t)LogicalLevel::HIGH)
+					g_Cutter.On();
+				else
+					g_Cutter.Off();
+			}break;
+			
+			case PacketParams::ELECTROVALVES:
+			{
+				if(packet->value == (uint8_t)LogicalLevel::HIGH)
+					g_ElectroValves.On();
+				else
+					g_ElectroValves.Off();
+			}break;
+			
+			case PacketParams::UP:
+			{
+				g_MasterDC.SetDirection(MotorDcDirection::FORWARD);
+				if(packet->value == (uint8_t)LogicalLevel::HIGH)
+					g_MasterDC.Run();
+				else
+					g_MasterDC.Stop();
+			}break;
+			
+			case PacketParams::DOWN:
+			{
+				g_MasterDC.SetDirection(MotorDcDirection::BACKWARD);
+				if(packet->value == (uint8_t)LogicalLevel::HIGH)
+					g_MasterDC.Run();
+				else
+					g_MasterDC.Stop();
+			}break;
+			
+			case PacketParams::RIGHT:
+			{
+				g_CutterDC.SetDirection(MotorDcDirection::FORWARD);
+				if(packet->value == (uint8_t)LogicalLevel::HIGH)
+					g_CutterDC.Run();
+				else
+					g_CutterDC.Stop();
+			}break;
+			
+			case PacketParams::LEFT:
+			{
+				g_CutterDC.SetDirection(MotorDcDirection::BACKWARD);
+				if(packet->value == (uint8_t)LogicalLevel::HIGH)
+					g_CutterDC.Run();
+				else
+					g_CutterDC.Stop();
+			}break;
+			
+			case PacketParams::RESET:
+			{
+				if(g_SensorVerticalMaster.CurrentState == LogicalLevel::HIGH && g_SensorHorizontal.CurrentState == LogicalLevel::HIGH)
+				{
+					/* Already reseted */
+					return;
+				}
+//
+//				/* Check which one to reset */
+//				if(g_SensorVertical.CurrentState == LogicalLevel::LOW)
+//				{
+//					g_MasterDC.SetDirection(MotorDcDirection::BACKWARD);
+//					g_MasterDC.Run();
+//				}
+				
+				
+				g_State.Set(States::WAIT_RESET);
+			}break;
+			
+			
+			default: break;
+		}
+	} /* Method */
+}; /* Class */
 
 ServerTCP g_TcpServer;
 

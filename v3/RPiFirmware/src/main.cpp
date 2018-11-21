@@ -14,12 +14,13 @@
 #include "peripherals/LedConnection.h"
 #include "peripherals/MasterDC.h"
 #include "peripherals/SlaveDC.h"
+#include "communication/ServerTCP.h"
+#include "peripherals/SensorVerticalMaster.h"
+#include "peripherals/SensorVerticalSlave.h"
 #include "peripherals/SensorHorizontal.h"
-#include "peripherals/SensorVertical.h"
 #include "peripherals/SensorLaser.h"
 #include "peripherals/MasterEncoder.h"
 #include "peripherals/SlaveEncoder.h"
-#include "communication/ServerTCP.h"
 
 bool _ProgramContinue = true;
 
@@ -34,9 +35,13 @@ void SigHandler(int signum)
 	std::cout << std::endl;
 	console->critical("Interrupt signal ({0} - {1}) received", strsignal(signum), signum);
 	OnExit();
-	_ProgramContinue = false;
 	g_LedConnection.Off();
 	g_LedTraffic.Off();
+	g_MasterDC.Stop();
+	g_SlaveDC.Stop();
+	g_CutterDC.Stop();
+	g_Cutter.Off();
+	_ProgramContinue = false;
 	exit(signum);
 }
 
@@ -52,6 +57,12 @@ void onCommandReceived()
 {
 
 }
+
+
+/*
+ * TODO: MUTEX MUTEX MUTEX to be added
+ */
+ 
 
 int main()
 {

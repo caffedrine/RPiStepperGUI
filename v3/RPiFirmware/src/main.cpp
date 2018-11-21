@@ -7,7 +7,7 @@
 
 #include "utils/time_utils.h"
 #include "Globals.h"
-#include "drivers/hal.h"
+#include "interfaces/TcpPublisher.h"
 #include "peripherals/CutterDC.h"
 #include "peripherals/Cutter.h"
 #include "peripherals/ElectroValves.h"

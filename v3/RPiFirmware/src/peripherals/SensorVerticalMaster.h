@@ -13,6 +13,7 @@
 class SensorVerticalMaster : public Gpio
 {
 public:
+	
 	explicit SensorVerticalMaster(uint8_t _gpio) : Gpio(_gpio)
 	{
 	}
@@ -22,8 +23,11 @@ private:
 	{
 		console->info("Sensor init button horizontal master: {0}", (bool)newState);
 		static Packet packet = { .param = PacketParams::SENSOR_INIT_CUTTER };
-		packet.value = (uint8_t)newState;
-		g_TcpServer.SendPacket( &packet );
+//		if(TcpSend != nullptr)
+//		{
+//			packet.value = (uint8_t) newState;
+//			TcpSend( &packet );
+//		}
 	}
 };
 

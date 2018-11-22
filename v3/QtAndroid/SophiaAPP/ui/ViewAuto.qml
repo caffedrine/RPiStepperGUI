@@ -136,7 +136,7 @@ Page {
                 icon.source: "imgs/auto_frame/emergency_stop.png"
                 icon.color: "red"
                 onPressed: {
-                    cpp.onButtonPressed_Cut();
+                    cpp.onButtonPressed_Stop();
                 }
             }
         }

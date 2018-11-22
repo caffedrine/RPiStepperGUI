@@ -25,9 +25,7 @@ int main(int argc, char *argv[])
 
     /* Launch work on a separate thread to keep UI thread free */
     MainClass work;
-    //QObject::connect(&MainWork, SIGNAL(UiSetProperty(const char *, QVariant)), &ui, SLOT(SetProperty(const char *, QVariant)));
-    QObject::connect(&ui, SIGNAL( onConnectButtonPressed() ), &work, SLOT( onButtonPressed_Connect() ));
-    //MainWork->SetUi(ui);
+    work.SetUi(&ui);
     work.start();
 
     return app.exec();

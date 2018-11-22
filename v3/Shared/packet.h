@@ -2,6 +2,7 @@
 #define PACKET_H
 
 #include <stdint.h>
+#include <string.h>
 
 #define PACKET_SIZE				4
 #define START_PACKET_SYMBOL		'#'
@@ -45,7 +46,7 @@ typedef struct Packet
 } packet_t;
 #pragma pack(pop)
 
-int Serialize(const Packet *inputPacket, char *output)
+static int Serialize(const Packet *inputPacket, char *output)
 {
 	/* Create a new char array to store serialized structure */
 	char serialized[PACKET_SIZE];
@@ -62,7 +63,7 @@ int Serialize(const Packet *inputPacket, char *output)
 	return (sizeof(serialized)/ sizeof(char));
 }
 
-int Deserialize(const char *recvBytes, int length, Packet *output)
+static int Deserialize(const char *recvBytes, int length, Packet *output)
 {
 	if(length != PACKET_SIZE)
 		return -1;
@@ -83,6 +84,5 @@ int Deserialize(const char *recvBytes, int length, Packet *output)
 	
 	return 0;
 }
-
 
 #endif // PACKET_H

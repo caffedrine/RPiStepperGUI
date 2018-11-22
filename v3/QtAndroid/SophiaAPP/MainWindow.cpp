@@ -17,28 +17,13 @@ void MainWindow::SetupUI()
     }
     else
     {
-        engine->rootContext()->setContextProperty("cpp", this);
+//        engine->rootContext()->setContextProperty("cpp", this);
         this->ui = engine->rootObjects()[0];
     }
 }
-
-//void MainWindow::SetStatus(QString text, UiStatusType status)
-//{
-
-//}
 
 void MainWindow::SetProperty(const char* property, const QVariant value)
 {
     this->ui->setProperty(property, value);
 }
 
-void MainWindow::connectButtonPressed()
-{
-    qDebug() << "Connect button pressed!";
-    emit onConnectButtonPressed();
-}
-
-void MainWindow::connectButtonReleased()
-{
-    emit onConnectButtonReleased();
-}

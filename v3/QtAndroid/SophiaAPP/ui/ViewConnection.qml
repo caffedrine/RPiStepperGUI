@@ -98,12 +98,7 @@ Page {
             text: "Connect"
 
             onPressed: {
-               cpp.connectButtonPressed();
-            }
-
-            onReleased:
-            {
-                cpp.connectButtonReleased();
+               cpp.onButtonPressed_Connect();
             }
 
         }

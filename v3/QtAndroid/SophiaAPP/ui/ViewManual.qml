@@ -13,52 +13,100 @@ Page {
         anchors.topMargin: 25
         spacing: 10
 
-        Rectangle{id: gap; width: 10; height: 8;}
+        Rectangle{id: gap1; width: 10; height: 20;}
+
+        Rectangle
+        {
+            id: sensors_rectangle
+            border.color: "black"
+            border.width: 2
+            width: 310
+            height: 150
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.topMargin: 25
+            anchors.top: gap.bottom
 
         /* Sensors */
         Row {
-            id: column_sensors
-            anchors.top: gap.bottom
+            id: column_sensors_v
+            anchors.top: parent.top
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.topMargin: 25
 
             RadioButton {
-                id: radioButton_Horizontal
-                width: 110
+                id: radioButton_VerticalLeft
+                width: 155
                 height: 20
-                text: qsTr("Horizontal")
+                text: qsTr("Vertical MASTER")
                 font.pointSize: 11
                 checkable: false
                 autoExclusive: false
             }
 
             RadioButton {
-                id: radioButton_Vertical
-                width: 90
+                id: radioButton_VerticalRight
+                width: 155
                 height: 20
-                text: qsTr("Vertical")
+                text: qsTr("Vertical SLAVE")
                 font.pointSize: 11
                 checkable: false
                 autoExclusive: false
             }
+
+        }
+
+        Row {
+            id: column_sensors_h
+            anchors.top: column_sensors_v.bottom
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.topMargin: 25
+
+            RadioButton {
+                id: radioButton_VerticalMaster
+                width: 155
+                height: 20
+                text: qsTr("Horizontal left")
+                font.pointSize: 11
+                checkable: false
+                autoExclusive: false
+            }
+
+            RadioButton {
+                id: radioButton_VerticalSlave
+                width: 155
+                height: 20
+                text: qsTr("Horizontal right")
+                font.pointSize: 11
+                checkable: false
+                autoExclusive: false
+            }
+
+        }
+
+        Row {
+            id: column_sensor_laser
+            anchors.top: column_sensors_h.bottom
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.topMargin: 25
 
             RadioButton {
                 id: radioButton_Laser
-                width: 80
+                width: 150
                 height: 20
-                text: qsTr("Laser")
+                text: qsTr("Cutter laser")
                 font.pointSize: 11
-                display: AbstractButton.TextBesideIcon
                 checkable: false
                 autoExclusive: false
             }
+        }
+
         }
 
         /* Manual control valves & cutters */
         Row {
             id: column_manuals
             anchors.horizontalCenter: parent.horizontalCenter
-            anchors.top: column_sensors.bottom
+            anchors.top: sensors_rectangle.bottom
             anchors.topMargin: 20
             spacing: 10
 

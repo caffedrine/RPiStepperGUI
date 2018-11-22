@@ -1,4 +1,4 @@
-#ifndef MAINCLASS_H
+﻿#ifndef MAINCLASS_H
 #define MAINCLASS_H
 
 #include <QQmlApplicationEngine>
@@ -17,7 +17,7 @@
 #include "TcpClient.h"
 #include "../../Shared/packet.h"
 
-#define RPI_IP_ADDRESS  "127.0.0.1"
+#define RPI_IP_ADDRESS  "192.168.0.248"
 #define RPI_PORT        1337
 
 enum
@@ -47,11 +47,13 @@ public:
 private:
     MainWindow *ui = nullptr;
     TcpClient *rpi = nullptr;
-    Packet packet;
+    Packet packet, packetAck;
     QElapsedTimer timeCounter;
 
     void run();
-    bool SendPacket(bool isAck = false);
+    bool SendPacket(Packet *packet);
+    bool SendAck();
+
 
 
 signals:
@@ -65,12 +67,13 @@ public slots:
     Q_INVOKABLE void onSwitchChanged_Valves(bool checked);
     Q_INVOKABLE void onSwitchChanged_Cutter(bool checked);
 
-    void onButtonPressed_Connect();
+    Q_INVOKABLE void onButtonPressed_Connect();
     Q_INVOKABLE void onButtonPressed_Reset();
     Q_INVOKABLE void onButtonPressed_Lock();
     Q_INVOKABLE void onButtonPressed_Unlock();
     Q_INVOKABLE void onButtonPressed_Cut();
     Q_INVOKABLE void onButtonPressed_MoveTo(int size);
+    Q_INVOKABLE void onButtonPressed_Stop();
     Q_INVOKABLE void onButtonPressed_Up();
     Q_INVOKABLE void onButtonPressed_Down();
     Q_INVOKABLE void onButtonPressed_Right();

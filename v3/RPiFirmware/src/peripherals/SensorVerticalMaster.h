@@ -12,7 +12,7 @@
 class SensorVerticalMaster : public PushButton
 {
 public:
-	explicit SensorVerticalMaster(uint8_t _gpio) : PushButton(_gpio)
+	explicit SensorVerticalMaster(uint8_t _gpio) : PushButton(_gpio, 10000)
 	{
 		PushButton::SetPullState(PullState::DOWN);
 	}

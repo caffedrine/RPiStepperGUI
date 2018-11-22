@@ -27,9 +27,11 @@ public:
     /* Socket operations */
     void doConnect();
     void doDisconnect();
+    bool is_alive();
+
+public slots:
     qint64 read(char *data, qint64 max_len);
     qint64 write(QByteArray sendBytes);
-    bool is_alive();
 
 signals:
     /* To be implemented on mother class */

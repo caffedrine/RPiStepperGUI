@@ -22,8 +22,8 @@
 
 enum
 {
-    TRUE,
-    FALSE
+    FALSE = 0,
+    TRUE = 1
 };
 
 enum class UiStatusType
@@ -41,22 +41,19 @@ public:
     ~MainClass();
     void SetUi(MainWindow *_ui);
     void SetStatus(QString description, UiStatusType);
-    void MainLoop();
+    void run();
 
 
 private:
     MainWindow *ui = nullptr;
     TcpClient *rpi = nullptr;
-    Packet packet, packetAck;
     QElapsedTimer timeCounter;
 
-    void run();
     bool SendPacket(Packet *packet);
     bool SendAck();
 
-
-
 signals:
+    void _WritePacket(QByteArray);
     void UiSetProperty(const char* property, QVariant value);
 
 public slots:

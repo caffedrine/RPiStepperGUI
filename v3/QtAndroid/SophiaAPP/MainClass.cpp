@@ -2,7 +2,6 @@
 
 MainClass::MainClass()
 {
-    packetAck.param = PacketParams::ACK;
 }
 
 MainClass::~MainClass()
@@ -30,24 +29,20 @@ bool MainClass::SendPacket(Packet *packet)
 
     if(this->rpi != nullptr && this->rpi->is_alive())
     {
+        char serialized[PACKET_SIZE];
         QByteArray bytes;
-        bytes.push_back(START_PACKET_SYMBOL);
-        bytes.push_back((char)0x00);
-        bytes.push_back((char)0x01);
+        Serialize(packet, serialized);
+        bytes = QByteArray(reinterpret_cast<char*>(serialized), PACKET_SIZE);
 
-        /* Param byte */
-        //bytes.push_back( isAck?((uint8_t)PacketParams::ACK):((uint8_t)packet.param) );
-        /* Value byte  - ignored for ack packet*/
-        //bytes.push_back( (uint8_t)packet.value );
-        bytes.push_back(END_PACKET_SYMBOL);
-        if(rpi->write(bytes) < bytes.length())
-            qDebug() << "Failed to send data to rpi: " << rpi->getLastError();
+        emit _WritePacket(bytes);
     }
-    return false;
+    return true;
 }
 
 bool MainClass::SendAck()
 {
+    static Packet packetAck =
+    {.param = PacketParams::ACK, .value = 0x00};
     SendPacket(&packetAck);
 }
 
@@ -73,8 +68,60 @@ void MainClass::run()
 
 void MainClass::onTcpReadyRead()
 {
-}
+    char recvBuffer[512];
+    qint64 readBytes = rpi->read(recvBuffer, 512);
 
+    for(int i = 0; i < readBytes/PACKET_SIZE; i++)
+    {
+        Packet recvPacket;
+        static char tmp[PACKET_SIZE];
+        memcpy(&tmp, recvBuffer + (i*PACKET_SIZE), PACKET_SIZE);
+        Deserialize(tmp, PACKET_SIZE, &recvPacket);
+
+        /* ACK packets are just ignored for now */
+        if(recvPacket.param == PacketParams::ACK)
+            continue;
+
+        switch (recvPacket.param)
+        {
+            case PacketParams::SENSOR_CUTTER_LASER:
+            {
+                qDebug() << "Sensor LASER: " << ((recvPacket.value<1)?"false":"true");
+                ui->SetProperty("laser_sensor", (recvPacket.value<1)?"false":"true" );
+            }break;
+
+            case PacketParams::SENSOR_INIT_HORIZONTAL_LEFT:
+            {
+                qDebug() << "Sensor LEFT: " << ((recvPacket.value<1)?"false":"true");
+                ui->SetProperty("left_sensor", (recvPacket.value<1)?"false":"true" );
+            }break;
+
+            case PacketParams::SENSOR_INIT_HORIZONTAL_RIGHT:
+            {
+                qDebug() << "Sensor RIGHT: " << ((recvPacket.value<1)?"false":"true");
+                ui->SetProperty("right_sensor", (recvPacket.value<1)?"false":"true" );
+            }break;
+
+            case PacketParams::SENSOR_INIT_VERTICAL_MASTER:
+            {
+                qDebug() << "Sensor MASTER: " << ((recvPacket.value<1)?"false":"true");
+                ui->SetProperty("master_sensor", (recvPacket.value<1)?"false":"true" );
+            }break;
+
+            case PacketParams::SENSOR_INIT_VERTICAL_SLAVE:
+            {
+                qDebug() << "Sensor SLAVE: " << ((recvPacket.value<1)?"false":"true");
+                ui->SetProperty("slave_sensor", (recvPacket.value<1)?"false":"true" );
+            }break;
+
+            default:
+            {
+                qDebug() << "Unknown packet received: [" << recvPacket.param << " | " << recvPacket.value << "]";
+            }
+        }
+    }
+
+}
 
 void MainClass::onTcpConnectionChanged(bool connected)
 {
@@ -114,6 +161,8 @@ void MainClass::onButtonPressed_Connect()
     this->rpi = new TcpClient();
     this->rpi->setHostname(RPI_IP_ADDRESS);
     this->rpi->setPort(RPI_PORT);
+
+    connect(this, SIGNAL(_WritePacket(QByteArray)), rpi, SLOT(write(QByteArray)));
     connect(rpi, SIGNAL(onConnectionChanged(bool)), this, SLOT(onTcpConnectionChanged(bool)), Qt::QueuedConnection );
     connect(rpi, SIGNAL(onReadyRead()), this, SLOT(onTcpReadyRead()), Qt::QueuedConnection );
 
@@ -176,6 +225,7 @@ void MainClass::onButtonPressed_Cut()
     qDebug() << "CUT request";
     static Packet packet;
     packet.param = PacketParams::CUT;
+    packet.value = 1;
     SendPacket(&packet);
 }
 

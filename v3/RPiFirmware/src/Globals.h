@@ -76,4 +76,7 @@ private:
 
 States g_State;
 
+/* Flag to inform the user that a reset is required */
+bool ResetRequired = true;
+
 #endif //DRIVERSCONTAINER_COMMON_H

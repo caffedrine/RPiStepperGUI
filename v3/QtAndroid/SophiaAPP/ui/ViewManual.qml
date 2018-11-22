@@ -10,10 +10,10 @@ Page {
     Column {
         id: view_manual_main_layout
         anchors.horizontalCenter: parent.horizontalCenter
-        anchors.topMargin: 25
+        anchors.topMargin: 20
         spacing: 10
 
-        Rectangle{id: gap1; width: 10; height: 20;}
+        Rectangle{id: gap; width: 10; height: 20;}
 
         Rectangle
         {
@@ -23,62 +23,67 @@ Page {
             width: 310
             height: 150
             anchors.horizontalCenter: parent.horizontalCenter
-            anchors.topMargin: 25
+            anchors.topMargin: 5
             anchors.top: gap.bottom
 
         /* Sensors */
-        Row {
-            id: column_sensors_v
-            anchors.top: parent.top
-            anchors.horizontalCenter: parent.horizontalCenter
-            anchors.topMargin: 25
+            Row {
+                id: column_sensors_v
+                anchors.top: parent.top
+                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.topMargin: 25
 
-            RadioButton {
-                id: radioButton_VerticalLeft
-                width: 155
-                height: 20
-                text: qsTr("Vertical MASTER")
-                font.pointSize: 11
-                checkable: false
-                autoExclusive: false
+                RadioButton {
+                    id: radioButton_VerticalMaster
+                    width: 155
+                    height: 20
+                    text: qsTr("Vertical master")
+                    font.pointSize: 11
+                    checkable: false
+                    autoExclusive: false
+                    checked: root.master_sensor
+                }
+
+                RadioButton {
+                    id: radioButton_VerticalSlave
+                    width: 155
+                    height: 20
+                    text: qsTr("Vertical slave")
+                    font.pointSize: 11
+                    checkable: false
+                    autoExclusive: false
+                    checked: root.slave_sensor
+                }
+
             }
 
-            RadioButton {
-                id: radioButton_VerticalRight
-                width: 155
-                height: 20
-                text: qsTr("Vertical SLAVE")
-                font.pointSize: 11
-                checkable: false
-                autoExclusive: false
-            }
 
-        }
-
-        Row {
+            Row {
             id: column_sensors_h
             anchors.top: column_sensors_v.bottom
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.topMargin: 25
 
             RadioButton {
-                id: radioButton_VerticalMaster
+                id: radioButton_HorizontalLeft
                 width: 155
                 height: 20
                 text: qsTr("Horizontal left")
                 font.pointSize: 11
                 checkable: false
                 autoExclusive: false
+                checked: root.left_sensor
             }
 
             RadioButton {
-                id: radioButton_VerticalSlave
+                id: radioButton_HorizontalRight
                 width: 155
                 height: 20
                 text: qsTr("Horizontal right")
                 font.pointSize: 11
                 checkable: false
                 autoExclusive: false
+                checked: root.right_sensor
             }
 
         }
@@ -97,6 +102,7 @@ Page {
                 font.pointSize: 11
                 checkable: false
                 autoExclusive: false
+                checked: root.laser_sensor
             }
         }
 

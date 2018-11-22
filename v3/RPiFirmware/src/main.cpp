@@ -119,16 +119,16 @@ int main()
 		if( !_ProgramContinue )
 			break;
 	
-//		/* Check for client's responsiveness */
-//		if(g_TcpServer.client != NULL && g_TcpServer.client->IsConnected() > 0 && TimeUtils::millis() - g_TcpRecvLastMillis > TCP_ACK_INTERVAL_MS)
-//		{
-//			console->warn("Client ACK timeout reached", TCP_ACK_INTERVAL_MS);
-//			console->warn("Dropped {0}:{1}", g_TcpServer.client->Ip, g_TcpServer.client->Port);
-//			/* Drop client connection socket */
-//			g_TcpServer.client->Disconnect();
-//			/* Go to emergency stop until next client is connected */
-//			g_State.Set(States::EMERGENCY_STOP);
-//		}
+		/* Check for client's responsiveness */
+		if(g_TcpServer.client != NULL && g_TcpServer.client->IsConnected() > 0 && TimeUtils::millis() - g_TcpRecvLastMillis > TCP_ACK_INTERVAL_MS)
+		{
+			console->warn("Client ACK timeout reached", TCP_ACK_INTERVAL_MS);
+			console->warn("Dropped {0}:{1}", g_TcpServer.client->Ip, g_TcpServer.client->Port);
+			/* Drop client connection socket */
+			g_TcpServer.client->Disconnect();
+			/* Go to emergency stop until next client is connected */
+			g_State.Set(States::EMERGENCY_STOP);
+		}
 		
 		/* Handle EMERGENCY_STOP state */
 		if(g_State.Current.Val == States::EMERGENCY_STOP)

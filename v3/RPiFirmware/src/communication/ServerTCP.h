@@ -19,6 +19,7 @@
 #include "peripherals/SensorVerticalMaster.h"
 #include "peripherals/SensorVerticalSlave.h"
 #include "peripherals/SensorHorizontalLeft.h"
+#include "peripherals/SensorHorizontalRight.h"
 #include "peripherals/SensorLaser.h"
 
 #include "../../../Shared/packet.h"
@@ -64,6 +65,31 @@ private:
 		g_TcpRecvLastMillis = TimeUtils::millis();
 		client = _client;
 		console->info("[{0} {1}:{2}] CONNECTED", _client->Fd, _client->Ip, _client->Port);
+		
+		/* Reset is required */
+		ResetRequired = true;
+		/* Send sensors states to client */
+		Packet packet;
+		/* Laser */
+		packet.param = PacketParams::SENSOR_CUTTER_LASER;
+		packet.value = (uint8_t)g_SensorLaser.CurrentState;
+		SendPacket(&packet);
+		/* master */
+		packet.param = PacketParams::SENSOR_INIT_VERTICAL_MASTER;
+		packet.value = (uint8_t)g_SensorVerticalMaster.CurrentState;
+		SendPacket(&packet);
+		/* slave */
+		packet.param = PacketParams::SENSOR_INIT_VERTICAL_SLAVE;
+		packet.value = (uint8_t)g_SensorVerticalSlave.CurrentState;
+		SendPacket(&packet);
+		/* right */
+		packet.param = PacketParams::SENSOR_INIT_HORIZONTAL_RIGHT;
+		packet.value = (uint8_t)g_SensorHorizontalRight.CurrentState;
+		SendPacket(&packet);
+		/* left */
+		packet.param = PacketParams::SENSOR_INIT_HORIZONTAL_LEFT;
+		packet.value = (uint8_t)g_SensorHorizontalLeft.CurrentState;
+		SendPacket(&packet);
 	}
 	
 	void ClientDisconnected(const TcpServerAsync::client_t *_client) override

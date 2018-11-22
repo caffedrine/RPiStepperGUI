@@ -16,6 +16,13 @@ ApplicationWindow
     property string ip_address: "192.168.0.1"
     property int port: 1337
 
+    // Sensors
+    property bool laser_sensor: false
+    property bool master_sensor: false
+    property bool slave_sensor: false
+    property bool left_sensor: false
+    property bool right_sensor: false
+
     header: Rectangle
     {
         Rectangle

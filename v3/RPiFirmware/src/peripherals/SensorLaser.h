@@ -12,7 +12,7 @@
 class SensorLaser : public Gpio
 {
 public:
-	explicit SensorLaser(uint8_t _gpio) : Gpio(_gpio, 100000)
+	explicit SensorLaser(uint8_t _gpio) : Gpio(_gpio)
 	{
 		Gpio::SetPullState(PullState::DOWN);
 	}

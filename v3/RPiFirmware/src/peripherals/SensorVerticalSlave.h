@@ -12,7 +12,7 @@
 class SensorVerticalSlave : public PushButton
 {
 public:
-	SensorVerticalSlave(uint8_t _gpio) : PushButton(_gpio, 10000)
+	SensorVerticalSlave(uint8_t _gpio) : PushButton(_gpio)
 	{
 		PushButton::SetPullState(PullState::DOWN);
 	}

@@ -58,7 +58,7 @@ void MainClass::run()
     while(true)
     {
         /* Send ACK package every 3 seconds */
-        if(timeCounter.elapsed() > 2300)
+        if(timeCounter.elapsed() > 2500)
             SendAck();
 
         /* Prevent high CPU load */

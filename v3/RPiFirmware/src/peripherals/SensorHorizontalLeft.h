@@ -12,7 +12,7 @@
 class SensorHorizontalLeft : public PushButton
 {
 public:
-	explicit SensorHorizontalLeft(uint8_t _gpio) : PushButton(_gpio, 100000)
+	explicit SensorHorizontalLeft(uint8_t _gpio) : PushButton(_gpio)
 	{
 		PushButton::SetPullState(PullState::DOWN);
 	}

@@ -8,7 +8,7 @@
 #include "Config.h"
 #include "drivers/Encoder.h"
 
-class SlaveEncoder : Encoder
+class SlaveEncoder : public Encoder
 {
 public:
 	SlaveEncoder(uint8_t gpio_pin) : Encoder(gpio_pin)

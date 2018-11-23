@@ -19,7 +19,7 @@ endforeach()
 list(REMOVE_DUPLICATES RPiFirmware_INCLUDE_DIRS)
 ##############################################################################################
 
-add_executable (RPiFirmwareExe ${RPiFirmware_SOURCES} src/peripherals/SensorHorizontalRight.h)
+add_executable (RPiFirmwareExe ${RPiFirmware_SOURCES})
 target_include_directories(RPiFirmwareExe PRIVATE ${RPiFirmware_INCLUDE_DIRS})
 
 target_link_libraries(RPiFirmwareExe pthread)

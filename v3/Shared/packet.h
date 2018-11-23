@@ -4,7 +4,7 @@
 #include <stdint.h>
 #include <string.h>
 
-#define PACKET_SIZE				4
+#define PACKET_SIZE				5
 #define START_PACKET_SYMBOL		'#'
 #define END_PACKET_SYMBOL		'$'
 
@@ -43,6 +43,7 @@ typedef struct Packet
 {
 	uint8_t param;
 	uint8_t value;
+	uint8_t value2;
 } packet_t;
 #pragma pack(pop)
 
@@ -56,6 +57,7 @@ static int Serialize(const Packet *inputPacket, char *output)
 	/* Populate serialized array */
 	serialized[1] = (char)(inputPacket->param);
 	serialized[2] = (char)(inputPacket->value);
+	serialized[3] = (char)(inputPacket->value2);
 	/* Assign created array to output */
 	memcpy(output, serialized, PACKET_SIZE);
 	
@@ -77,6 +79,7 @@ static int Deserialize(const char *recvBytes, int length, Packet *output)
 	/* Read packet field */
 	output->param = (uint8_t)recvBytes[1];
 	output->value = (uint8_t)recvBytes[2];
+	output->value2 = (uint8_t)recvBytes[3];
 	
 	/* Check whether values are valid or not */
 	if( ( (output->param) < 0) || ( output->param > PacketParams::ELEMENTS_NO) )

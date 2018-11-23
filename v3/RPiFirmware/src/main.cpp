@@ -177,6 +177,9 @@ int main()
 		
 		}
 		
+		/* Tick vertical movement motors */
+		g_Vertical.Tick();
+		
 		/* Prevent excessive CPU load */
 		std::this_thread::sleep_for(std::chrono::milliseconds(1));
 	}

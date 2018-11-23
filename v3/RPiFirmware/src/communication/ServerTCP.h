@@ -9,6 +9,7 @@
 #include "Globals.h"
 #include "drivers/TcpServerAsync.h"
 #include "utils/time_utils.h"
+#include "cdd/VericalMovement.h"
 #include "peripherals/LedConnection.h"
 #include "peripherals/LedTraffic.h"
 #include "peripherals/MasterDC.h"
@@ -67,7 +68,7 @@ private:
 		console->info("[{0} {1}:{2}] CONNECTED", _client->Fd, _client->Ip, _client->Port);
 		
 		/* Reset is required */
-		ResetRequired = true;
+		g_ResetRequired = true;
 		/* Send sensors states to client */
 		Packet packet;
 		/* Laser */
@@ -249,7 +250,7 @@ protected:
 			
 			case PacketParams::RESET:
 			{
-				console->info("[MANUAL] Resetting");
+				console->info("[MANUAL] Start resetting");
 				if(g_SensorVerticalMaster.CurrentState == PushButtonState::DOWN && g_SensorHorizontalLeft.CurrentState == PushButtonState::DOWN)
 				{
 					/* Already reseted */
@@ -262,9 +263,38 @@ protected:
 //					g_MasterDC.SetDirection(MotorDcDirection::BACKWARD);
 //					g_MasterDC.Run();
 //				}
-				
-				
 				g_State.Set(States::WAIT_RESET);
+			}break;
+			
+			case PacketParams::MOVETO:
+			{
+				/* Merge both u8 values into one single u16 val */
+				uint16_t targetRecv = ((uint16_t)packet->value << 8) | ((uint16_t)packet->value2);
+				if(g_Vertical.PositionMM != targetRecv)
+				{
+					console->info("[MOVETO] Start moving to {} mm", targetRecv);
+					g_Vertical.MoveToMM(targetRecv);
+					g_State.Set(States::WAIT_MOVETO);
+				}
+				else
+				{
+					console->info("[MOVETO] Abort!!! Already at position {}", targetRecv);
+				}
+			}break;
+			
+			case PacketParams::CUT:
+			{
+				console->info("[CUT] Started cutting curtain");
+				if(g_SensorHorizontalLeft.CurrentState != PushButtonState::DOWN)
+				{
+					console->info("Machinery not initialized");
+					return;
+				}
+				
+				g_Cutter.On();
+				g_CutterDC.SetDirection(MotorDcDirection::FORWARD);
+				g_CutterDC.Run();
+				g_State.Set(States::WAIT_CUT);
 			}break;
 			
 			default:

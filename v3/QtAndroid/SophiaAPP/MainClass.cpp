@@ -231,10 +231,15 @@ void MainClass::onButtonPressed_Cut()
 
 void MainClass::onButtonPressed_MoveTo(int size)
 {
+    uint8_t bytes[2];
+    bytes[0] = size & 0xFF;
+    bytes[1] = (size >> 8) & 0xFF;
+
     qDebug() << "MOVETO " << size << " request";
     static Packet packet;
     packet.param = PacketParams::MOVETO;
-    packet.value = TRUE;
+    packet.value = bytes[1];
+    packet.value2 = bytes[0];
     SendPacket(&packet);
 }
 

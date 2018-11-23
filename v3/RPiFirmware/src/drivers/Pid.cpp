@@ -1,9 +1,6 @@
-#ifndef _PID_SOURCE_
-#define _PID_SOURCE_
-
 #include <iostream>
 #include <cmath>
-#include "pid.h"
+#include "Pid.h"
 
 using namespace std;
 
@@ -90,5 +87,3 @@ double PIDImpl::calculate( double setpoint, double pv )
 PIDImpl::~PIDImpl()
 {
 }
-
-#endif

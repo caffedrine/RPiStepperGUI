@@ -17,7 +17,7 @@
 #include "TcpClient.h"
 #include "../../Shared/packet.h"
 
-#define RPI_IP_ADDRESS  "192.168.0.248"
+#define RPI_IP_ADDRESS  "10.0.0.1"
 #define RPI_PORT        1337
 
 enum

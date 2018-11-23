@@ -47,18 +47,19 @@ public:
 private:
     MainWindow *ui = nullptr;
     TcpClient *rpi = nullptr;
-    QElapsedTimer timeCounter;
+    QElapsedTimer timeCounter, ackTimeCounter;
 
     bool SendPacket(Packet *packet);
     bool SendAck();
 
 signals:
+    void _DoDisconnect();
     void _WritePacket(QByteArray);
     void UiSetProperty(const char* property, QVariant value);
 
 public slots:
     void onTcpReadyRead();
-    void onTcpPacketReceived(packet_t packet);
+    void onTcpPacketReceived(Packet *packet);
     void onTcpConnectionChanged(bool connected);
 
     Q_INVOKABLE void onSwitchChanged_Valves(bool checked);

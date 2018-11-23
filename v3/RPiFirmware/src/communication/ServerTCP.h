@@ -119,7 +119,9 @@ private:
 			
 			if( Deserialize(tmp, PACKET_SIZE, &recvPacket) >= 0 )
 			{
-				/* Push a message is the packet is valid and is not ACK */
+				/* Send back an acknowledgement */
+				SendAck();
+				/* Notify if packet is not ACK */
 				if( recvPacket.param != PacketParams::ACK )
 					this->OnPacketReceived(&recvPacket);
 			}
@@ -134,8 +136,6 @@ private:
 	
 	virtual void OnPacketReceived(Packet *packet)
 	{
-		/* Send back an acknowledgement */
-		SendAck();
 		HandlePacketRecv(packet);
 	}
 

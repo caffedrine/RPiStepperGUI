@@ -10,8 +10,8 @@ ApplicationWindow
     height: 580
     title: qsTr("Sophia APP Controller")
 
-    property string statusText: "Waiting for actions..."
-    property string connection_status_label: "NOT connected!"
+    property string statusText: "NOT Connected"
+    property string connection_status_label: "NOT Connected!"
 
     property string ip_address: "192.168.0.1"
     property int port: 1337

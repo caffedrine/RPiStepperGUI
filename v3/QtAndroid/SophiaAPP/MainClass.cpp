@@ -61,6 +61,17 @@ void MainClass::run()
         if(timeCounter.elapsed() > 2500)
             SendAck();
 
+        /* Unexpected connection lost? */
+        if(ackTimeCounter.elapsed() > 8000)
+        {
+            ackTimeCounter.restart();
+            if(this->rpi != nullptr && this->rpi->is_alive())
+            {
+                emit _DoDisconnect();
+                this->rpi = nullptr;
+            }
+        }
+
         /* Prevent high CPU load */
         QThread::msleep(1);
     }
@@ -78,68 +89,71 @@ void MainClass::onTcpReadyRead()
         memcpy(&tmp, recvBuffer + (i*PACKET_SIZE), PACKET_SIZE);
         Deserialize(tmp, PACKET_SIZE, &recvPacket);
 
-        /* ACK packets are just ignored for now */
-        if(recvPacket.param == PacketParams::ACK)
-            continue;
-
-        switch (recvPacket.param)
-        {
-            case PacketParams::SENSOR_CUTTER_LASER:
-            {
-                qDebug() << "Sensor LASER: " << ((recvPacket.value<1)?"false":"true");
-                ui->SetProperty("laser_sensor", (recvPacket.value<1)?"false":"true" );
-            }break;
-
-            case PacketParams::SENSOR_INIT_HORIZONTAL_LEFT:
-            {
-                qDebug() << "Sensor LEFT: " << ((recvPacket.value<1)?"false":"true");
-                ui->SetProperty("left_sensor", (recvPacket.value<1)?"false":"true" );
-            }break;
-
-            case PacketParams::SENSOR_INIT_HORIZONTAL_RIGHT:
-            {
-                qDebug() << "Sensor RIGHT: " << ((recvPacket.value<1)?"false":"true");
-                ui->SetProperty("right_sensor", (recvPacket.value<1)?"false":"true" );
-            }break;
-
-            case PacketParams::SENSOR_INIT_VERTICAL_MASTER:
-            {
-                qDebug() << "Sensor MASTER: " << ((recvPacket.value<1)?"false":"true");
-                ui->SetProperty("master_sensor", (recvPacket.value<1)?"false":"true" );
-            }break;
-
-            case PacketParams::SENSOR_INIT_VERTICAL_SLAVE:
-            {
-                qDebug() << "Sensor SLAVE: " << ((recvPacket.value<1)?"false":"true");
-                ui->SetProperty("slave_sensor", (recvPacket.value<1)?"false":"true" );
-            }break;
-
-            default:
-            {
-                qDebug() << "Unknown packet received: [" << recvPacket.param << " | " << recvPacket.value << "]";
-            }
-        }
+        /* Notify the reception of new packet */
+        onTcpPacketReceived(&recvPacket);
     }
-
 }
 
 void MainClass::onTcpConnectionChanged(bool connected)
 {
     if(connected)
     {
+        ackTimeCounter.restart();
         ui->SetProperty("connection_status_label", "connected");
         this->SetStatus("Connected to " + QString(RPI_IP_ADDRESS) + ":" + QString::number(RPI_PORT), UiStatusType::SUCCESS);
     }
     else
     {
+        ackTimeCounter.restart();
         ui->SetProperty("connection_status_label", "NOT connected");
         this->SetStatus("Disconnected from RPi server", UiStatusType::ERROR);
     }
 }
 
-void MainClass::onTcpPacketReceived(packet_t packet)
+void MainClass::onTcpPacketReceived(Packet *recvPacket)
 {
+    /* ACK packets are just ignored for now */
+    ackTimeCounter.restart();
+    if(recvPacket->param == PacketParams::ACK)
+        return;
 
+    switch (recvPacket->param)
+    {
+        case PacketParams::SENSOR_CUTTER_LASER:
+        {
+            qDebug() << "Sensor LASER: " << ((recvPacket->value<1)?"false":"true");
+            ui->SetProperty("laser_sensor", (recvPacket->value<1)?"false":"true" );
+        }break;
+
+        case PacketParams::SENSOR_INIT_HORIZONTAL_LEFT:
+        {
+            qDebug() << "Sensor LEFT: " << ((recvPacket->value<1)?"false":"true");
+            ui->SetProperty("left_sensor", (recvPacket->value<1)?"false":"true" );
+        }break;
+
+        case PacketParams::SENSOR_INIT_HORIZONTAL_RIGHT:
+        {
+            qDebug() << "Sensor RIGHT: " << ((recvPacket->value<1)?"false":"true");
+            ui->SetProperty("right_sensor", (recvPacket->value<1)?"false":"true" );
+        }break;
+
+        case PacketParams::SENSOR_INIT_VERTICAL_MASTER:
+        {
+            qDebug() << "Sensor MASTER: " << ((recvPacket->value<1)?"false":"true");
+            ui->SetProperty("master_sensor", (recvPacket->value<1)?"false":"true" );
+        }break;
+
+        case PacketParams::SENSOR_INIT_VERTICAL_SLAVE:
+        {
+            qDebug() << "Sensor SLAVE: " << ((recvPacket->value<1)?"false":"true");
+            ui->SetProperty("slave_sensor", (recvPacket->value<1)?"false":"true" );
+        }break;
+
+        default:
+        {
+            qDebug() << "Unknown packet received: [" << recvPacket->param << " | " << recvPacket->value << "]";
+        }
+    }
 }
 
 //     _   _ ___    ____  _                   _
@@ -153,8 +167,9 @@ void MainClass::onButtonPressed_Connect()
     this->SetStatus("Connecting to " + QString(RPI_IP_ADDRESS) + ":" + QString::number(RPI_PORT), UiStatusType::PENDING);
     if(this->rpi != nullptr && this->rpi->is_alive())
     {
-        this->SetStatus("Already connected!", UiStatusType::ERROR);
-        return;
+//        this->SetStatus("Already connected!", UiStatusType::ERROR);
+//        return;
+        this->rpi->doDisconnect();
     }
 
     this->rpi = nullptr;
@@ -163,6 +178,7 @@ void MainClass::onButtonPressed_Connect()
     this->rpi->setPort(RPI_PORT);
 
     connect(this, SIGNAL(_WritePacket(QByteArray)), rpi, SLOT(write(QByteArray)));
+    connect(this, SIGNAL(_DoDisconnect()), rpi, SLOT(doDisconnect()));
     connect(rpi, SIGNAL(onConnectionChanged(bool)), this, SLOT(onTcpConnectionChanged(bool)), Qt::QueuedConnection );
     connect(rpi, SIGNAL(onReadyRead()), this, SLOT(onTcpReadyRead()), Qt::QueuedConnection );
 
@@ -178,6 +194,9 @@ void MainClass::onButtonPressed_Connect()
 
 void MainClass::onSwitchChanged_Valves(bool checked)
 {
+    if(!rpi || !rpi->is_alive())
+        ui->SetProperty("statusText", "NOT Connected to machinery");
+
     qDebug() << "Valves: " << (checked?"ON":"OFF");
     static Packet packet;
     packet.param = PacketParams::ELECTROVALVES;
@@ -187,6 +206,9 @@ void MainClass::onSwitchChanged_Valves(bool checked)
 
 void MainClass::onSwitchChanged_Cutter(bool checked)
 {
+    if(!rpi || !rpi->is_alive())
+        ui->SetProperty("statusText", "NOT Connected to machinery");
+
     qDebug() << "Cutter: " << (checked?"ON":"OFF");
     static Packet packet;
     packet.param = PacketParams::CUTTER;
@@ -196,6 +218,9 @@ void MainClass::onSwitchChanged_Cutter(bool checked)
 
 void MainClass::onButtonPressed_Reset()
 {
+    if(!rpi || !rpi->is_alive())
+        ui->SetProperty("statusText", "NOT Connected to machinery");
+
     qDebug() << "RESET request";
     static Packet packet;
     packet.param = PacketParams::RESET;
@@ -204,6 +229,9 @@ void MainClass::onButtonPressed_Reset()
 
 void MainClass::onButtonPressed_Lock()
 {
+    if(!rpi || !rpi->is_alive())
+        ui->SetProperty("statusText", "NOT Connected to machinery");
+
     qDebug() << "LOCK request";
     static Packet packet;
     packet.param = PacketParams::ELECTROVALVES;
@@ -213,6 +241,9 @@ void MainClass::onButtonPressed_Lock()
 
 void MainClass::onButtonPressed_Unlock()
 {
+    if(!rpi || !rpi->is_alive())
+        ui->SetProperty("statusText", "NOT Connected to machinery");
+
     qDebug() << "UNLOCK request";
     static Packet packet;
     packet.param = PacketParams::ELECTROVALVES;
@@ -222,6 +253,9 @@ void MainClass::onButtonPressed_Unlock()
 
 void MainClass::onButtonPressed_Cut()
 {
+    if(!rpi || !rpi->is_alive())
+        ui->SetProperty("statusText", "NOT Connected to machinery");
+
     qDebug() << "CUT request";
     static Packet packet;
     packet.param = PacketParams::CUT;
@@ -231,6 +265,9 @@ void MainClass::onButtonPressed_Cut()
 
 void MainClass::onButtonPressed_MoveTo(int size)
 {
+    if(!rpi || !rpi->is_alive())
+        ui->SetProperty("statusText", "NOT Connected to machinery");
+
     uint8_t bytes[2];
     bytes[0] = size & 0xFF;
     bytes[1] = (size >> 8) & 0xFF;
@@ -245,6 +282,9 @@ void MainClass::onButtonPressed_MoveTo(int size)
 
 void MainClass::onButtonPressed_Stop()
 {
+    if(!rpi || !rpi->is_alive())
+        ui->SetProperty("statusText", "NOT Connected to machinery");
+
     qDebug() << "STOP request";
     static Packet packet;
     packet.param = PacketParams::EMERGENCY_STOP;
@@ -254,6 +294,9 @@ void MainClass::onButtonPressed_Stop()
 
 void MainClass::onButtonPressed_Up()
 {
+    if(!rpi || !rpi->is_alive())
+        ui->SetProperty("statusText", "NOT Connected to machinery");
+
     qDebug() << "UP pressed";
     static Packet packet;
     packet.param = PacketParams::UP;
@@ -263,6 +306,9 @@ void MainClass::onButtonPressed_Up()
 
 void MainClass::onButtonPressed_Down()
 {
+    if(!rpi || !rpi->is_alive())
+        ui->SetProperty("statusText", "NOT Connected to machinery");
+
     qDebug() << "DOWN pressed";
     static Packet packet;
     packet.param = PacketParams::DOWN;
@@ -272,6 +318,9 @@ void MainClass::onButtonPressed_Down()
 
 void MainClass::onButtonPressed_Right()
 {
+    if(!rpi || !rpi->is_alive())
+        ui->SetProperty("statusText", "NOT Connected to machinery");
+
     qDebug() << "RIGHT pressed";
     static Packet packet;
     packet.param = PacketParams::RIGHT;
@@ -281,6 +330,9 @@ void MainClass::onButtonPressed_Right()
 
 void MainClass::onButtonPressed_Left()
 {
+    if(!rpi || !rpi->is_alive())
+        ui->SetProperty("statusText", "NOT Connected to machinery");
+
     qDebug() << "LEFT pressed";
     static Packet packet;
     packet.param = PacketParams::LEFT;
@@ -290,6 +342,7 @@ void MainClass::onButtonPressed_Left()
 
 void MainClass::onButtonReleased_Up()
 {
+
     qDebug() << "UP released";
     static Packet packet;
     packet.param = PacketParams::UP;

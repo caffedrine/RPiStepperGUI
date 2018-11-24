@@ -251,18 +251,17 @@ protected:
 			case PacketParams::RESET:
 			{
 				console->info("[MANUAL] Start resetting");
-				if(g_SensorVerticalMaster.CurrentState == PushButtonState::DOWN && g_SensorHorizontalLeft.CurrentState == PushButtonState::DOWN)
+				
+				if(g_SensorHorizontalLeft.CurrentState == PushButtonState::UP)
 				{
-					/* Already reseted */
-					return;
+					g_CutterDC.SetDirection(MotorDcDirection::BACKWARD);
+					g_CutterDC.Run();
 				}
-//
-//				/* Check which one to reset */
-//				if(g_SensorVertical.CurrentState == LogicalLevel::LOW)
-//				{
-//					g_MasterDC.SetDirection(MotorDcDirection::BACKWARD);
-//					g_MasterDC.Run();
-//				}
+				
+				if(g_SensorVerticalSlave.CurrentState == PushButtonState::UP || g_SensorVerticalMaster.CurrentState == PushButtonState::UP)
+				{
+					g_Vertical.Reset();
+				}
 				g_State.Set(States::WAIT_RESET);
 			}break;
 			

@@ -129,4 +129,19 @@ void DcMotor::SetEnableReversed(bool enb_reversed)
 	this->EnbReversed = enb_reversed;
 }
 
+void DcMotor::ReverseDirection()
+{
+	if(CurrentDirection == MotorDcDirection::BACKWARD)
+	{
+		this->SetDirection(MotorDcDirection::FORWARD);
+		this->CurrentDirection = MotorDcDirection::FORWARD;
+	}
+	else
+	{
+		this->SetDirection(MotorDcDirection::BACKWARD);
+		this->CurrentDirection = MotorDcDirection::BACKWARD;
+	}
+}
+
+
 

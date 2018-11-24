@@ -6,15 +6,22 @@
 #define RPIFIRMWARE_MASTERENCODER_H
 
 #include "Config.h"
+#include "Globals.h"
 #include "drivers/Encoder.h"
 
 class MasterEncoder : public Encoder
 {
 public:
-	MasterEncoder(uint8_t gpio) : Encoder(gpio)
+	explicit MasterEncoder(uint8_t gpio) : Encoder(gpio)
 	{
 		Encoder::SetPullstate(PullState::DOWN);
 	}
+	
+	void onStep() override
+	{
+		console->info("Master encoder new step");
+	}
+private:
 };
 
 MasterEncoder g_MasterEncoder(ENCODER_MASTER_GPIO);

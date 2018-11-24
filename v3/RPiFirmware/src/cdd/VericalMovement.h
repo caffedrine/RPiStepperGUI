@@ -44,9 +44,6 @@ public:
 	
 	void Stop()
 	{
-		/* Reverse to brake */
-		g_MasterDC.SetDirection( (g_MasterDC.CurrentDirection==MotorDcDirection::FORWARD)?MotorDcDirection::BACKWARD:MotorDcDirection::FORWARD);
-		g_SlaveDC.SetDirection( (g_MasterDC.CurrentDirection==MotorDcDirection::FORWARD)?MotorDcDirection::BACKWARD:MotorDcDirection::FORWARD);
 		/*  Stop */
 		g_MasterDC.Stop();
 		g_SlaveDC.Stop();

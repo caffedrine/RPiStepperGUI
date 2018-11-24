@@ -36,6 +36,7 @@ public:
 	void Disable();
 	void SetSpeed(uint8_t speed);
 	void SetDirection(MotorDcDirection new_direction);
+	void ReverseDirection();
 	void SetEnableReversed(bool enb_reversed);
 	
 	bool IsRunning();

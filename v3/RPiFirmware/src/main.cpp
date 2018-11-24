@@ -69,12 +69,14 @@ void SensorLaserCallback(LogicalLevel new_level)
 
 void OnExit()
 {
+	g_State.Set(States::EMERGENCY_STOP);
 	g_LedConnection.Off();
 	g_LedTraffic.Off();
 	g_MasterDC.Stop();
 	g_SlaveDC.Stop();
 	g_CutterDC.Stop();
 	g_Cutter.Off();
+	g_ElectroValves.Off();
 	
 	console->info("Executing STOP routine...");
 }
@@ -85,7 +87,7 @@ void SigHandler(int signum)
 	console->critical("Interrupt signal ({0} - {1}) received", strsignal(signum), signum);
 	OnExit();
 	_ProgramContinue = false;
-	exit(signum);
+	//exit(signum);
 }
 
 void Initialize()
@@ -134,6 +136,7 @@ int main()
 		if(g_State.Current.Val == States::EMERGENCY_STOP)
 		{
 			g_Cutter.Off();
+			g_ElectroValves.Off();
 			g_CutterDC.Stop();
 			g_MasterDC.Stop();
 			g_SlaveDC.Stop();
@@ -144,37 +147,69 @@ int main()
 		/* Handle WAIT_RESET state */
 		else if(g_State.Current.Val == States::WAIT_RESET)
 		{
-		
+			/* Cutter is on initial position */
+			if(g_SensorHorizontalLeft.CurrentState == PushButtonState::DOWN)
+			{
+				g_CutterDC.Stop();
+			}
+			
+			/* Vertical position checking */
+			if(!g_Vertical.IsWorking && g_Vertical.Position == 0)
+			{
+				g_Vertical.Stop();
+			}
+			
+			/* If both are stopped then reset is finished */
+			if(g_SensorHorizontalLeft.CurrentState == PushButtonState::DOWN && !g_Vertical.IsWorking && g_Vertical.Position == 0)
+				g_State.Set(States::STANDBY);
 		}
 		
 		/* Handle WAIT_MOVETO state */
 		else if(g_State.Current.Val == States::WAIT_MOVETO)
 		{
-		
+			/* If required position is reached then just stop */
+			if(!g_Vertical.IsWorking&& g_Vertical.Position == g_Vertical.TargetPosition)
+				g_State.Set(States::STANDBY);
 		}
 		
 		/* Handle WAIT_CUT state */
 		else if(g_State.Current.Val == States::WAIT_CUT)
 		{
-		
+			/* End of line reached - send it back */
+			if(g_SensorHorizontalRight.CurrentState == PushButtonState::DOWN)
+			{
+				g_CutterDC.SetDirection(MotorDcDirection::BACKWARD);
+				g_State.Set(States::WAIT_CUTTER_INIT);
+			}
+			/// TODO: implement
+			
 		}
 		
 		/* Handle WAIT_CUTTER_INIT state */
 		else if(g_State.Current.Val == States::WAIT_CUTTER_INIT)
 		{
-		
+			if(g_SensorHorizontalLeft.CurrentState == PushButtonState::DOWN)
+			{
+				g_CutterDC.Stop();
+				g_State.Set(States::STANDBY);
+			}
 		}
 		
 		/* Handle WAIT_LOCK state */
 		else if(g_State.Current.Val == States::WAIT_LOCK)
 		{
-		
+			static auto previous = TimeUtils::millis();
+			if( TimeUtils::millis() - previous > 1500 )
+			{
+				;/// TODO: implement
+			}
+			
 		}
 		
 		/* Handle WAIT_UNLOCK state */
 		else if(g_State.Current.Val == States::WAIT_UNLOCK)
 		{
-		
+			/// TODO: implement
 		}
 		
 		/* Tick vertical movement motors */

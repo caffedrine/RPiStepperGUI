@@ -12,7 +12,6 @@
 #include <QThread>
 #include <QElapsedTimer>
 
-#include "LockHelper.h"
 #include "MainWindow.h"
 #include "TcpClient.h"
 #include "../../Shared/packet.h"

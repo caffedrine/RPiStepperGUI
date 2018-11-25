@@ -48,11 +48,6 @@ bool MainClass::SendAck()
 
 void MainClass::run()
 {
-    #ifdef Q_OS_ANDROID
-    /* Prevent screen from turning off */
-    KeepAwakeHelper helper;
-    #endif
-
     timeCounter.restart();
 
     while(true)

@@ -97,6 +97,7 @@ private:
 	{
 		client = nullptr;
 		console->info("[{0} {1}:{2}] DISCONNECTED", _client->Fd, _client->Ip, _client->Port);
+		g_State.Set(States::EMERGENCY_STOP);
 	}
 	
 	void DataReceived(const TcpServerAsync::client_t *client, char *data, int len) override

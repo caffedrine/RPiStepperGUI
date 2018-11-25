@@ -17,6 +17,7 @@ int main(int argc, char *argv[])
 
     /* Load GUI */
     MainWindow ui;
+    QObject::connect(&app, SIGNAL(applicationStateChanged(Qt::ApplicationState)), &ui, SLOT(OnApplicationStateCanged(Qt::ApplicationState)));
     ui.SetupUI();
 
     /* Display IP and Port */

@@ -23,6 +23,11 @@ ApplicationWindow
     property bool left_sensor: false
     property bool right_sensor: false
 
+    onClosing: {
+        close.accepted = false
+        tabBar.currentIndex = 0
+    }
+
     header: Rectangle
     {
         Rectangle

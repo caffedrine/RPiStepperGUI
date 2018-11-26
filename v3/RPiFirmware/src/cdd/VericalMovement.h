@@ -32,14 +32,21 @@ public:
 		this->TargetPosition = encoder_units;
 	}
 	
-	void MoveDown()
-	{
-	
-	}
 	
 	void MoveUp()
 	{
+		g_MasterDC.SetDirection(MotorDcDirection::FORWARD);
+		g_SlaveDC.SetDirection(MotorDcDirection::FORWARD);
+		g_MasterDC.Run();
+		g_SlaveDC.Run();
+	}
 	
+	void MoveDown()
+	{
+		g_MasterDC.SetDirection(MotorDcDirection::BACKWARD);
+		g_SlaveDC.SetDirection(MotorDcDirection::BACKWARD);
+		g_MasterDC.Run();
+		g_SlaveDC.Run();
 	}
 	
 	void Stop()

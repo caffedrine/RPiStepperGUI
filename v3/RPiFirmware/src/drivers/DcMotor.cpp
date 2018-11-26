@@ -39,6 +39,9 @@ void DcMotor::Init()
 	
 	if(this->GpioDirection > 0)
 		Vfb_SetPinMode(this->GpioDirection, PinMode::OUTPUT);
+	
+	/* Default PWM */
+	this->PwmConfig(this->PwmFreqHz, this->PwmDuty);
 }
 
 bool DcMotor::IsRunning()
@@ -46,9 +49,9 @@ bool DcMotor::IsRunning()
 	return !(CurrentState == MotorDcState ::STOPPED);
 }
 
-long DcMotor::PwmConfig(unsigned freq, uint8_t duty)
+long DcMotor::PwmConfig(unsigned freq, uint8_t u8Duty)
 {
-	this->PwmDuty = duty;
+	this->PwmDuty = u8Duty;
 	this->PwmFreqHz = freq;
 	
 	/* Set Freq */

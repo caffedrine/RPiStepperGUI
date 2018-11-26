@@ -53,6 +53,30 @@ static std::string formatted_time_now()
 	return oss.str();
 }
 
+class Timer
+{
+public:
+	explicit Timer() = default;
+	
+	uint64_t ElapsesMs()
+	{
+		return (millis() - (PreviousUs/1000) );
+	}
+	
+	uint64_t ElapsedUs()
+	{
+		return ( micros() - PreviousUs );
+	}
+	
+	void Restart()
+	{
+		this->PreviousUs = micros();
+	}
+	
+private:
+	uint64_t PreviousUs = 0;
+};
+
 }
 
 #endif //TIME_UTILS_H

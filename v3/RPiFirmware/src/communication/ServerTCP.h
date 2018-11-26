@@ -180,42 +180,40 @@ protected:
 				if(packet->value == (uint8_t)LogicalLevel::HIGH)
 				{
 					console->info("[MANUAL] Electrovalves ON");
-					g_ElectroValves.On();
+					g_State.Set(States::WAIT_LOCK);
 				}
 				else
 				{
 					console->info("[MANUAL] Electrovalves OFF");
-					g_ElectroValves.Off();
+					g_State.Set(States::WAIT_UNLOCK);
 				}
 			}break;
 			
 			case PacketParams::UP:
 			{
-				g_MasterDC.SetDirection(MotorDcDirection::FORWARD);
 				if(packet->value == (uint8_t)LogicalLevel::HIGH)
 				{
 					console->info("[MANUAL] Running UP");
-					g_MasterDC.Run();
+					g_Vertical.MoveUp();
 				}
 				else
 				{
 					console->info("[MANUAL] Stopped");
-					g_MasterDC.Stop();
+					g_Vertical.Stop();
 				}
 			}break;
 			
 			case PacketParams::DOWN:
 			{
-				g_MasterDC.SetDirection(MotorDcDirection::BACKWARD);
 				if(packet->value == (uint8_t)LogicalLevel::HIGH)
 				{
 					console->info("[MANUAL] Running down");
-					g_MasterDC.Run();
+					g_Vertical.MoveDown();
 				}
 				else
 				{
 					console->info("[MANUAL] Stopped");
-					g_MasterDC.Stop();
+					g_Vertical.Stop();
 				}
 			}break;
 			
@@ -292,8 +290,6 @@ protected:
 				}
 				
 				g_Cutter.On();
-				g_CutterDC.SetDirection(MotorDcDirection::FORWARD);
-				g_CutterDC.Run();
 				g_State.Set(States::WAIT_CUT);
 			}break;
 			

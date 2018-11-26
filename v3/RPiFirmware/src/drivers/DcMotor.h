@@ -40,7 +40,7 @@ public:
 	void SetEnableReversed(bool enb_reversed);
 	
 	bool IsRunning();
-	long PwmConfig(unsigned FrequencyHz, uint8_t DutyProcents);
+	long PwmConfig(unsigned FrequencyHz, uint8_t u8Duty);
 	
 private:
 	void Init();

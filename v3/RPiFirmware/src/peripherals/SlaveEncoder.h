@@ -19,7 +19,7 @@ public:
 	
 	void onStep() override
 	{
-		console->info("Slave encoder new step");
+		console->info("Slave encoder: {}", Encoder::Steps);
 	}
 private:
 };

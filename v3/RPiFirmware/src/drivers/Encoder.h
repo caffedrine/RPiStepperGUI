@@ -27,7 +27,7 @@ public:
 	void SetDebouncer(int micros);
 	void SetPullstate(PullState newPullstate);
 	
-private:
+protected:
 	uint8_t gpio_pin;
 	void onStateChanged(LogicalLevel newState) override;
 	

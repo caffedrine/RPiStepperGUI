@@ -13,7 +13,6 @@ class LedTraffic : public Led
 public:
 	LedTraffic(uint8_t _gpio_pin) : Led(_gpio_pin)
 	{
-	
 	}
 	
 private:

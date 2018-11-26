@@ -19,7 +19,7 @@ public:
 	
 	void onStep() override
 	{
-		console->info("Master encoder new step");
+		console->info("Master encoder: {0}", Encoder::Steps);
 	}
 private:
 };

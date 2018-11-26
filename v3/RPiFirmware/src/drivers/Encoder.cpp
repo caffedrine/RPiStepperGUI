@@ -17,8 +17,12 @@ void Encoder::Reset()
 void Encoder::onStateChanged(LogicalLevel newState)
 {
 	Gpio::onStateChanged(newState);
-	this->Steps++;
-	this->State= (EncoderState)newState;
+	if( newState == (LogicalLevel) EncoderState::HIGH )
+	{
+		this->Steps++;
+		this->State = (EncoderState) newState;
+		onStep();
+	}
 }
 
 void Encoder::ReversePolarity()

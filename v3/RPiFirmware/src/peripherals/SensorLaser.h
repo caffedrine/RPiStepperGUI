@@ -16,6 +16,11 @@ public:
 	{
 		Gpio::SetPullState(PullState::DOWN);
 	}
+	
+	bool IsCourtainPresent()
+	{
+		return !(bool)(Gpio::CurrentState);
+	}
 };
 
 SensorLaser g_SensorLaser(SENSOR_LASER_CUT_GPIO);

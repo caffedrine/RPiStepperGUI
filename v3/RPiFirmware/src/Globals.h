@@ -1,6 +1,7 @@
 #ifndef DRIVERSCONTAINER_COMMON_H
 #define DRIVERSCONTAINER_COMMON_H
 
+#include "utils/time_utils.h"
 #include "Config.h"
 #include "../../Shared/packet.h"
 
@@ -12,6 +13,9 @@ auto console = spdlog::stdout_color_mt("console");
 
 /* Global variable to store latest received ACK from client */
 uint64_t g_TcpRecvLastMillis = 0;
+
+/* General time used in waiting States */
+TimeUtils::Timer g_WaitTimer;
 
 /* Program states */
 class States
@@ -69,6 +73,9 @@ public:
 		
 		/* Print current state */
 		console->info( states_description[Current.Val] );
+		
+		/* Reset timer to have timestamp when entered on current state */
+		g_WaitTimer.Restart();
 	}
 
 private:
@@ -78,5 +85,6 @@ States g_State;
 
 /* Flag to inform the user that a reset is required */
 bool g_ResetRequired = true;
+
 
 #endif //DRIVERSCONTAINER_COMMON_H

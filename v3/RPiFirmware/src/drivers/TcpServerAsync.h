@@ -1,3 +1,5 @@
+#include <utility>
+
 //
 // Created by curiosul on 10/10/18.
 //
@@ -49,7 +51,7 @@ public:
 	struct Exception : public std::exception
 	{
 		std::string s;
-		explicit Exception(std::string ss): s(ss) {}
+		explicit Exception(std::string ss): s(std::move(ss)) {}
 		Exception(std::string function, std::string ss) : s( function + "(): " + ss ) {}
 		~Exception() throw () {} // Updated
 		const char* what() const throw() override { return s.c_str(); }

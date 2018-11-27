@@ -16,11 +16,26 @@
 
 class VerticalMovement
 {
-public:
+	enum class VerticalMovementState
+	{
+		STOPPED,
+		RUNNING_UP,
+		RUNNING_DOWN,
+		RUNNING_STEPS_UP,
+		RUNNING_STEPS_DOWN
+	};
 	
+public:
 	uint16_t Position = 0, TargetPosition = 0;
 	uint16_t PositionMM = 0, TargetPositionMM = 0;
 	bool IsWorking = false;
+	
+	explicit VerticalMovement()
+	{
+		BackgroundWorker = std::thread([this]()
+									   { BackgroundWork(); });
+		BackgroundWorker.detach();
+	}
 	
 	void MoveToMM(uint16_t mm)
 	{
@@ -84,10 +99,22 @@ public:
 	{
 	
 	}
-	
+
 private:
 	uint32_t PositionMaster = 0;
 	uint32_t PositionSlave = 0;
+	
+	std::thread BackgroundWorker;
+	
+	void BackgroundWork()
+	{
+		
+		while( 1 )
+		{
+			console->info("Second thread!");
+			std::this_thread::sleep_for(  std::chrono::milliseconds(1000) );
+		}
+	}
 	
 };
 

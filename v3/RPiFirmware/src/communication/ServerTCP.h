@@ -180,12 +180,14 @@ protected:
 				if(packet->value == (uint8_t)LogicalLevel::HIGH)
 				{
 					console->info("[MANUAL] Electrovalves ON");
-					g_State.Set(States::WAIT_LOCK);
+					g_ElectroValves.On();
+					//g_State.Set(States::WAIT_LOCK);
 				}
 				else
 				{
 					console->info("[MANUAL] Electrovalves OFF");
-					g_State.Set(States::WAIT_UNLOCK);
+					g_ElectroValves.Off();
+					//g_State.Set(States::WAIT_UNLOCK);
 				}
 			}break;
 			

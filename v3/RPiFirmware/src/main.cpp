@@ -99,6 +99,9 @@ void Fault( const char *msg)
 	
 	while(1)
 	{
+		if( !_ProgramContinue )
+			break;
+		
 		g_LedTraffic.On();
 		g_LedConnection.Off();
 		std::this_thread::sleep_for( std::chrono::milliseconds(200) );

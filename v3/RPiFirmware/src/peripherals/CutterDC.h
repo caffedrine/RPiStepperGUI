@@ -13,7 +13,7 @@ class CutterDC : public DcMotor
 public:
 	CutterDC(uint8_t PulsePin, uint8_t DirPin) : DcMotor(PulsePin, DirPin)
 	{
-	
+		DcMotor::PwmConfig(DC_MOTORS_FREQ_HZ, DC_MOTOR_DEFAULT_SPEED);
 	}
 private:
 };

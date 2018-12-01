@@ -66,6 +66,9 @@ long DcMotor::PwmConfig(unsigned freq, uint8_t u8Duty)
 
 void DcMotor::SetSpeed(uint8_t speed)
 {
+	if(PwmDuty == speed)
+		return;
+	
 	this->PwmDuty = speed;
 
 	if(this->CurrentState == MotorDcState::RUNNING)
@@ -95,6 +98,9 @@ void DcMotor::Stop()
 
 void DcMotor::SetDirection(MotorDcDirection new_direction)
 {
+	if(CurrentDirection == new_direction)
+		return;
+	
 	if(this->GpioDirection > 0)
 	{
 		CurrentDirection = new_direction;
@@ -107,6 +113,9 @@ void DcMotor::SetDirection(MotorDcDirection new_direction)
 
 void DcMotor::Run()
 {
+	if(this->IsRunning())
+		return;
+	
 	this->CurrentState = MotorDcState::RUNNING;
 	
 	/* Provide PWM to the output */

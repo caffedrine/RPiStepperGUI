@@ -58,7 +58,7 @@ class Timer
 public:
 	explicit Timer() = default;
 	
-	uint64_t ElapsesMs()
+	uint64_t ElapsedMs()
 	{
 		return (millis() - (PreviousUs/1000) );
 	}

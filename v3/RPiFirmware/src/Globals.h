@@ -86,5 +86,8 @@ States g_State;
 /* Flag to inform the user that a reset is required */
 bool g_ResetRequired = true;
 
+/* Program state */
+bool _ProgramContinue = true;
+
 
 #endif //DRIVERSCONTAINER_COMMON_H

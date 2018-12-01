@@ -19,11 +19,14 @@ public:
 	
 	void onStep() override
 	{
-		console->info("Slave encoder: {}", Encoder::Steps);
+		OnSlaveEncoderStep();
+		//console->info("Slave encoder: {}", Encoder::Steps);
 	}
+protected:
+	virtual void OnSlaveEncoderStep(){};
 private:
 };
 
-SlaveEncoder g_SlaveEncoder(ENCODER_SLAVE_GPIO);
+//SlaveEncoder g_SlaveEncoder(ENCODER_SLAVE_GPIO);
 
 #endif //RPIFIRMWARE_SLAVEENCODER_H

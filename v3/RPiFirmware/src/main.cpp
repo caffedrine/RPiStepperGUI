@@ -7,6 +7,7 @@
 
 #include "utils/time_utils.h"
 #include "Globals.h"
+#include "cdd/Motion.h"
 #include "communication/ServerTCP.h"
 #include "peripherals/CutterDC.h"
 #include "peripherals/Cutter.h"
@@ -22,8 +23,6 @@
 #include "peripherals/SensorLaser.h"
 #include "peripherals/MasterEncoder.h"
 #include "peripherals/SlaveEncoder.h"
-
-bool _ProgramContinue = true;
 
 /* Callbacks */
 void SensorVerticalSlaveCallback(PushButtonState new_state)
@@ -97,7 +96,7 @@ void Fault( const char *msg)
 	/* Stop everything */
 	OnExit();
 	
-	while(1)
+	while(true)
 	{
 		if( !_ProgramContinue )
 			break;
@@ -175,18 +174,12 @@ int main()
 				g_CutterDC.Stop();
 			}
 			
-			/* Vertical position checking */
-			if(!g_Vertical.IsWorking && g_Vertical.Position == 0)
-			{
-				g_Vertical.Stop();
-			}
-			
 			/* If both are stopped then reset is finished */
-			if(g_SensorHorizontalLeft.CurrentState == PushButtonState::DOWN && !g_Vertical.IsWorking && g_Vertical.Position == 0)
+			if(g_SensorHorizontalLeft.CurrentState == PushButtonState::DOWN && !g_Vertical.IsRunning())
 				g_State.Set(States::STANDBY);
 			
 			/* Reset can't take more than 20s */
-			if(g_WaitTimer.ElapsesMs() > 20000)
+			if( g_WaitTimer.ElapsedMs() > 20000)
 			{
 				Fault("Reset can't take more than 20 seconds");
 			}
@@ -196,11 +189,11 @@ int main()
 		else if(g_State.Current.Val == States::WAIT_MOVETO)
 		{
 			/* If required position is reached then just stop */
-			if(!g_Vertical.IsWorking && g_Vertical.Position == g_Vertical.TargetPosition)
+			if(!g_Vertical.IsRunning() && g_Vertical.GetCurrentPosition() == g_Vertical.GetTargetPosition())
 				g_State.Set(States::STANDBY);
 			
 			/* Reset can't take more than 20s */
-			if(g_WaitTimer.ElapsesMs() > 20000)
+			if( g_WaitTimer.ElapsedMs() > 20000)
 			{
 				Fault("Too much time elapsed without reaching target position!");
 			}
@@ -210,7 +203,7 @@ int main()
 		else if(g_State.Current.Val == States::WAIT_CUT)
 		{
 			/* Wait 2 seconds for cutter to start */
-			if(g_WaitTimer.ElapsesMs() > 2000)
+			if( g_WaitTimer.ElapsedMs() > 2000)
 			{
 				g_CutterDC.SetDirection(MotorDcDirection::FORWARD);
 				g_CutterDC.Run();
@@ -223,7 +216,7 @@ int main()
 				}
 				
 				/* Wait 3 seconds before checking the laser (still need to count previous elapsed time) */
-				if( g_WaitTimer.ElapsesMs() > (2000+3000) )
+				if( g_WaitTimer.ElapsedMs() > (2000+3000) )
 				{
 					/* If laser does not detect courtain */
 					if( !g_SensorLaser.IsCourtainPresent() )
@@ -233,7 +226,7 @@ int main()
 					}
 					
 					/* Check if too much time elapsed */
-					if(g_WaitTimer.ElapsesMs() > 30000)
+					if( g_WaitTimer.ElapsedMs() > 30000)
 					{
 						Fault("Too much time took to cut curtain!");
 					}
@@ -251,7 +244,7 @@ int main()
 			}
 			
 			/* If it take more than 20 seconds to reset then there it's a fault on a button or something */
-			if(g_WaitTimer.ElapsesMs() > 20000)
+			if( g_WaitTimer.ElapsedMs() > 20000)
 			{
 				Fault("Cutter failed to reach initial point in maximum allowed time!");
 			}
@@ -260,14 +253,14 @@ int main()
 		/* Handle WAIT_LOCK state */
 		else if(g_State.Current.Val == States::WAIT_LOCK)
 		{
-			if(g_WaitTimer.ElapsesMs() > 1000)
+			if( g_WaitTimer.ElapsedMs() > 1000)
 				g_State.Set(States::STANDBY);
 		}
 		
 		/* Handle WAIT_UNLOCK state */
 		else if(g_State.Current.Val == States::WAIT_UNLOCK)
 		{
-			if(g_WaitTimer.ElapsesMs() > 1000)
+			if( g_WaitTimer.ElapsedMs() > 1000)
 				g_State.Set(States::STANDBY);
 		}
 		

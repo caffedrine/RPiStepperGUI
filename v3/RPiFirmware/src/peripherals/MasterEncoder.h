@@ -19,11 +19,14 @@ public:
 	
 	void onStep() override
 	{
-		console->info("Master encoder: {0}", Encoder::Steps);
+		OnMasterEncoderStep();
+		//console->info("Master encoder: {0}", Encoder::Steps);
 	}
+protected:
+	virtual void OnMasterEncoderStep() {};
 private:
 };
 
-MasterEncoder g_MasterEncoder(ENCODER_MASTER_GPIO);
+//MasterEncoder g_MasterEncoder(ENCODER_MASTER_GPIO);
 
 #endif //RPIFIRMWARE_MASTERENCODER_H

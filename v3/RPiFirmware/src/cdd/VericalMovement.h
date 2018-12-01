@@ -62,7 +62,20 @@ public:
 	
 	void MoveTo(uint32_t encoder_units)
 	{
-		SetTargetPosition( encoder_units );
+		console->info("---Request to move to {} enc units ", encoder_units);
+		console->info("---Current position {} enc", GetCurrentPosition());
+		console->info("---Target position {} enc", GetTargetPosition());
+		console->info("---Offset: {} enc", Mm2Enc(VERTICAL_MM_OFFSET));
+		
+		if( (int)( (int)(encoder_units - (int)Mm2Enc(VERTICAL_MM_OFFSET)) ) <= 0)
+		{
+			console->warn("Can't go to a negative position!");
+			return;
+		}
+		
+		console->info("Moving from {}enc to {}enc", GetCurrentPosition(), (encoder_units - Mm2Enc(VERTICAL_MM_OFFSET)) );
+		console->info("Moving from {}mm to {}mm", Enc2Mm(GetCurrentPosition()), Enc2Mm(encoder_units - Mm2Enc(VERTICAL_MM_OFFSET)) );
+		SetTargetPosition( encoder_units - Mm2Enc(VERTICAL_MM_OFFSET) );
 	}
 	
 	void MoveUp()
@@ -72,7 +85,7 @@ public:
 	
 	void MoveDown()
 	{
-		MoveTo( 0 );
+		MoveTo( MIN_POSITION );
 	}
 	
 	void Stop()
@@ -86,14 +99,16 @@ public:
 		this->_IsResetting = true;
 	}
 	
-	float Enc2Mm(uint32_t enc)
+	static float Enc2Mm(uint32_t enc)
 	{
-		return ((float) MasterCurrentPosition * MM_PER_STEP);
+		//console->info("{}enc is {}mm", enc, ((float) enc * MM_PER_STEP));
+		return ((float) enc * MM_PER_STEP);
 	}
 	
-	uint32_t Mm2Enc(float mm)
+	static uint32_t Mm2Enc(float mm)
 	{
-		return (uint32_t) (mm / MM_PER_STEP);
+		//console->info("{}mm is {}enc", mm, ((uint32_t) (mm / MM_PER_STEP)));
+		return ((uint32_t) (mm / MM_PER_STEP));
 	}
 	
 	void Tick()
@@ -102,9 +117,7 @@ public:
 	}
 
 private:
-	const float MM_PER_STEP = 1.5;
-	const float OFFSET = 10;
-	const float MIN_POSITION = OFFSET;
+	const float MIN_POSITION = Mm2Enc(VERTICAL_MM_OFFSET);
 	const float MAX_POSITION = 5000;
 	
 	/* PID constants */
@@ -117,9 +130,9 @@ private:
 	PID pid = PID(DT, MAX, MIN, KP, KD, KI);
 	
 	/* Store positions */
-	uint32_t MasterCurrentPosition = 0, TargetPosition = 0;
+	uint32_t MasterCurrentPosition = Mm2Enc(VERTICAL_MM_OFFSET), TargetPosition = Mm2Enc(VERTICAL_MM_OFFSET);
 	/* Slave motor position */
-	uint32_t SlaveCurrentPosition = 0;
+	uint32_t SlaveCurrentPosition = Mm2Enc(VERTICAL_MM_OFFSET);
 	
 	/* Safe read/write positions */
 	std::mutex mutex_;
@@ -171,9 +184,9 @@ private:
 					SlaveEncoder::Reset();
 					_IsResetting = false;
 					/* Move motors to init buttons then stop */
-					SetMasterCurrentPosition(0);
-					SetSlaveCurrentPosition(0);
-					SetTargetPosition(0);
+					SetMasterCurrentPosition( Mm2Enc(VERTICAL_MM_OFFSET) );
+					SetSlaveCurrentPosition( Mm2Enc(VERTICAL_MM_OFFSET) );
+					SetTargetPosition( Mm2Enc(VERTICAL_MM_OFFSET) );
 				}
 				std::this_thread::sleep_for(std::chrono::milliseconds(1));
 				continue;

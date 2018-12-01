@@ -32,4 +32,8 @@
 #define DC_MOTORS_FREQ_HZ				4000
 const uint8_t DC_MOTOR_DEFAULT_SPEED = 	200;
 
+/* Vertical movement and encoders settings */
+const float MM_PER_STEP = 1.5;
+const float VERTICAL_MM_OFFSET = 15;
+
 #endif //DRIVERSCONTAINER_CONFIG_H

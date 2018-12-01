@@ -56,6 +56,12 @@ static void HandleReset()
 
 static void HandleMoveTo(uint16_t targetRecv)
 {
+	if( targetRecv < VERTICAL_MM_OFFSET )
+	{
+		console->warn("[MOVETO] Error! Value {}mm is below offset {}mm", targetRecv, VERTICAL_MM_OFFSET);
+		return;
+	}
+	
 	if((uint16_t)g_Vertical.GetCurrPositionMM() != targetRecv)
 	{
 		console->info("[MOVETO] Start moving to {} mm", targetRecv);

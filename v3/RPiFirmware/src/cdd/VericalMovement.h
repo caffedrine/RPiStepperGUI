@@ -73,19 +73,19 @@ public:
 			return;
 		}
 		
-		console->info("Moving from {}enc to {}enc", GetCurrentPosition(), (encoder_units - Mm2Enc(VERTICAL_MM_OFFSET)) );
-		console->info("Moving from {}mm to {}mm", Enc2Mm(GetCurrentPosition()), Enc2Mm(encoder_units - Mm2Enc(VERTICAL_MM_OFFSET)) );
+		console->info("Moving from {}enc to {}enc", GetCurrentPosition(), encoder_units );
+		console->info("Moving from {}mm to {}mm", Enc2Mm(GetCurrentPosition()), Enc2Mm(encoder_units) );
 		SetTargetPosition( encoder_units - Mm2Enc(VERTICAL_MM_OFFSET) );
 	}
 	
 	void MoveUp()
 	{
-		MoveTo( MAX_POSITION );
+		MoveTo( VERTICAL_MAX_POSITION_MM );
 	}
 	
 	void MoveDown()
 	{
-		MoveTo( MIN_POSITION );
+		MoveTo( VERTICAL_MIN_POSITION );
 	}
 	
 	void Stop()
@@ -117,8 +117,7 @@ public:
 	}
 
 private:
-	const float MIN_POSITION = Mm2Enc(VERTICAL_MM_OFFSET);
-	const float MAX_POSITION = 5000;
+	const float VERTICAL_MIN_POSITION = Mm2Enc(VERTICAL_MM_OFFSET);
 	
 	/* PID constants */
 	const double DT = 0.01;    // loop interval time

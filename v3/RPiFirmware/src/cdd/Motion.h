@@ -62,6 +62,12 @@ static void HandleMoveTo(uint16_t targetRecv)
 		return;
 	}
 	
+	if(targetRecv > VERTICAL_MAX_POSITION_MM)
+	{
+		console->warn("[MOVETO] ERROR! Length {} is bigger than maximum accepted {}!", targetRecv, VERTICAL_MAX_POSITION_MM);
+		return;
+	}
+	
 	if((uint16_t)g_Vertical.GetCurrPositionMM() != targetRecv)
 	{
 		console->info("[MOVETO] Start moving to {} mm", targetRecv);

@@ -83,8 +83,8 @@ void DcMotor::Stop()
 		return;
 	
 	/* Reverse direction to brake */
-	if(this->GpioDirection > 0)
-		this->SetDirection( (CurrentDirection==MotorDcDirection::FORWARD)?MotorDcDirection::BACKWARD:MotorDcDirection::FORWARD );
+//	if(this->GpioDirection > 0)
+//		this->SetDirection( (CurrentDirection==MotorDcDirection::FORWARD)?MotorDcDirection::BACKWARD:MotorDcDirection::FORWARD );
 	
 	this->CurrentState = MotorDcState::STOPPED;
 	Vfb_PwmOut(this->GpioPulse, 0);
@@ -92,8 +92,8 @@ void DcMotor::Stop()
 	this->Disable();
 	
 	/* Reverse direction to initial */
-	if(this->GpioDirection > 0)
-		this->SetDirection( (CurrentDirection==MotorDcDirection::FORWARD)?MotorDcDirection::BACKWARD:MotorDcDirection::FORWARD );
+//	if(this->GpioDirection > 0)
+//		this->SetDirection( (CurrentDirection==MotorDcDirection::FORWARD)?MotorDcDirection::BACKWARD:MotorDcDirection::FORWARD );
 }
 
 void DcMotor::SetDirection(MotorDcDirection new_direction)

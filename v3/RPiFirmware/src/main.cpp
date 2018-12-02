@@ -176,7 +176,10 @@ int main()
 			
 			/* If both are stopped then reset is finished */
 			if(g_SensorHorizontalLeft.CurrentState == PushButtonState::DOWN && !g_Vertical.IsRunning())
+			{
+				console->info("[RESET] Success!");
 				g_State.Set(States::STANDBY);
+			}
 			
 			/* Reset can't take more than 20s */
 			if( g_WaitTimer.ElapsedMs() > 20000)
@@ -189,8 +192,11 @@ int main()
 		else if(g_State.Current.Val == States::WAIT_MOVETO)
 		{
 			/* If required position is reached then just stop */
-			if(!g_Vertical.IsRunning() && g_Vertical.GetCurrentPosition() == g_Vertical.GetTargetPosition())
+			if(!g_Vertical.IsRunning())
+			{
+				console->info( "Moved! Master: {0} Slave: {1}", g_Vertical.GetMasterCurrentPosition(), g_Vertical.GetSlaveCurrentPosition() );
 				g_State.Set(States::STANDBY);
+			}
 			
 			/* Reset can't take more than 20s */
 			if( g_WaitTimer.ElapsedMs() > 20000)

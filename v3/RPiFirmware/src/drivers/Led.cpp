@@ -4,23 +4,23 @@
 
 #include "Led.h"
 
-Led::Led(uint8_t _gpio_pin) : Gpio(_gpio_pin)
+Led::Led(uint8_t _gpio_pin) : GpioInterrupt(_gpio_pin)
 {
-	Gpio::SetMode(PinMode::OUTPUT);
+	GpioInterrupt::SetMode(PinMode::OUTPUT);
 	this->Off();
 }
 
 void Led::SetReversedPolarity(bool reversed)
 {
-	Gpio::SetReversedPolarity(reversed);
+	GpioInterrupt::SetReversedPolarity(reversed);
 }
 
 void Led::On()
 {
-	Gpio::Write(LogicalLevel::HIGH);
+	GpioInterrupt::Write(LogicalLevel::HIGH);
 }
 
 void Led::Off()
 {
-	Gpio::Write(LogicalLevel::LOW);
+	GpioInterrupt::Write(LogicalLevel::LOW);
 }

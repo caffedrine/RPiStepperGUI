@@ -7,7 +7,7 @@
 
 #include <stdint.h>
 
-#include "Gpio.h"
+#include "GpioInterrupt.h"
 
 enum class EncoderState
 {
@@ -15,7 +15,7 @@ enum class EncoderState
 	LOW = 0
 };
 
-class Encoder : Gpio
+class Encoder : GpioInterrupt
 {
 public:
 	uint64_t Steps = 0;

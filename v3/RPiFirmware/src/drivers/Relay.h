@@ -5,9 +5,9 @@
 #ifndef _RELAY_H
 #define _RELAY_H
 
-#include "Gpio.h"
+#include "GpioInterrupt.h"
 
-class Relay : private Gpio
+class Relay : private GpioInterrupt
 {
 public:
 	Relay(uint8_t _gpio_pin);

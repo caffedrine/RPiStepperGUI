@@ -7,19 +7,19 @@
 
 #include "Config.h"
 #include "Globals.h"
-#include "drivers/Gpio.h"
+#include "drivers/GpioInterrupt.h"
 
-class SensorLaser : public Gpio
+class SensorLaser : public GpioInterrupt
 {
 public:
-	explicit SensorLaser(uint8_t _gpio) : Gpio(_gpio)
+	explicit SensorLaser(uint8_t _gpio) : GpioInterrupt(_gpio)
 	{
-		Gpio::SetPullState(PullState::DOWN);
+		GpioInterrupt::SetPullState(PullState::DOWN);
 	}
 	
 	bool IsCourtainPresent()
 	{
-		return !(bool)(Gpio::CurrentState);
+		return !(bool)(GpioInterrupt::CurrentState);
 	}
 };
 

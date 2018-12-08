@@ -2,12 +2,12 @@
 #define _GPIO_H
 
 #include <iostream>
-
 #include "hal.h"
+#include "GpioBase.h"
 
 typedef void (*level_changed_cb_t)(LogicalLevel);
 
-class Gpio
+class GpioInterrupt : public GpioBase
 {
 public:
 	int Pin;
@@ -15,15 +15,10 @@ public:
 	int DebounceTimeUs = 0;
 	LogicalLevel CurrentState, PreviousState;
 	
-	Gpio(int GpioPin);
-	Gpio(int GpioPin, int DebounceTimeMicroseconds);
-	~Gpio();
+	GpioInterrupt(int GpioPin);
+	GpioInterrupt(int GpioPin, int DebounceTimeMicroseconds);
+	~GpioInterrupt();
 	
-	LogicalLevel Read();
-	void Write(LogicalLevel new_level);
-	
-	void SetMode(PinMode new_mode);
-	void SetPullState(PullState);
 	void SetReversedPolarity(bool reveresed);
 	void SetStateChangedCallback( level_changed_cb_t );
 	

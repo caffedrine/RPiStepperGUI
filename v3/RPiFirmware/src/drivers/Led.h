@@ -5,9 +5,9 @@
 #ifndef _LED_H
 #define _LED_H
 
-#include "Gpio.h"
+#include "GpioInterrupt.h"
 
-class Led : private Gpio
+class Led : private GpioInterrupt
 {
 public:
 	Led(uint8_t _gpio_pin);

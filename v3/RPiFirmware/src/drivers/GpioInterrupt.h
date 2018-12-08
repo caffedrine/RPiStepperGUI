@@ -7,6 +7,11 @@
 
 typedef void (*level_changed_cb_t)(LogicalLevel);
 
+/**
+ * Not to be used with mechanical input components which are noisy and needs debounce.
+ * Used as it's best when input signal does not need software debouncing.
+ */
+
 class GpioInterrupt : public GpioBase
 {
 public:
@@ -19,7 +24,7 @@ public:
 	GpioInterrupt(int GpioPin, int DebounceTimeMicroseconds);
 	~GpioInterrupt();
 	
-	void SetReversedPolarity(bool reveresed);
+	void SetReversedPolarity(bool reversed);
 	void SetStateChangedCallback( level_changed_cb_t );
 	
 private:

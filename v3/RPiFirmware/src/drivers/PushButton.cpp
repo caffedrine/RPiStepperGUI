@@ -1,16 +1,15 @@
 #include "PushButton.h"
 #include "hal.h"
 
-PushButton::PushButton(int _GpioPin)
+PushButton::PushButton(int _GpioPin) : GpioPooling(_GpioPin)
 {
 	this->GpioPin = _GpioPin;
 	this->Init();
 }
 
-PushButton::PushButton(int _GpioPin, int _DebounceTimeMicroseconds)
+PushButton::PushButton(int _GpioPin, int _DebounceTimeMicroseconds) : GpioPooling(_GpioPin, _DebounceTimeMicroseconds)
 {
 	this->GpioPin = _GpioPin;
-	this->DebounceTimeUs = _DebounceTimeMicroseconds;
 	this->Init();
 }
 
@@ -22,34 +21,15 @@ PushButton::~PushButton()
 
 void PushButton::Init()
 {
-	/* Make sure PiGpio is initialized */
-	Vfb_GpioInitialise();
-	
-	/* Set pin as input */
-	Vfb_SetPinMode(this->GpioPin, PinMode::INPUT);
-	this->SetPullState(PullState::DOWN);
-	
-	/* Enable interruptions on pin state changed */
-	//gpioSetAlertFuncEx(this->GpioPin, &PushButton::static_internal_gpio_callback, this );
-	Vfb_SetGpioCallbackFunc(this->GpioPin, &PushButton::static_internal_gpio_callback, this );
-	
+	GpioPooling::SetMode(PinMode::OUTPUT);
+	GpioPooling::SetPullState(PullState::DOWN);
 	this->ReadState();
-}
-
-void PushButton::SetPullState(PullState state)
-{
-	Vfb_SetPullUpDown(this->GpioPin, state);
-}
-
-bool PushButton::ReadGpio()
-{
-	return (bool) (Vfb_ReadGpio(GpioPin));
 }
 
 PushButtonState PushButton::ReadState()
 {
 	PreviousState = CurrentState;
-	CurrentState = this->Gpio2State( this->ReadGpio() );
+	CurrentState = this->LogicalLevel2State(GpioPooling::Read());
 	
 	if( CurrentState != PreviousState )
 	{
@@ -60,15 +40,15 @@ PushButtonState PushButton::ReadState()
 	return CurrentState;
 }
 
-PushButtonState PushButton::Gpio2State(bool GpioVal)
+PushButtonState PushButton::LogicalLevel2State(LogicalLevel logical_level)
 {
 	if( this->ReversedPolarity == true )
 	{
-		return (PushButtonState)(!GpioVal);
+		return (PushButtonState)(!(bool)logical_level);
 	}
 	else
 	{
-		return (PushButtonState)(GpioVal);
+		return (PushButtonState)((bool)logical_level);
 	}
 }
 
@@ -82,37 +62,17 @@ void PushButton::SetStateChangedCallback( state_changed_cb_t f)
 	StateChangedCbFunc = f;
 }
 
-void PushButton::static_internal_gpio_callback(int pin, int level, uint32_t tick, void* userdata)
-{
-	reinterpret_cast<PushButton*>(userdata)->internal_gpio_callback(pin, level, tick);
-}
-
-void PushButton::internal_gpio_callback(int pin, int NewLevel, uint32_t CurrentTicks)
-{
-	if( NewLevel == 2  || pin != this->GpioPin)
-		return;
-	
-	static uint32_t LastTicks = 0;
-	
-	if(  this->Gpio2State((bool)NewLevel) != CurrentState )
-	{
-		if(CurrentTicks - LastTicks >= this->DebounceTimeUs)
-		{
-			PreviousState = CurrentState;
-			CurrentState = this->Gpio2State( (bool)NewLevel );
-			
-			/* Emit changes */
-			OnStateChanged(CurrentState);
-			
-			LastTicks = CurrentTicks;
-		}
-	}
-}
-
 void PushButton::OnStateChanged(PushButtonState new_state)
 {
 	/* Call callback function*/
 	if(this->StateChangedCbFunc > 0)
 		StateChangedCbFunc(CurrentState);
+}
+
+void PushButton::onGpioStateChanged(LogicalLevel newState)
+{
+	this->PreviousState = this->CurrentState;
+	this->CurrentState = LogicalLevel2State(newState);
+	this->OnStateChanged(LogicalLevel2State(newState) );
 }
 

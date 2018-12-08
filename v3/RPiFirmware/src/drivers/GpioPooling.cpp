@@ -42,7 +42,7 @@ void GpioPooling::Tick()
 			if( this->LevelChangedCbFunc > 0 )
 				this->LevelChangedCbFunc(this->CurrentState);
 			
-			onStateChanged(this->CurrentState);
+			onGpioStateChanged(this->CurrentState);
 		}
 	}
 }
@@ -52,7 +52,7 @@ void GpioPooling::SetStateChangedCallback(level_changed_cb_t f)
 	this->LevelChangedCbFunc = f;
 }
 
-void GpioPooling::onStateChanged(LogicalLevel newState)
+void GpioPooling::onGpioStateChanged(LogicalLevel newState)
 {
 
 }

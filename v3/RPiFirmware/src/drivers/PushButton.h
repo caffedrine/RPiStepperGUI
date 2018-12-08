@@ -4,6 +4,7 @@
 #include <iostream>
 #include <cstdint>
 #include "hal.h"
+#include "GpioPooling.h"
 
 enum class PushButtonState
 {
@@ -13,36 +14,30 @@ enum class PushButtonState
 
 typedef void (*state_changed_cb_t)(PushButtonState);
 
-class PushButton
+class PushButton : public GpioPooling
 {
 public:
     int GpioPin;
     bool ReversedPolarity = false;
-    int DebounceTimeUs = 0;
     PushButtonState CurrentState, PreviousState;
 	
     PushButton(int GpioPin);
-    PushButton(int GpioPin, int DebounceTimeMicroseconds );
+    PushButton(int GpioPin, int DebounceTimeMillis );
     ~PushButton();
     
     PushButtonState ReadState();
-    bool ReadGpio();
-    void SetPullState(PullState);
     void SetReversedPolarity(bool reveresed);
     void SetStateChangedCallback( state_changed_cb_t );
     
-    virtual void OnStateChanged(PushButtonState stte);
+    virtual void OnStateChanged(PushButtonState state);
     
 private:
 	/* State changed callback function*/
 	state_changed_cb_t StateChangedCbFunc = NULL;
-	
-	/* Used to make callback function available inside class*/
-	static void static_internal_gpio_callback(int pin, int level, uint32_t tick, void* userdata);
-	void internal_gpio_callback(int pin, int NewLevel, uint32_t CurrentTick);
+	void onGpioStateChanged(LogicalLevel newState) override;
 	
 	void Init();
-	inline PushButtonState Gpio2State( bool GpioVal );
+	inline PushButtonState LogicalLevel2State(LogicalLevel logical_level);
 };
 
 #endif // _PUSHBUTTON_H

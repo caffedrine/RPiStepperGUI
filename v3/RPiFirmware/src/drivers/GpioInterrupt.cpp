@@ -24,9 +24,9 @@ void GpioInterrupt::Init()
 	Vfb_SetGpioCallbackFunc(this->Pin, &GpioInterrupt::static_internal_gpio_callback, this );
 }
 
-void GpioInterrupt::SetReversedPolarity(bool reveresed)
+void GpioInterrupt::SetReversedPolarity(bool reversed)
 {
-	this->ReversedPolarity = reveresed;
+	this->ReversedPolarity = reversed;
 }
 
 void GpioInterrupt::SetStateChangedCallback(level_changed_cb_t f)

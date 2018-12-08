@@ -4,28 +4,31 @@
 
 #include "Relay.h"
 
-Relay::Relay(uint8_t _gpio_pin) : GpioInterrupt(_gpio_pin)
+Relay::Relay(uint8_t _gpio_pin) : GpioBase(_gpio_pin)
 {
-	GpioInterrupt::SetMode(PinMode::OUTPUT);
+	GpioBase::SetMode(PinMode::OUTPUT);
+	GpioBase::SetPullState(PullState::DOWN);
+	
 	this->OpenCircuit();
 }
 
 void Relay::SetReversedPolarity(bool reversed)
 {
-	GpioInterrupt::SetReversedPolarity(reversed);
+	this->IsReversed = reversed;
 }
 
 void Relay::CloseCircuit()
 {
-	GpioInterrupt::Write(LogicalLevel::HIGH);
+	if(!IsReversed)
+		GpioBase::Write(LogicalLevel::HIGH);
+	else
+		GpioBase::Write(LogicalLevel::LOW);
 }
 
 void Relay::OpenCircuit()
 {
-	GpioInterrupt::Write(LogicalLevel::LOW);
-}
-
-void Relay::SetPullState(PullState new_state)
-{
-	GpioInterrupt::SetPullState(new_state);
+	if(!IsReversed)
+		GpioBase::Write(LogicalLevel::LOW);
+	else
+		GpioBase::Write(LogicalLevel::HIGH);
 }

@@ -44,7 +44,6 @@ public:
 		{
 			g_LedTraffic.On();
 			Write(client, data, len);
-			g_LedTraffic.Off();
 		}
 	}
 	
@@ -128,7 +127,6 @@ private:
 					this->OnPacketReceived(&recvPacket);
 			}
 		}
-		g_LedTraffic.Off();
 	}
 	
 	void DataSend(const TcpServerAsync::client_t *client, const char *data, int bytesSend) override

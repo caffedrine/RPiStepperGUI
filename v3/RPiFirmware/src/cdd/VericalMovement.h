@@ -29,6 +29,17 @@ class VerticalMovement : protected MasterEncoder, protected SlaveEncoder
 		RUNNING_STEPS_DOWN
 	};
 	
+	enum class SlaveState
+	{
+		STOPPED,
+		RUNNING
+	};
+	
+//	 ____  _   _ ____  _     ___ ____
+//	|  _ \| | | | __ )| |   |_ _/ ___|
+//	| |_) | | | |  _ \| |    | | |
+//	|  __/| |_| | |_) | |___ | | |___
+//	|_|    \___/|____/|_____|___\____|
 public:
 	States State = States::STOPPED;
 	
@@ -98,10 +109,10 @@ public:
 			return;
 		}
 		
-		console->info("------------------------------");
-		console->info("Moving from {}enc to {}enc", GetCurrentPosition(), encoder_units );
-		console->info("Moving from {}mm to {}mm", Enc2Mm(GetCurrentPosition()), Enc2Mm(encoder_units) );
-		console->info("------------------------------");
+//		console->info("------------------------------");
+//		console->info("Moving from {}enc to {}enc", GetCurrentPosition(), encoder_units );
+//		console->info("Moving from {}mm to {}mm", Enc2Mm(GetCurrentPosition()), Enc2Mm(encoder_units) );
+//		console->info("------------------------------");
 		
 		g_MasterDC.SetSpeed(DC_MOTOR_DEFAULT_SPEED);
 		uint32_t target = (encoder_units - Mm2Enc(VERTICAL_MM_OFFSET));
@@ -173,9 +184,15 @@ public:
 	
 	void Tick()
 	{
-	
+		MasterEncoder::Tick();
+		SlaveEncoder::Tick();
 	}
-
+	
+//	 ____  ____  _____     ___  _____ _____
+//	|  _ \|  _ \|_ _\ \   / / \|_   _| ____|
+//	| |_) | |_) || | \ \ / / _ \ | | |  _|
+//	|  __/|  _ < | |  \ V / ___ \| | | |___
+//	|_|   |_| \_\___|  \_/_/   \_\_| |_____|
 private:
 	const uint32_t VERTICAL_MIN_POSITION = Mm2Enc(VERTICAL_MM_OFFSET);
 	
@@ -185,7 +202,7 @@ private:
 	const double MIN = 0;        // minimum value of manipulated variable
 	const double KP = 0.1;        // proportional gain
 	const double KD = 0.01;        // derivative gain
-	const double KI = 0.5;        // Integral gain
+	const double KI = 0.2;        // Integral gain
 	PID pid = PID(DT, MAX, MIN, KP, KD, KI);
 	
 	/* Store positions */
@@ -297,8 +314,11 @@ private:
 				}
 			}
 			
-			
+			/* Update encoders and others */
+			Tick();
+			/* Update slave(s) is any */
 			HandleSlave();
+			
 			std::this_thread::sleep_for(std::chrono::milliseconds( 1 ));
 		}
 	}
@@ -331,7 +351,11 @@ private:
 			g_SlaveDC.Run();
 		}
 	}
-
+//	 ____  ____   ___ _____ _____ ____ _____ _____ ____
+//	|  _ \|  _ \ / _ \_   _| ____/ ___|_   _| ____|  _ \
+//  | |_) | |_) | | | || | |  _|| |     | | |  _| | | | |
+//	|  __/|  _ <| |_| || | | |__| |___  | | | |___| |_| |
+//	|_|   |_| \_\\___/ |_| |_____\____| |_| |_____|____/
 protected:
 	void OnMasterEncoderStep() override
 	{

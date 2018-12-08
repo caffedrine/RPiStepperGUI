@@ -5,18 +5,17 @@
 #ifndef _RELAY_H
 #define _RELAY_H
 
-#include "GpioInterrupt.h"
+#include "GpioBase.h"
 
-class Relay : private GpioInterrupt
+class Relay : public GpioBase
 {
 public:
 	Relay(uint8_t _gpio_pin);
-	
 	void SetReversedPolarity(bool reversed);
-	void SetPullState(PullState new_state);
 	void CloseCircuit();
 	void OpenCircuit();
 private:
+	bool IsReversed = false;
 };
 
 #endif //_RELAY_H

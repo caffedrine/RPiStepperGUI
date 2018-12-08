@@ -6,12 +6,13 @@
 #define RPIFIRMWARE_LEDTRAFFIC_H
 
 #include "Config.h"
+#include "utils/time_utils.h"
 #include <drivers/Led.h>
 
 class LedTraffic : public Led
 {
 public:
-	LedTraffic(uint8_t _gpio_pin) : Led(_gpio_pin)
+	LedTraffic(uint8_t _gpio_pin) : Led(_gpio_pin, 500)
 	{
 	}
 	

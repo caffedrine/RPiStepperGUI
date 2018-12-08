@@ -12,9 +12,9 @@
 class MasterEncoder : public Encoder
 {
 public:
-	explicit MasterEncoder(uint8_t gpio) : Encoder(gpio)
+	explicit MasterEncoder(uint8_t gpio) : Encoder(gpio, ENCODER_DEBOUNCING_TIME_MS)
 	{
-		Encoder::SetPullstate(PullState::DOWN);
+		Encoder::SetPullState(PullState::DOWN);
 	}
 	
 	void onStep() override

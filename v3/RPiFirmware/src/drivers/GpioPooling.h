@@ -33,7 +33,7 @@ private:
 	void Init();
 
 protected:
-	virtual void onStateChanged(LogicalLevel newState);
+	virtual void onGpioStateChanged(LogicalLevel newState);
 };
 
 

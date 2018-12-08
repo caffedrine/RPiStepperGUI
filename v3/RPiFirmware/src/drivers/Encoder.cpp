@@ -4,9 +4,14 @@
 
 #include "Encoder.h"
 
-Encoder::Encoder(uint8_t _gpio_pin) : GpioInterrupt(_gpio_pin)
+Encoder::Encoder(uint8_t _gpio_pin) : GpioPooling(_gpio_pin)	/* 1ms debouncing */
 {
 	this->gpio_pin = _gpio_pin;
+}
+
+Encoder::Encoder(uint8_t gpio_pin, uint32_t denounce_ms) : GpioPooling(gpio_pin, denounce_ms)
+{
+
 }
 
 void Encoder::Reset()
@@ -14,9 +19,9 @@ void Encoder::Reset()
 	this->Steps = 0;
 }
 
-void Encoder::onStateChanged(LogicalLevel newState)
+void Encoder::onGpioStateChanged(LogicalLevel newState)
 {
-	GpioInterrupt::onStateChanged(newState);
+	GpioPooling::onGpioStateChanged(newState);
 //	if( newState == (LogicalLevel) EncoderState::HIGH )
 //	{
 		this->Steps++;
@@ -27,17 +32,7 @@ void Encoder::onStateChanged(LogicalLevel newState)
 
 void Encoder::ReversePolarity()
 {
-	GpioInterrupt::ReversedPolarity = !GpioInterrupt::ReversedPolarity;
-}
-
-void Encoder::SetDebouncer(int micros)
-{
-	GpioInterrupt::DebounceTimeUs = micros;
-}
-
-void Encoder::SetPullstate(PullState newPullstate)
-{
-	GpioInterrupt::SetPullState(newPullstate);
+	GpioPooling::ReversedPolarity = !GpioPooling::ReversedPolarity;
 }
 
 

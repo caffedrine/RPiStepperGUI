@@ -127,6 +127,18 @@ void Initialize()
 }
 
 
+void Tick()
+{
+	g_SensorVerticalMaster.Tick();
+	g_SensorVerticalSlave.Tick();
+	g_SensorHorizontalLeft.Tick();
+	g_SensorHorizontalRight.Tick();
+	g_LedTraffic.Tick();
+	
+	/* Tick vertical movement motors */
+	g_Vertical.Tick();
+}
+
 /*
  * TODO: MUTEX MUTEX MUTEX to be added
  */
@@ -270,8 +282,8 @@ int main()
 				g_State.Set(States::STANDBY);
 		}
 		
-		/* Tick vertical movement motors */
-		g_Vertical.Tick();
+		/* Call modules main functions */
+		Tick();
 		
 		/* Prevent excessive CPU load */
 		std::this_thread::sleep_for(std::chrono::milliseconds(1));

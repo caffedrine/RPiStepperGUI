@@ -7,7 +7,7 @@
 
 #include <stdint.h>
 
-#include "GpioInterrupt.h"
+#include "GpioPooling.h"
 
 enum class EncoderState
 {
@@ -15,21 +15,20 @@ enum class EncoderState
 	LOW = 0
 };
 
-class Encoder : GpioInterrupt
+class Encoder : public GpioPooling
 {
 public:
 	uint64_t Steps = 0;
 	EncoderState  State;
 	
 	Encoder(uint8_t gpio_pin);
+	Encoder(uint8_t gpio_pin, uint32_t denounce_ms);
 	void Reset();
 	void ReversePolarity();
-	void SetDebouncer(int micros);
-	void SetPullstate(PullState newPullstate);
 	
 protected:
 	uint8_t gpio_pin;
-	void onStateChanged(LogicalLevel newState) override;
+	void onGpioStateChanged(LogicalLevel newState) override;
 	
 protected:
 	virtual void onStep() {};

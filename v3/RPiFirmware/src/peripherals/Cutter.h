@@ -8,7 +8,7 @@
 #include "Config.h"
 #include "drivers/Relay.h"
 
-class Cutter : private Relay
+class Cutter : public Relay
 {
 public:
 	Cutter(uint8_t RelayPin) : Relay(RelayPin)

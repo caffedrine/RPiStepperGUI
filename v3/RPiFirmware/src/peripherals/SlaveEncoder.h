@@ -12,9 +12,9 @@
 class SlaveEncoder : public Encoder
 {
 public:
-	explicit SlaveEncoder(uint8_t gpio_pin) : Encoder(gpio_pin)
+	explicit SlaveEncoder(uint8_t gpio_pin) : Encoder(gpio_pin, ENCODER_DEBOUNCING_TIME_MS)
 	{
-		Encoder::SetPullstate(PullState::DOWN);
+		Encoder::SetPullState(PullState::DOWN);
 	}
 	
 	void onStep() override

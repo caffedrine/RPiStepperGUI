@@ -329,6 +329,14 @@ private:
 		 *  Slave have the task to monitor master's position and stick to it's position
 		 */
 		
+		/* If master is not running and slave is in correct position just ignore the rest */
+		if(!IsRunning() && ( (GetSlaveCurrentPosition() >= (GetMasterCurrentPosition()-SLAVE_MOTOR_MAX_ERROR_STEP)) && (GetSlaveCurrentPosition() <= (GetMasterCurrentPosition()+SLAVE_MOTOR_MAX_ERROR_STEP))  )
+		)
+		{
+			g_SlaveDC.Stop();
+			return;
+		}
+		
 		/* Set correct direction */
 		if( GetMasterCurrentPosition() < GetSlaveCurrentPosition())
 		{
@@ -340,7 +348,8 @@ private:
 		}
 		
 		/* Move motor to master's position */
-		if(GetSlaveCurrentPosition() == GetMasterCurrentPosition())
+		if((GetSlaveCurrentPosition() >= (GetMasterCurrentPosition()-SLAVE_MOTOR_MAX_ERROR_STEP)) && (GetSlaveCurrentPosition() <= (GetMasterCurrentPosition()+SLAVE_MOTOR_MAX_ERROR_STEP))  )
+			//if( GetSlaveCurrentPosition() == GetMasterCurrentPosition() )
 		{
 			g_SlaveDC.Stop();
 		}
@@ -373,7 +382,7 @@ protected:
 		{
 			g_MasterDC.Stop();
 		}
-		//console->info("Master current position: {}", GetCurrentPosition());
+		console->info("Master current position: {}", GetCurrentPosition());
 	}
 	
 	void OnSlaveEncoderStep() override
@@ -387,7 +396,7 @@ protected:
 			if(this->SlaveCurrentPosition > 0)
 				this->SetSlaveCurrentPosition( GetSlaveCurrentPosition() - 1 );
 		}
-		//console->info("Slave current position: {}", this->SlaveCurrentPosition);
+		console->info("Slave current position: {}", this->SlaveCurrentPosition);
 	}
 	
 	virtual void onStepsDone()

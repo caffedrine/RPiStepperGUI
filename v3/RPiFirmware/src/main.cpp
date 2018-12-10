@@ -67,6 +67,7 @@ void SensorLaserCallback(LogicalLevel new_level)
 
 void OnExit()
 {
+	g_Vertical.Stop();
 	g_State.Set(States::EMERGENCY_STOP);
 	g_LedConnection.Off();
 	g_LedTraffic.Off();

@@ -11,7 +11,9 @@
 #include "Globals.h"
 #include "drivers/Pid.h"
 #include "peripherals/MasterEncoder.h"
+#include "peripherals/MasterEncoderAux.h"
 #include "peripherals/SlaveEncoder.h"
+#include "peripherals/SlaveEncoderAux.h"
 #include "peripherals/MasterDC.h"
 #include "peripherals/SlaveDC.h"
 #include "peripherals/SensorVerticalMaster.h"
@@ -19,7 +21,7 @@
 
 ;
 
-class VerticalMovement : protected MasterEncoder, protected SlaveEncoder
+class VerticalMovement : protected MasterEncoder, protected SlaveEncoder, protected  MasterEncoderAux, protected SlaveEncoderAux
 {
 	enum class States
 	{
@@ -43,7 +45,7 @@ class VerticalMovement : protected MasterEncoder, protected SlaveEncoder
 public:
 	States State = States::STOPPED;
 	
-	explicit VerticalMovement() : MasterEncoder(ENCODER_MASTER_GPIO), SlaveEncoder(ENCODER_SLAVE_GPIO)
+	explicit VerticalMovement() : MasterEncoder(ENCODER_MASTER_GPIO), SlaveEncoder(ENCODER_SLAVE_GPIO), MasterEncoderAux(ENCODER_MASTER_AUX_GPIO), SlaveEncoderAux(ENCODER_SLAVE_AUX_GPIO)
 	{
 		BackgroundWorker = std::thread([this]()
 									   {
@@ -193,6 +195,9 @@ public:
 	{
 		MasterEncoder::Tick();
 		SlaveEncoder::Tick();
+		MasterEncoderAux::Tick();
+		SlaveEncoderAux::Tick();
+		
 	}
 	
 //	 ____  ____  _____     ___  _____ _____
@@ -403,7 +408,12 @@ protected:
 		{
 			g_MasterDC.Stop();
 		}
-		console->info("Master current position: {}", GetCurrentPosition());
+		//console->info("Master current position: {}", GetCurrentPosition());
+	}
+	
+	void OnMasterEncoderAuxStep() override
+	{
+		console->info("Master AUX step!");
 	}
 	
 	void OnSlaveEncoderStep() override
@@ -418,6 +428,11 @@ protected:
 				this->SetSlaveCurrentPosition( GetSlaveCurrentPosition() - 1 );
 		}
 		//console->info("Slave current position: {}", this->SlaveCurrentPosition);
+	}
+	
+	void OnSlaveEncoderAuxStep() override
+	{
+		console->info("Slave AUX step!");
 	}
 	
 	virtual void onStepsDone()

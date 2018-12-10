@@ -70,7 +70,7 @@ static void HandleMoveTo(uint16_t targetRecv)
 	
 	if((uint16_t)g_Vertical.GetCurrPositionMM() != targetRecv)
 	{
-		console->info("[MOVETO] Start moving to {} mm", targetRecv);
+		console->info("[MOVETO] Start moving to {0} mm ({1}enc)", targetRecv, VerticalMovement::Mm2Enc(targetRecv));
 		g_Vertical.MoveToMM(targetRecv);
 		g_State.Set(States::WAIT_MOVETO);
 	}

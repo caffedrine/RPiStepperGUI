@@ -29,22 +29,28 @@ void GpioPooling::Init()
 
 void GpioPooling::Tick()
 {
-	static uint64_t LastTicks = 0;
-	this->CurrentState = GpioBase::Read();
+	LogicalLevel CurrentRead = GpioBase::Read();
 	
-	if(this->CurrentState != this->PreviousState)
+	if(CurrentRead != this->CurrentState)
 	{
-		if( TimeUtils::millis() - LastTicks >= this->DebounceTimeMs )
+		if( timer.ElapsedMs() >= this->DebounceTimeMs )
 		{
-			LastTicks = TimeUtils::millis();
 			this->PreviousState = this->CurrentState;
+			this->CurrentState = CurrentRead;
 			
 			if( this->LevelChangedCbFunc > 0 )
 				this->LevelChangedCbFunc(this->CurrentState);
 			
 			onGpioStateChanged(this->CurrentState);
+		
+			this->timer.Restart();
 		}
 	}
+	else
+	{
+		this->timer.Restart();
+	}
+	
 }
 
 void GpioPooling::SetStateChangedCallback(level_changed_cb_t f)

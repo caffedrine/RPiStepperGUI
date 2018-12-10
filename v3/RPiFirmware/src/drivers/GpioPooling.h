@@ -17,7 +17,7 @@ public:
 	int Pin;
 	bool ReversedPolarity = false;
 	int DebounceTimeMs = 0;
-	LogicalLevel CurrentState, PreviousState;
+	LogicalLevel CurrentState = LogicalLevel::LOW, PreviousState = LogicalLevel::LOW;
 	
 	explicit GpioPooling(int GpioPin);
 	GpioPooling(int GpioPin, int DebounceTimeMillis);
@@ -28,6 +28,9 @@ public:
 	void SetStateChangedCallback( level_changed_cb_t );
 
 private:
+	/* Used for dbouncing */
+	TimeUtils::Timer timer;
+	
 	/* State changed callback function*/
 	level_changed_cb_t  LevelChangedCbFunc = NULL;
 	void Init();

@@ -11,8 +11,9 @@ PushButton::PushButton(int _GpioPin, int _DebounceTimeMicroseconds) : GpioPoolin
 {
 	this->GpioPin = _GpioPin;
 	this->Init();
+	
+	this->ReadState();
 }
-
 
 PushButton::~PushButton()
 {
@@ -21,7 +22,7 @@ PushButton::~PushButton()
 
 void PushButton::Init()
 {
-	GpioPooling::SetMode(PinMode::OUTPUT);
+	GpioPooling::SetMode(PinMode::INPUT);
 	GpioPooling::SetPullState(PullState::DOWN);
 	this->ReadState();
 }
@@ -66,13 +67,13 @@ void PushButton::OnStateChanged(PushButtonState new_state)
 {
 	/* Call callback function*/
 	if(this->StateChangedCbFunc > 0)
-		StateChangedCbFunc(CurrentState);
+		StateChangedCbFunc(new_state);
 }
 
 void PushButton::onGpioStateChanged(LogicalLevel newState)
 {
 	this->PreviousState = this->CurrentState;
 	this->CurrentState = LogicalLevel2State(newState);
-	this->OnStateChanged(LogicalLevel2State(newState) );
+	this->OnStateChanged( this->CurrentState );
 }
 

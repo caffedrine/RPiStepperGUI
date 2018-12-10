@@ -50,35 +50,42 @@ public:
 										   BackgroundWork();
 									   });
 		BackgroundWorker.detach();
+		
+		/* Read encoders on a separate thread */
+		EncReader = std::thread([this]()
+								{
+									EncReaderThread();
+								});
+		EncReader.detach();
 	}
 	
-	uint32_t GetCurrentPosition()
+	int32_t GetCurrentPosition()
 	{
 		return GetMasterCurrentPosition();
 	}
 	
-	uint32_t GetTargetPosition()
+	int32_t GetTargetPosition()
 	{
 		std::unique_lock<std::mutex> mlock(mutex_);
-		uint32_t tmp = TargetPosition;
+		int32_t tmp = TargetPosition;
 		mlock.unlock();     // unlock before notificiation to minimize mutex con
 		cond_.notify_one(); // notify one waiting thread
 		return tmp;
 	}
 	
-	uint32_t GetMasterCurrentPosition()
+	int32_t GetMasterCurrentPosition()
 	{
 		std::unique_lock<std::mutex> mlock(mutex_);
-		uint32_t tmp = MasterCurrentPosition;
+		int32_t tmp = MasterCurrentPosition;
 		mlock.unlock();     // unlock before notificiation to minimize mutex con
 		cond_.notify_one(); // notify one waiting thread
 		return tmp;
 	}
 	
-	uint32_t GetSlaveCurrentPosition()
+	int32_t GetSlaveCurrentPosition()
 	{
 		std::unique_lock<std::mutex> mlock(mutex_);
-		uint32_t tmp = SlaveCurrentPosition;
+		int32_t tmp = SlaveCurrentPosition;
 		mlock.unlock();     // unlock before notificiation to minimize mutex con
 		cond_.notify_one(); // notify one waiting thread
 		return tmp;
@@ -96,12 +103,12 @@ public:
 		return Enc2Mm( GetCurrentPosition() );
 	}
 	
-	void MoveToMM(uint32_t mm)
+	void MoveToMM(int32_t mm)
 	{
 		MoveTo(Mm2Enc(mm));
 	}
 	
-	void MoveTo(uint32_t encoder_units)
+	void MoveTo(int32_t encoder_units)
 	{
 		if( (int)( (int)(encoder_units - (int)Mm2Enc(VERTICAL_MM_OFFSET)) ) < 0)
 		{
@@ -115,7 +122,7 @@ public:
 //		console->info("------------------------------");
 		
 		g_MasterDC.SetSpeed(DC_MOTOR_DEFAULT_SPEED);
-		uint32_t target = (encoder_units - Mm2Enc(VERTICAL_MM_OFFSET));
+		int32_t target = (encoder_units - Mm2Enc(VERTICAL_MM_OFFSET));
 		SetTargetPosition( target );
 		
 		if(GetCurrentPosition() < target)
@@ -164,7 +171,7 @@ public:
 		State = States::RESETTING;
 	}
 	
-	static float Enc2Mm(uint32_t enc)
+	static float Enc2Mm(int32_t enc)
 	{
 		if(enc == 0)
 			return 0;
@@ -173,13 +180,13 @@ public:
 		return ((float) enc * MM_PER_STEP);
 	}
 	
-	static uint32_t Mm2Enc(float mm)
+	static int32_t Mm2Enc(float mm)
 	{
 		if(mm == 0)
 			return 0;
 		
 		//console->info("{}mm is {}enc", mm, ((uint32_t) (mm / MM_PER_STEP)));
-		return ((uint32_t) (mm / MM_PER_STEP));
+		return ((int32_t) (mm / MM_PER_STEP));
 	}
 	
 	void Tick()
@@ -194,7 +201,7 @@ public:
 //	|  __/|  _ < | |  \ V / ___ \| | | |___
 //	|_|   |_| \_\___|  \_/_/   \_\_| |_____|
 private:
-	const uint32_t VERTICAL_MIN_POSITION = Mm2Enc(VERTICAL_MM_OFFSET);
+	const int32_t VERTICAL_MIN_POSITION = Mm2Enc(VERTICAL_MM_OFFSET);
 	
 	/* PID constants */
 	const double DT = 0.1;    // loop interval time
@@ -206,9 +213,9 @@ private:
 	PID pid = PID(DT, MAX, MIN, KP, KD, KI);
 	
 	/* Store positions */
-	uint32_t MasterCurrentPosition = Mm2Enc(VERTICAL_MM_OFFSET), TargetPosition = Mm2Enc(VERTICAL_MM_OFFSET);
+	int32_t MasterCurrentPosition = Mm2Enc(VERTICAL_MM_OFFSET), TargetPosition = Mm2Enc(VERTICAL_MM_OFFSET);
 	/* Slave motor position */
-	uint32_t SlaveCurrentPosition = Mm2Enc(VERTICAL_MM_OFFSET);
+	int32_t SlaveCurrentPosition = Mm2Enc(VERTICAL_MM_OFFSET);
 	
 	/* Safe read/write positions */
 	std::mutex mutex_;
@@ -216,6 +223,20 @@ private:
 	
 	/* Background thread */
 	std::thread BackgroundWorker;
+	std::thread EncReader;
+	
+	void EncReaderThread()
+	{
+		while(true)
+		{
+			if( !_ProgramContinue )
+				break;
+			
+			Tick();
+			
+			std::this_thread::sleep_for( std::chrono::microseconds(200)  );
+		}
+	}
 	
 	void BackgroundWork()
 	{
@@ -282,9 +303,9 @@ private:
 				else
 				{
 					/* Slow down at the last 10 steps*/
-					if( (GetTargetPosition() - GetMasterCurrentPosition()) <= 10 )
+					if( (GetTargetPosition() - GetMasterCurrentPosition()) <= 20 )
 					{
-						g_MasterDC.SetSpeed(DC_MOTOR_DEFAULT_SPEED/3);
+						g_MasterDC.SetSpeed(DC_MOTOR_DEFAULT_SPEED/2);
 					}
 					
 					g_MasterDC.SetDirection(MotorDcDirection::FORWARD);
@@ -304,9 +325,9 @@ private:
 				else
 				{
 					/* Slow down at the last 10 steps*/
-					if( ( GetMasterCurrentPosition() - GetTargetPosition() ) <= 10 )
+					if( ( GetMasterCurrentPosition() - GetTargetPosition() ) <= 20 )
 					{
-						g_MasterDC.SetSpeed(DC_MOTOR_DEFAULT_SPEED/3);
+						g_MasterDC.SetSpeed(DC_MOTOR_DEFAULT_SPEED/2);
 					}
 					
 					g_MasterDC.SetDirection(MotorDcDirection::BACKWARD);
@@ -315,7 +336,7 @@ private:
 			}
 			
 			/* Update encoders and others */
-			Tick();
+			//Tick();
 			/* Update slave(s) is any */
 			HandleSlave();
 			
@@ -356,7 +377,7 @@ private:
 		else
 		{
 			double NewSpeed = pid.calculate(GetMasterCurrentPosition(), GetSlaveCurrentPosition());
-			g_SlaveDC.SetSpeed((uint8_t) NewSpeed);
+			//g_SlaveDC.SetSpeed((uint8_t) NewSpeed);
 			g_SlaveDC.Run();
 		}
 	}
@@ -396,7 +417,7 @@ protected:
 			if(this->SlaveCurrentPosition > 0)
 				this->SetSlaveCurrentPosition( GetSlaveCurrentPosition() - 1 );
 		}
-		console->info("Slave current position: {}", this->SlaveCurrentPosition);
+		//console->info("Slave current position: {}", this->SlaveCurrentPosition);
 	}
 	
 	virtual void onStepsDone()
@@ -404,7 +425,7 @@ protected:
 		console->info("Steps finished!");
 	}
 	
-	void SetTargetPosition(uint32_t _TargetPosition)
+	void SetTargetPosition(int32_t _TargetPosition)
 	{
 		std::unique_lock<std::mutex> mlock(mutex_);
 		{
@@ -414,7 +435,7 @@ protected:
 		cond_.notify_one();
 	}
 	
-	void SetMasterCurrentPosition(uint32_t _CurrentMasterPosition)
+	void SetMasterCurrentPosition(int32_t _CurrentMasterPosition)
 	{
 		std::unique_lock<std::mutex> mlock(mutex_);
 		{
@@ -424,7 +445,7 @@ protected:
 		cond_.notify_one(); // notify one waiting thread
 	}
 	
-	void SetSlaveCurrentPosition(uint32_t _CurrentSlavePosition)
+	void SetSlaveCurrentPosition(int32_t _CurrentSlavePosition)
 	{
 		std::unique_lock<std::mutex> mlock(mutex_);
 		{

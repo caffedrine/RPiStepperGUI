@@ -168,6 +168,7 @@ int main()
 		/* Handle EMERGENCY_STOP state */
 		if(g_State.Current.Val == States::EMERGENCY_STOP)
 		{
+			g_Vertical.Stop();
 			g_Cutter.Off();
 			g_ElectroValves.Off();
 			g_CutterDC.Stop();
@@ -211,7 +212,7 @@ int main()
 			}
 			
 			/* Reset can't take more than 20s */
-			if( g_WaitTimer.ElapsedMs() > 20000)
+			if( g_WaitTimer.ElapsedMs() > 35000)
 			{
 				Fault("Too much time elapsed without reaching target position!");
 			}

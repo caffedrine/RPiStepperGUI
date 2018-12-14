@@ -56,14 +56,14 @@ void GpioInterrupt::internal_gpio_callback(int pin, int NewLevel, uint32_t Curre
 			if(this->LevelChangedCbFunc > 0)
 				this->LevelChangedCbFunc(CurrentState);
 			
-			onStateChanged(CurrentState);
+			onGpioStateChanged(CurrentState);
 			
 			LastTicks = CurrentTicks;
 		}
 	}
 }
 
-void GpioInterrupt::onStateChanged(LogicalLevel newLevel)
+void GpioInterrupt::onGpioStateChanged(LogicalLevel newLevel)
 {
 
 }

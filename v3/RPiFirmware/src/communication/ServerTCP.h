@@ -199,7 +199,7 @@ protected:
 				else
 				{
 					console->info("[MANUAL] Stopped");
-					g_Vertical.Stop();
+					HandleVerticalStop();
 				}
 			}break;
 			
@@ -213,7 +213,7 @@ protected:
 				else
 				{
 					console->info("[MANUAL] Stopped");
-					g_Vertical.Stop();
+					HandleVerticalStop();
 				}
 			}break;
 			

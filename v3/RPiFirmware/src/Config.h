@@ -15,7 +15,7 @@
 #define MOTOR_SLAVE_DIR_GPIO	21
 
 #define MOTOR_CUTTER_DIR_GPIO	26
-#define MOTOR_CUTTER_PWM_GPIO	19
+#define MOTOR_CUTTER_PWM_GPIO	13
 
 #define RELAY_CUTTER_ENB_GPIO		12
 #define RELAY_ELECTROVALVES_GPIO	16
@@ -24,7 +24,7 @@
 #define SENSOR_INIT_VERTICAL_MASTER_GPIO	4
 #define SENSOR_INIT_HORIZONTAL_LEFT_GPIO	6
 #define SENSOR_INIT_HORIZONTAL_RIGHT_GPIO	5
-#define SENSOR_LASER_CUT_GPIO	18
+#define SENSOR_LASER_CUT_GPIO	11
 
 #define LED_TRAFFIC				27
 #define LED_CONNECTION			22
@@ -33,6 +33,7 @@
 
 #define DC_MOTORS_FREQ_HZ				4000
 const uint8_t DC_MOTOR_DEFAULT_SPEED = 	200;
+const uint8_t DC_MOTOR_DOWN_SPEED 		= 	80;
 
 /* Vertical movement and encoders settings */
 const float MM_PER_STEP 				= 1.5;
@@ -43,7 +44,7 @@ const int MASTER_MOTOR_MAX_ERROR_STEP	= 0;
 
 
 /* Debouncing */
-const int ENCODER_DEBOUNCING_TIME_MS 	= 5;
+const int ENCODER_DEBOUNCING_TIME_US 	= 0;
 const int BUTTONS_DBOUNCING_TIME_MS 	= 10;
 
 #endif //DRIVERSCONTAINER_CONFIG_H

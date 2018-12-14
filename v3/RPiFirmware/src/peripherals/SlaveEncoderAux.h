@@ -8,14 +8,14 @@
 
 #include "Config.h"
 #include "Globals.h"
-#include "drivers/Encoder.h"
+#include "drivers/EncoderInterrupt.h"
 
-class SlaveEncoderAux : public Encoder
+class SlaveEncoderAux : public EncoderInterrupt
 {
 public:
-	explicit SlaveEncoderAux(uint8_t gpio_pin) : Encoder(gpio_pin, ENCODER_DEBOUNCING_TIME_MS)
+	explicit SlaveEncoderAux(uint8_t gpio_pin) : EncoderInterrupt(gpio_pin, ENCODER_DEBOUNCING_TIME_US)
 	{
-		Encoder::SetPullState(PullState::DOWN);
+		EncoderInterrupt::SetPullState(PullState::DOWN);
 	}
 	
 	void onStep() override

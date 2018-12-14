@@ -8,14 +8,14 @@
 
 #include "Config.h"
 #include "Globals.h"
-#include "drivers/Encoder.h"
+#include "drivers/EncoderInterrupt.h"
 
-class MasterEncoderAux : public Encoder
+class MasterEncoderAux : public EncoderInterrupt
 {
 public:
-	explicit MasterEncoderAux(uint8_t gpio) : Encoder(gpio, ENCODER_DEBOUNCING_TIME_MS)
+	explicit MasterEncoderAux(uint8_t gpio) : EncoderInterrupt(gpio, ENCODER_DEBOUNCING_TIME_US)
 	{
-		Encoder::SetPullState(PullState::DOWN);
+		EncoderInterrupt::SetPullState(PullState::DOWN);
 	}
 	
 	void onStep() override

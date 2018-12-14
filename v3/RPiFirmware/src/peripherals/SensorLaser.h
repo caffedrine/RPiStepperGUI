@@ -7,12 +7,12 @@
 
 #include "Config.h"
 #include "Globals.h"
-#include "drivers/GpioInterrupt.h"
+#include "drivers/GpioPooling.h"
 
 class SensorLaser : public GpioPooling
 {
 public:
-	explicit SensorLaser(uint8_t _gpio) : GpioPooling(_gpio)
+	explicit SensorLaser(uint8_t _gpio) : GpioPooling(_gpio, 10)
 	{
 		GpioPooling::SetPullState(PullState::DOWN);
 	}

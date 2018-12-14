@@ -17,13 +17,28 @@ static void HandleEmergencyStop()
 	g_State.Set(States::EMERGENCY_STOP);
 }
 
+static void HandleVerticalStop()
+{
+	g_Vertical.Stop();
+}
+
 static void HandleUp()
 {
+//	g_MasterDC.SetDirection(MotorDcDirection::FORWARD);
+//	g_SlaveDC.SetDirection(MotorDcDirection::FORWARD);
+//	g_MasterDC.Run();
+//	g_SlaveDC.Run();
+	
 	g_Vertical.MoveUp();
 }
 
 static void HandleDown()
 {
+//	g_MasterDC.SetDirection(MotorDcDirection::BACKWARD);
+//	g_SlaveDC.SetDirection(MotorDcDirection::BACKWARD);
+//	g_MasterDC.Run();
+//	g_SlaveDC.Run();
+	
 	g_Vertical.MoveDown();
 }
 

@@ -54,11 +54,11 @@ public:
 		BackgroundWorker.detach();
 		
 		/* Read encoders on a separate thread */
-		EncReader = std::thread([this]()
-								{
-									EncReaderThread();
-								});
-		EncReader.detach();
+//		EncReader = std::thread([this]()
+//								{
+//									EncReaderThread();
+//								});
+//		EncReader.detach();
 	}
 	
 	int32_t GetCurrentPosition()
@@ -130,11 +130,13 @@ public:
 		if(GetCurrentPosition() < target)
 		{
 			g_MasterDC.SetDirection(MotorDcDirection::FORWARD);
+			g_SlaveDC.SetSpeed(DC_MOTOR_DEFAULT_SPEED);
 			State = States::RUNNING_STEPS_UP;
 		}
 		else if(GetCurrentPosition() > target)
 		{
 			g_MasterDC.SetDirection(MotorDcDirection::BACKWARD);
+			g_SlaveDC.SetSpeed(120);
 			State = States::RUNNING_STEPS_DOWN;
 		}
 	}
@@ -193,10 +195,10 @@ public:
 	
 	void Tick()
 	{
-		MasterEncoder::Tick();
-		SlaveEncoder::Tick();
-		MasterEncoderAux::Tick();
-		SlaveEncoderAux::Tick();
+//		MasterEncoder::Tick();
+//		SlaveEncoder::Tick();
+//		MasterEncoderAux::Tick();
+//		SlaveEncoderAux::Tick();
 		
 	}
 	
@@ -210,11 +212,11 @@ private:
 	
 	/* PID constants */
 	const double DT = 0.1;    // loop interval time
-	const double MAX = 255;        // maximum value of manipulated variable
-	const double MIN = 0;        // minimum value of manipulated variable
+	const double MAX = 220;        // maximum value of manipulated variable
+	const double MIN = 50;        // minimum value of manipulated variable
 	const double KP = 0.1;        // proportional gain
 	const double KD = 0.01;        // derivative gain
-	const double KI = 0.2;        // Integral gain
+	const double KI = 0.4;        // Integral gain
 	PID pid = PID(DT, MAX, MIN, KP, KD, KI);
 	
 	/* Store positions */
@@ -304,13 +306,14 @@ private:
 					/* Move down */
 					g_MasterDC.Stop();
 					State = States::STOPPED;
+					onStepsDone();
 				}
 				else
 				{
 					/* Slow down at the last 10 steps*/
 					if( (GetTargetPosition() - GetMasterCurrentPosition()) <= 20 )
 					{
-						g_MasterDC.SetSpeed(DC_MOTOR_DEFAULT_SPEED/2);
+						g_MasterDC.SetSpeed(DC_MOTOR_DEFAULT_SPEED-20);
 					}
 					
 					g_MasterDC.SetDirection(MotorDcDirection::FORWARD);
@@ -326,15 +329,17 @@ private:
 					/* Move down */
 					g_MasterDC.Stop();
 					State = States::STOPPED;
+					onStepsDone();
 				}
 				else
 				{
 					/* Slow down at the last 10 steps*/
 					if( ( GetMasterCurrentPosition() - GetTargetPosition() ) <= 20 )
 					{
-						g_MasterDC.SetSpeed(DC_MOTOR_DEFAULT_SPEED/2);
+						g_MasterDC.SetSpeed(DC_MOTOR_DEFAULT_SPEED-20);
 					}
 					
+					g_MasterDC.SetSpeed(DC_MOTOR_DOWN_SPEED);
 					g_MasterDC.SetDirection(MotorDcDirection::BACKWARD);
 					g_MasterDC.Run();
 				}
@@ -382,7 +387,7 @@ private:
 		else
 		{
 			double NewSpeed = pid.calculate(GetMasterCurrentPosition(), GetSlaveCurrentPosition());
-			//g_SlaveDC.SetSpeed((uint8_t) NewSpeed);
+			g_SlaveDC.SetSpeed((uint8_t) NewSpeed);
 			g_SlaveDC.Run();
 		}
 	}
@@ -408,7 +413,7 @@ protected:
 		{
 			g_MasterDC.Stop();
 		}
-		//console->info("Master current position: {}", GetCurrentPosition());
+		console->info("Master current position: {}", GetCurrentPosition());
 	}
 	
 	void OnMasterEncoderAuxStep() override
@@ -437,7 +442,9 @@ protected:
 	
 	virtual void onStepsDone()
 	{
-		console->info("Steps finished!");
+		
+		console->info( "Moved! Master: {0} Slave: {1}", GetMasterCurrentPosition(), GetSlaveCurrentPosition() );
+		
 	}
 	
 	void SetTargetPosition(int32_t _TargetPosition)

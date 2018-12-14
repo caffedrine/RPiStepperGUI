@@ -134,6 +134,7 @@ void Tick()
 	g_SensorVerticalSlave.Tick();
 	g_SensorHorizontalLeft.Tick();
 	g_SensorHorizontalRight.Tick();
+	g_SensorLaser.Tick();
 	g_LedTraffic.Tick();
 	
 	/* Tick vertical movement motors */
@@ -208,7 +209,6 @@ int main()
 			/* If required position is reached then just stop */
 			if(!g_Vertical.IsRunning())
 			{
-				console->info( "Moved! Master: {0} Slave: {1}", g_Vertical.GetMasterCurrentPosition(), g_Vertical.GetSlaveCurrentPosition() );
 				g_State.Set(States::STANDBY);
 			}
 			
@@ -264,7 +264,7 @@ int main()
 			}
 			
 			/* If it take more than 20 seconds to reset then there it's a fault on a button or something */
-			if( g_WaitTimer.ElapsedMs() > 20000)
+			if( g_WaitTimer.ElapsedMs() > 25000)
 			{
 				Fault("Cutter failed to reach initial point in maximum allowed time!");
 			}

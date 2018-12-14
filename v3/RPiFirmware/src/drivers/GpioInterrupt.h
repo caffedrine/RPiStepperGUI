@@ -20,7 +20,7 @@ public:
 	int DebounceTimeUs = 0;
 	LogicalLevel CurrentState, PreviousState;
 	
-	GpioInterrupt(int GpioPin);
+	explicit GpioInterrupt(int GpioPin);
 	GpioInterrupt(int GpioPin, int DebounceTimeMicroseconds);
 	~GpioInterrupt();
 	
@@ -38,7 +38,7 @@ private:
 	void Init();
 
 protected:
-	virtual void onStateChanged(LogicalLevel newState);
+	virtual void onGpioStateChanged(LogicalLevel newState);
 };
 
 

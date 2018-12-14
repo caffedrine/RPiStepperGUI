@@ -9,14 +9,15 @@
 
 #include "GpioPooling.h"
 
-enum class EncoderState
-{
-	HIGH = 1,
-	LOW = 0
-};
 
 class Encoder : public GpioPooling
 {
+	enum class EncoderState
+	{
+		HIGH = 1,
+		LOW = 0
+	};
+	
 public:
 	uint64_t Steps = 0;
 	EncoderState  State;

@@ -12,12 +12,12 @@
 class SensorHorizontalRight : public PushButton
 {
 public:
-	explicit SensorHorizontalRight(uint8_t  gpio) : PushButton(gpio, BUTTONS_DBOUNCING_TIME_MS)
+	explicit SensorHorizontalRight() : PushButton(SENSOR_INIT_HORIZONTAL_RIGHT_GPIO, BUTTONS_DBOUNCING_TIME_MS)
 	{
 		PushButton::SetPullState(PullState::DOWN);
 	}
 };
 
-SensorHorizontalRight g_SensorHorizontalRight(SENSOR_INIT_HORIZONTAL_RIGHT_GPIO);
+SensorHorizontalRight g_SensorHorizontalRight;
 
 #endif //RPIFIRMWARE_SENSORHORIZONTALRIGHT_H

@@ -27,6 +27,6 @@ protected:
 private:
 };
 
-//MasterEncoder g_MasterEncoder(ENCODER_MASTER_GPIO);
+//MasterEncoder g_MasterEncoder;
 
 #endif //RPIFIRMWARE_MASTERENCODER_H

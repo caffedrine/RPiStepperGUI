@@ -11,13 +11,13 @@
 class LedConnection : public Led
 {
 public:
-	LedConnection(uint8_t _gpio_pin) : Led(_gpio_pin)
+	LedConnection() : Led(LED_CONNECTION_GPIO)
 	{
 	
 	}
 private:
 };
 
-LedConnection g_LedConnection(LED_CONNECTION);
+LedConnection g_LedConnection;
 
 #endif //RPIFIRMWARE_LED_H

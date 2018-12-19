@@ -11,7 +11,7 @@
 class ElectroValves : private Relay
 {
 public:
-	ElectroValves(uint8_t gpio_pin) : Relay(gpio_pin)
+	ElectroValves() : Relay(RELAY_ELECTROVALVES_GPIO)
 	{
 		Relay::SetPullState(PullState::DOWN);
 	}
@@ -28,6 +28,6 @@ public:
 private:
 };
 
-ElectroValves g_ElectroValves(RELAY_ELECTROVALVES_GPIO);
+ElectroValves g_ElectroValves;
 
 #endif //RPIFIRMWARE_ELECTROVALVES_H

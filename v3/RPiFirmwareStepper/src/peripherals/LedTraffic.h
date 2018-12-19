@@ -12,13 +12,13 @@
 class LedTraffic : public Led
 {
 public:
-	LedTraffic(uint8_t _gpio_pin) : Led(_gpio_pin, 100)
+	LedTraffic() : Led(LED_TRAFFIC_GPIO, 100)
 	{
 	}
 	
 private:
 };
 
-LedTraffic g_LedTraffic(LED_TRAFFIC);
+LedTraffic g_LedTraffic;
 
 #endif //RPIFIRMWARE_LEDTRAFFIC_H

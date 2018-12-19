@@ -24,7 +24,6 @@ GpioPooling::~GpioPooling()
 
 void GpioPooling::Init()
 {
-
 }
 
 void GpioPooling::Tick()

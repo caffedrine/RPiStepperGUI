@@ -12,13 +12,13 @@
 class SensorVerticalMaster : public PushButton
 {
 public:
-	explicit SensorVerticalMaster(uint8_t _gpio) : PushButton(_gpio, BUTTONS_DBOUNCING_TIME_MS)
+	explicit SensorVerticalMaster() : PushButton(SENSOR_INIT_VERTICAL_MASTER_GPIO, BUTTONS_DBOUNCING_TIME_MS)
 	{
 		PushButton::SetPullState(PullState::DOWN);
 	}
 };
 
-SensorVerticalMaster g_SensorVerticalMaster(SENSOR_INIT_VERTICAL_MASTER_GPIO);
+SensorVerticalMaster g_SensorVerticalMaster;
 
 
 

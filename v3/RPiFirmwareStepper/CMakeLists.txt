@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD 11)
 
 # Enable PiGPIO if installed
 ## add_compile_definitions(PIGPIO)
-#add_definitions(-DPIGPIO=1)
+add_definitions(-DPIGPIO=1)
 
 ######################################Include everuthing src##################################
 file(GLOB_RECURSE RPiFirmware_SOURCES "src/*.cpp")
@@ -26,6 +26,6 @@ target_link_libraries(RPiFirmwareExe pthread)
 
 #Enable pigpio if on RPi
 #if(DEFINED PIGPIO)
-#    target_link_libraries(RPiFirmwareExe pigpio)
-#    target_link_libraries(RPiFirmwareExe rt)
+    target_link_libraries(RPiFirmwareExe pigpio)
+    target_link_libraries(RPiFirmwareExe rt)
 #endif()

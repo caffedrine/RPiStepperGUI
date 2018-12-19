@@ -10,7 +10,7 @@
 #include "cdd/Motion.h"
 #include "drivers/TcpServerAsync.h"
 #include "utils/time_utils.h"
-#include "cdd/VericalMovement.h"
+#include "cdd/VerticalMovement.h"
 #include "peripherals/LedConnection.h"
 #include "peripherals/LedTraffic.h"
 #include "peripherals/CutterDC.h"

@@ -67,6 +67,9 @@ long Stepper::map(long x, long in_min, long in_max, long out_min, long out_max)
 
 void Stepper::Stop()
 {
+	this->LastStepsToDo = this->StepsToDo;
+	this->LastStepsDone = this->StepsDone;
+	
 	this->StepsToDo = 0;
 	this->StepsDone = 0;
 	
@@ -92,6 +95,9 @@ void Stepper::Run()
 
 void Stepper::SetDirection(StepperDirection NewDirection)
 {
+	if(this->CurrentDirection == NewDirection)
+		return;
+	
 	this->CurrentDirection = NewDirection;
 	
 	if(this->DirectionPin > 0)
@@ -142,14 +148,16 @@ void Stepper::internal_step_callback(int pin, int NewLevel, uint32_t CurrentTick
 	/* At this point one step was made */
 	StepsDone++;
 	
-	static uint32_t  last_tick = 0;
-	std::cout << "Step done in: " << (CurrentTick - last_tick) << " us" << std::endl;
-	last_tick = CurrentTick;
+//	static uint32_t  last_tick = 0;
+//	std::cout << "Step done in: " << (CurrentTick - last_tick) << " us" << std::endl;
+//	last_tick = CurrentTick;
 	
 	if( this->StepsToDo > 0 && this->StepsDone == StepsToDo)
 	{
 		Vfb_PwmOut(this->PulsePin, 0);
 		SetState(StepperState::STOPPED);
+		this->LastStepsToDo = this->StepsToDo;
+		this->LastStepsDone = this->StepsDone;
 		
 		OnStepsDone();
 	}
@@ -162,6 +170,8 @@ void Stepper::SetStepsDoneCallback(steps_finished_t f)
 
 void Stepper::OnStepsDone()
 {
+	
+	
 	if(StepsDoneCb > 0)
 		StepsDoneCb(this->StepsDone);
 }

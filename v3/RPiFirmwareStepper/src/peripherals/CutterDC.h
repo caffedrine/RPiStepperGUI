@@ -11,13 +11,13 @@
 class CutterDC : public DcMotor
 {
 public:
-	CutterDC(uint8_t PulsePin, uint8_t DirPin) : DcMotor(PulsePin, DirPin)
+	CutterDC() : DcMotor(MOTOR_CUTTER_PWM_GPIO, MOTOR_CUTTER_DIR_GPIO)
 	{
-		DcMotor::PwmConfig(DC_MOTORS_FREQ_HZ, DC_MOTOR_DEFAULT_SPEED);
+		DcMotor::PwmConfig(DC_MOTORS_FREQ_HZ, DC_CUTTER_MOTOR_SPEED);
 	}
 private:
 };
 
-CutterDC g_CutterDC(MOTOR_CUTTER_PWM_GPIO, MOTOR_CUTTER_DIR_GPIO);
+CutterDC g_CutterDC;
 
 #endif //RPIFIRMWARE_CUTTERDC_H

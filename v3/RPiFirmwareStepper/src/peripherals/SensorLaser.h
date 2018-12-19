@@ -12,7 +12,7 @@
 class SensorLaser : public GpioPooling
 {
 public:
-	explicit SensorLaser(uint8_t _gpio) : GpioPooling(_gpio, 10)
+	explicit SensorLaser() : GpioPooling(SENSOR_LASER_CUT_GPIO, 10)
 	{
 		GpioPooling::SetPullState(PullState::DOWN);
 	}
@@ -23,6 +23,6 @@ public:
 	}
 };
 
-SensorLaser g_SensorLaser(SENSOR_LASER_CUT_GPIO);
+SensorLaser g_SensorLaser;
 
 #endif //RPIFIRMWARE_SENSORLASER_H

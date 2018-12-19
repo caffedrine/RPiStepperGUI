@@ -27,6 +27,6 @@ protected:
 private:
 };
 
-//SlaveEncoder g_SlaveEncoder(ENCODER_SLAVE_GPIO);
+//SlaveEncoder g_SlaveEncoder;
 
 #endif //RPIFIRMWARE_SLAVEENCODER_H

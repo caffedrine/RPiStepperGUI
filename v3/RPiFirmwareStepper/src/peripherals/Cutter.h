@@ -11,7 +11,7 @@
 class Cutter : public Relay
 {
 public:
-	Cutter(uint8_t RelayPin) : Relay(RelayPin)
+	Cutter() : Relay(RELAY_CUTTER_ENB_GPIO)
 	{
 		Relay::SetPullState(PullState::DOWN);
 	}
@@ -29,6 +29,6 @@ private:
 
 };
 
-Cutter g_Cutter(RELAY_CUTTER_ENB_GPIO);
+Cutter g_Cutter;
 
 #endif //RPIFIRMWARE_CUTTERRELAY_H

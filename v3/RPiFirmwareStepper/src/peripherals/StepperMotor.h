@@ -13,7 +13,7 @@ class StepperMotor : public Stepper
 public:
 	StepperMotor() : Stepper(STEPPER_PWM_GPIO, STEPPER_DIR_GPIO)
 	{
-		Stepper::PwmConfig(DC_MOTORS_FREQ_HZ, 10);
+		Stepper::PwmConfig(STEPPER_FREQ_HZ, 10);
 	}
 	
 	void OnStepsDone() override

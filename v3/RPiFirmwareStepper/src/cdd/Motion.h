@@ -6,7 +6,7 @@
 #define RPIFIRMWARE_COMMANDS_H
 
 #include "Globals.h"
-#include "cdd/VericalMovement.h"
+#include "cdd/VerticalMovement.h"
 #include <peripherals/CutterDC.h>
 #include <peripherals/Cutter.h>
 
@@ -76,7 +76,6 @@ static void HandleMoveTo(uint16_t targetRecv)
 	
 	if((uint16_t)g_Vertical.GetCurrPositionMM() != targetRecv)
 	{
-		console->info("[MOVETO] Start moving to {0} mm ({1}steps)", targetRecv, VerticalMovement::Mm2Steps(targetRecv));
 		g_Vertical.MoveToMM(targetRecv);
 		g_State.Set(States::WAIT_MOVETO);
 	}
@@ -94,7 +93,6 @@ static void HandleCut()
 		return;
 	}
 	
-	g_CutterDC.SetSpeed(DC_CUTTER_DEFAULT_SPEED);
 	g_State.Set(States::WAIT_CUT);
 	g_Cutter.On();
 }

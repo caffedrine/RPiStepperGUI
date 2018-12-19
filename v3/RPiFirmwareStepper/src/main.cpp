@@ -133,9 +133,6 @@ void Tick()
 	g_SensorHorizontalRight.Tick();
 	g_SensorLaser.Tick();
 	g_LedTraffic.Tick();
-	
-	/* Tick vertical movement motors */
-	g_Vertical.Tick();
 }
 
 /*
@@ -187,6 +184,7 @@ int main()
 			if(g_SensorHorizontalLeft.CurrentState == PushButtonState::DOWN && !g_Vertical.IsRunning())
 			{
 				HandleVerticalStop();
+				
 				console->info("[RESET] Success!");
 				g_State.Set(States::STANDBY);
 			}

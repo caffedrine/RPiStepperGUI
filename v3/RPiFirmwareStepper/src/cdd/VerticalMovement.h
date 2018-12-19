@@ -52,16 +52,20 @@ public:
 			return;
 		}
 		
+		console->info("[MOVETO] Start moving from {0} ({1}steps) to {2} mm ({3}steps)", CurrentPosition, Steps2Mm(CurrentPosition), Steps2Mm(new_position), new_position);
+		
 		if( CurrentPosition < new_position )
 		{
 			StepperMotor::SetDirection(StepperDirection::FORWARD);
-			StepperMotor::RunSteps();
+			StepperMotor::RunSteps( new_position - CurrentPosition );
 		}
 		else if( CurrentPosition > new_position )
 		{
 			StepperMotor::SetDirection(StepperDirection::BACKWARD);
-			StepperMotor::RunSteps();
+			StepperMotor::RunSteps( CurrentPosition - new_position );
 		}
+		
+		this->CurrentPosition = new_position;
 	}
 	
 	void MoveUp()
@@ -76,8 +80,19 @@ public:
 	
 	void Stop()
 	{
-		/*  Stop */
+		/* Stop */
 		StepperMotor::Stop();
+		
+		/* Steps completed so far if stop was triggered suddenly */
+		auto StepsDoneSoFar = (uint32_t)( StepperMotor::LastStepsToDo - StepperMotor::LastStepsDone);
+		
+		if(StepperMotor::CurrentDirection == StepperDirection::FORWARD)
+			CurrentPosition -= StepsDoneSoFar;
+		else if(StepperMotor::CurrentDirection == StepperDirection::BACKWARD)
+			CurrentPosition += StepsDoneSoFar;
+		
+		console->info("[STOPPED] Stepper current position: {0}mm - {1}steps", Steps2Mm(CurrentPosition), CurrentPosition);
+		
 	}
 	
 	void Reset()
@@ -91,20 +106,21 @@ public:
 		{
 			console->info("Already in reset position!");
 		}
+		this->CurrentPosition = Mm2Steps(VERTICAL_MM_OFFSET);
 	}
 	
-	static float Steps2Mm(int32_t enc)
+	static float Steps2Mm(int32_t steps)
 	{
-		if( enc == 0 )
+		if( steps == 0 )
 			return 0;
-		return ((float) enc * MM_PER_STEP);
+		return ( (float)((float)steps*(float)MILIMETERS_PER_REVOLUTION)/(float)STEPS_PER_REVOLUTION );
 	}
 	
 	static int32_t Mm2Steps(float mm)
 	{
 		if( mm == 0 )
 			return 0;
-		return ((int32_t) (mm / MM_PER_STEP));
+		return (int32_t)( (mm*STEPS_PER_REVOLUTION)/MILIMETERS_PER_REVOLUTION );
 	}
 
 //	 ____  ____  _____     ___  _____ _____
@@ -130,7 +146,7 @@ protected:
 	
 	void StepperOnStepsDone() override
 	{
-		
+		console->info("{0} ({1} mm) steps done. Current position: {2} ({3}mm)", StepperMotor::StepsDone, Steps2Mm((uint32_t)StepperMotor::StepsDone), CurrentPosition, Steps2Mm(CurrentPosition));
 	}
 };
 

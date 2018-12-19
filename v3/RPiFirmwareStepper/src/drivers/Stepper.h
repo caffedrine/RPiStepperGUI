@@ -29,6 +29,7 @@ public:
 	~Stepper();
 	
 	long StepsToDo = 0, StepsDone = 0;
+	long LastStepsToDo = 0, LastStepsDone = 0;
 	StepperDirection CurrentDirection = StepperDirection ::FORWARD;
 	
 	void Stop();
@@ -41,7 +42,7 @@ public:
 	virtual void OnStepsDone();
 	
 private:
-	uint8_t PulsePin, DirectionPin = -1, EnablePin = -1;
+	uint8_t PulsePin, DirectionPin = 0, EnablePin = 0;
 	unsigned PwmFreq = 1000;
 	uint8_t PwmDutyProcents = 10;	// 10% default pwm duty
 	

@@ -1,8 +1,0 @@
-cmake-*
-cmake-*/
-.
-idea
-.idea/
-build/
-cmake-build-debug/
-cmake-build-debug

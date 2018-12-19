@@ -92,6 +92,8 @@ void Stepper::Run()
 
 void Stepper::SetDirection(StepperDirection NewDirection)
 {
+	this->CurrentDirection = NewDirection;
+	
 	if(this->DirectionPin > 0)
 		Vfb_WriteGpio(this->DirectionPin, (LogicalLevel)NewDirection);
 }

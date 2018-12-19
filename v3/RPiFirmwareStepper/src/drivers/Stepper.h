@@ -29,6 +29,7 @@ public:
 	~Stepper();
 	
 	long StepsToDo = 0, StepsDone = 0;
+	StepperDirection CurrentDirection = StepperDirection ::FORWARD;
 	
 	void Stop();
 	void Run();

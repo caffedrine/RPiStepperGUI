@@ -66,12 +66,10 @@ void SensorLaserCallback(LogicalLevel new_level)
 
 void OnExit()
 {
-	g_Vertical.Stop();
 	g_State.Set(States::EMERGENCY_STOP);
+	HandleVerticalStop();
 	g_LedConnection.Off();
 	g_LedTraffic.Off();
-	g_MasterDC.Stop();
-	g_SlaveDC.Stop();
 	g_CutterDC.Stop();
 	g_Cutter.Off();
 	g_ElectroValves.Off();
@@ -170,7 +168,6 @@ int main()
 		if(g_State.Current.Val == States::EMERGENCY_STOP)
 		{
 			HandleVerticalStop();
-			g_Vertical.Stop();
 			g_Cutter.Off();
 			g_ElectroValves.Off();
 			g_CutterDC.Stop();
@@ -189,11 +186,12 @@ int main()
 			/* If both are stopped then reset is finished */
 			if(g_SensorHorizontalLeft.CurrentState == PushButtonState::DOWN && !g_Vertical.IsRunning())
 			{
+				HandleVerticalStop();
 				console->info("[RESET] Success!");
 				g_State.Set(States::STANDBY);
 			}
 			
-			/* Reset can't take more than 20s */
+			/* Reset can't take more than 25s */
 			if( g_WaitTimer.ElapsedMs() > 25000)
 			{
 				console->info("Elapsed ms: {}", g_WaitTimer.ElapsedMs());
@@ -290,7 +288,7 @@ int main()
 		Tick();
 		
 		/* Prevent excessive CPU load */
-		std::this_thread::sleep_for(std::chrono::milliseconds(1));
+		std::this_thread::sleep_for(std::chrono::microseconds(500));
 	}
 	return 0;
 }

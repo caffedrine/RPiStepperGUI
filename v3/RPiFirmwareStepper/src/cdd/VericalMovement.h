@@ -18,65 +18,15 @@
 
 class VerticalMovement : protected MasterEncoder, protected SlaveEncoder, protected StepperMotor
 {
-	enum class States
-	{
-		STOPPED,
-		RESETTING,
-		RUNNING_STEPS_UP,
-		RUNNING_STEPS_DOWN
-	};
-	
-	enum class SlaveState
-	{
-		STOPPED,
-		RUNNING
-	};
-
 //	 ____  _   _ ____  _     ___ ____
 //	|  _ \| | | | __ )| |   |_ _/ ___|
 //	| |_) | | | |  _ \| |    | | |
 //	|  __/| |_| | |_) | |___ | | |___
 //	|_|    \___/|____/|_____|___\____|
 public:
-	States State = States::STOPPED;
-	
 	explicit VerticalMovement() : MasterEncoder(), SlaveEncoder(), StepperMotor()
 	{
-		MasterCurrentPosition = Mm2Steps(VERTICAL_MM_OFFSET);
-		TargetPosition = Mm2Steps(VERTICAL_MM_OFFSET);
-		SlaveCurrentPosition = Mm2Steps(VERTICAL_MM_OFFSET);
-	}
-	
-	int32_t GetCurrentPosition()
-	{
-		return GetMasterCurrentPosition();
-	}
-	
-	int32_t GetTargetPosition()
-	{
-		std::unique_lock<std::mutex> mlock(mutex_);
-		int32_t tmp = TargetPosition;
-		mlock.unlock();     // unlock before notificiation to minimize mutex con
-		cond_.notify_one(); // notify one waiting thread
-		return tmp;
-	}
-	
-	int32_t GetMasterCurrentPosition()
-	{
-		std::unique_lock<std::mutex> mlock(mutex_);
-		int32_t tmp = MasterCurrentPosition;
-		mlock.unlock();     // unlock before notificiation to minimize mutex con
-		cond_.notify_one(); // notify one waiting thread
-		return tmp;
-	}
-	
-	int32_t GetSlaveCurrentPosition()
-	{
-		std::unique_lock<std::mutex> mlock(mutex_);
-		int32_t tmp = SlaveCurrentPosition;
-		mlock.unlock();     // unlock before notificiation to minimize mutex con
-		cond_.notify_one(); // notify one waiting thread
-		return tmp;
+		CurrentPosition = Mm2Steps(VERTICAL_MM_OFFSET);
 	}
 	
 	bool IsRunning()
@@ -86,7 +36,7 @@ public:
 	
 	float GetCurrPositionMM()
 	{
-		return Steps2Mm(GetCurrentPosition());
+		return Steps2Mm(CurrentPosition);
 	}
 	
 	void MoveToMM(int32_t mm)
@@ -94,31 +44,23 @@ public:
 		MoveTo(Mm2Steps(mm));
 	}
 	
-	void MoveTo(int32_t encoder_units)
+	void MoveTo(int32_t new_position)
 	{
-		if( (int) ((int) (encoder_units - (int) Mm2Steps(VERTICAL_MM_OFFSET))) < 0 )
+		if( ((int) (new_position - (int) Mm2Steps(VERTICAL_MM_OFFSET))) < 0 )
 		{
-			console->warn("Can't go to a negative position: {}", ((int) ((int) (encoder_units - (int) Mm2Steps(VERTICAL_MM_OFFSET)))));
+			console->warn("Can't go to a negative position: {}", (((int) (new_position - (int) Mm2Steps(VERTICAL_MM_OFFSET)))));
 			return;
 		}
-
-//		console->info("------------------------------");
-		console->info("[VERTICAL] Moving from {}steps to {}steps", GetCurrentPosition(), encoder_units);
-		console->info("[VERTICAL] Moving from {}mm to {}mm", Steps2Mm(GetCurrentPosition()), Steps2Mm(encoder_units));
-//		console->info("------------------------------");
-
-		int32_t target = (encoder_units);// + Mm2Steps(VERTICAL_MM_OFFSET));
-		SetTargetPosition(target);
 		
-		if( GetCurrentPosition() < target )
+		if( CurrentPosition < new_position )
 		{
-			StepperMotor.SetDirection(StepperDirection::FORWARD);
-			State = States::RUNNING_STEPS_UP;
+			StepperMotor::SetDirection(StepperDirection::FORWARD);
+			StepperMotor::RunSteps();
 		}
-		else if( GetCurrentPosition() > target )
+		else if( CurrentPosition > new_position )
 		{
-			StepperMotor.SetDirection(StepperDirection::BACKWARD);
-			State = States::RUNNING_STEPS_DOWN;
+			StepperMotor::SetDirection(StepperDirection::BACKWARD);
+			StepperMotor::RunSteps();
 		}
 	}
 	
@@ -135,35 +77,26 @@ public:
 	void Stop()
 	{
 		/*  Stop */
-		this->State = States::STOPPED;
-		g_MasterDC.Stop();
-		g_SlaveDC.Stop();
+		StepperMotor::Stop();
 	}
 	
 	void Reset()
 	{
 		if( g_SensorVerticalMaster.CurrentState != PushButtonState::DOWN )
 		{
-			g_MasterDC.SetDirection(MotorDcDirection::BACKWARD);
-			g_MasterDC.SetSpeed(DC_MOTOR_MASTER_RESET_SPEED);
-			g_MasterDC.Run();
+			StepperMotor::SetDirection(StepperDirection::BACKWARD);
+			StepperMotor::Run();
 		}
-		
-		if( g_SensorVerticalSlave.CurrentState != PushButtonState::DOWN )
+		else
 		{
-			g_SlaveDC.SetDirection(MotorDcDirection::BACKWARD);
-			g_SlaveDC.SetSpeed(DC_MOTOR_SLAVE_RESET_SPEED);
-			g_SlaveDC.Run();
+			console->info("Already in reset position!");
 		}
-		State = States::RESETTING;
 	}
 	
 	static float Steps2Mm(int32_t enc)
 	{
 		if( enc == 0 )
 			return 0;
-		
-		//console->info("{}enc is {}mm", enc, ((float) enc * MM_PER_STEP));
 		return ((float) enc * MM_PER_STEP);
 	}
 	
@@ -171,8 +104,6 @@ public:
 	{
 		if( mm == 0 )
 			return 0;
-		
-		//console->info("{}mm is {}enc", mm, ((uint32_t) (mm / MM_PER_STEP)));
 		return ((int32_t) (mm / MM_PER_STEP));
 	}
 
@@ -183,198 +114,23 @@ public:
 //	|_|   |_| \_\___|  \_/_/   \_\_| |_____|
 private:
 	const int32_t VERTICAL_MIN_POSITION = Mm2Steps(VERTICAL_MM_OFFSET);
-	
-	
 	/* Store positions */
-	int32_t MasterCurrentPosition, TargetPosition;
-	/* Slave motor position */
-	int32_t SlaveCurrentPosition;
+	int32_t CurrentPosition;
 	
-	/* Safe read/write positions */
-	std::mutex mutex_;
-	std::condition_variable cond_;
-	
-	/* Background thread */
-	std::thread BackgroundWorker;
-	
-	void BackgroundWork()
-	{
-		while( true )
-		{
-			if( !_ProgramContinue )
-			{
-				g_MasterDC.Stop();
-				g_SlaveDC.Stop();
-				break;
-			}
-			
-			/* Handle reset position */
-			if( State == States::RESETTING )
-			{
-				if( g_SensorVerticalMaster.CurrentState == PushButtonState::DOWN )
-				{
-					g_MasterDC.Stop();
-				}
-				else
-				{
-					g_MasterDC.SetDirection(MotorDcDirection::BACKWARD);
-					g_MasterDC.SetSpeed(DC_MOTOR_MASTER_RESET_SPEED);
-					g_MasterDC.Run();
-				}
-				
-				if( g_SensorVerticalSlave.CurrentState == PushButtonState::DOWN )
-				{
-					g_SlaveDC.Stop();
-				}
-				else
-				{
-					g_SlaveDC.SetDirection(MotorDcDirection::BACKWARD);
-					g_SlaveDC.SetSpeed(DC_MOTOR_SLAVE_RESET_SPEED);
-					g_SlaveDC.Run();
-				}
-				
-				if( g_SensorVerticalMaster.CurrentState == PushButtonState::DOWN && g_SensorVerticalSlave.CurrentState == PushButtonState::DOWN )
-				{
-					g_MasterDC.Stop();
-					g_SlaveDC.Stop();
-					/* Optionally reset encoders */
-					MasterEncoder::Reset();
-					SlaveEncoder::Reset();
-					this->State = States::STOPPED;
-					/* Move motors to init buttons then stop */
-					SetMasterCurrentPosition(Mm2Steps(VERTICAL_MM_OFFSET));
-					SetSlaveCurrentPosition(Mm2Steps(VERTICAL_MM_OFFSET));
-					SetTargetPosition(Mm2Steps(VERTICAL_MM_OFFSET));
-				}
-				std::this_thread::sleep_for(std::chrono::milliseconds(1));
-				continue;
-			}
-			
-			/* Handle running steps UP */
-			if( State == States::RUNNING_STEPS_UP )
-			{
-				if( GetMasterCurrentPosition() >= GetTargetPosition() )
-				{
-					/* Move down */
-					g_MasterDC.Stop();
-					State = States::STOPPED;
-					onStepsDone();
-				}
-				else
-				{
-					/* Slow down at the last 10 steps*/
-					if( (GetTargetPosition() - GetMasterCurrentPosition()) <= 20 )
-					{
-						g_MasterDC.SetSpeed(DC_MOTOR_DEFAULT_SPEED - 20);
-					}
-					
-					g_MasterDC.SetDirection(MotorDcDirection::FORWARD);
-					g_MasterDC.Run();
-				}
-			}
-			
-			/* Handle running steps down */
-			if( State == States::RUNNING_STEPS_DOWN )
-			{
-				if( GetMasterCurrentPosition() <= GetTargetPosition() )
-				{
-					/* Move down */
-					g_MasterDC.Stop();
-					State = States::STOPPED;
-					onStepsDone();
-				}
-				else
-				{
-					/* Slow down at the last 10 steps*/
-					if( (GetMasterCurrentPosition() - GetTargetPosition()) <= 20 )
-					{
-						g_MasterDC.SetSpeed(DC_MOTOR_DEFAULT_SPEED - 20);
-					}
-					
-					g_MasterDC.SetSpeed(DC_MOTOR_DOWN_SPEED);
-					g_MasterDC.SetDirection(MotorDcDirection::BACKWARD);
-					g_MasterDC.Run();
-				}
-			}
-			
-			std::this_thread::sleep_for(std::chrono::milliseconds(1));
-		}
-	}
-
-//	 ____  ____   ___ _____ _____ ____ _____ _____ ____
-//	|  _ \|  _ \ / _ \_   _| ____/ ___|_   _| ____|  _ \
-//  | |_) | |_) | | | || | |  _|| |     | | |  _| | | | |
-//	|  __/|  _ <| |_| || | | |__| |___  | | | |___| |_| |
-//	|_|   |_| \_\\___/ |_| |_____\____| |_| |_____|____/
 protected:
 	void OnMasterEncoderStep() override
 	{
-		if( g_MasterDC.CurrentDirection == MotorDcDirection::FORWARD )
-		{
-			this->SetMasterCurrentPosition(GetCurrentPosition() + 1);
-		}
-		else if( g_MasterDC.CurrentDirection == MotorDcDirection::BACKWARD )
-		{
-			if( GetCurrentPosition() > 0 )
-				this->SetMasterCurrentPosition(GetCurrentPosition() - 1);
-		}
-		
-		if( GetMasterCurrentPosition() == GetTargetPosition() )
-		{
-			g_MasterDC.Stop();
-		}
-		//console->info("Master current position: {}", GetCurrentPosition());
+
 	}
 	
 	void OnSlaveEncoderStep() override
 	{
-		if( g_SlaveDC.CurrentDirection == MotorDcDirection::FORWARD )
-		{
-			this->SetSlaveCurrentPosition(GetSlaveCurrentPosition() + 1);
-		}
-		else if( g_SlaveDC.CurrentDirection == MotorDcDirection::BACKWARD )
-		{
-			if( this->SlaveCurrentPosition > 0 )
-				this->SetSlaveCurrentPosition(GetSlaveCurrentPosition() - 1);
-		}
-		//console->info("Slave current position: {}", this->SlaveCurrentPosition);
+
 	}
 	
-	
-	virtual void onStepsDone()
+	void StepperOnStepsDone() override
 	{
 		
-		console->info("Moved! Master: {0} Slave: {1}", GetMasterCurrentPosition(), GetSlaveCurrentPosition());
-	}
-	
-	void SetTargetPosition(int32_t _TargetPosition)
-	{
-		std::unique_lock<std::mutex> mlock(mutex_);
-		{
-			TargetPosition = _TargetPosition;
-		}
-		mlock.unlock();
-		cond_.notify_one();
-	}
-	
-	void SetMasterCurrentPosition(int32_t _CurrentMasterPosition)
-	{
-		std::unique_lock<std::mutex> mlock(mutex_);
-		{
-			MasterCurrentPosition = _CurrentMasterPosition;
-		}
-		mlock.unlock();     // unlock before notificiation to minimize mutex con
-		cond_.notify_one(); // notify one waiting thread
-	}
-	
-	void SetSlaveCurrentPosition(int32_t _CurrentSlavePosition)
-	{
-		std::unique_lock<std::mutex> mlock(mutex_);
-		{
-			SlaveCurrentPosition = _CurrentSlavePosition;
-		}
-		mlock.unlock();     // unlock before notificiation to minimize mutex con
-		cond_.notify_one(); // notify one waiting thread
 	}
 };
 

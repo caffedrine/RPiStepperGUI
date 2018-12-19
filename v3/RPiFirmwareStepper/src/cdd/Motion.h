@@ -8,8 +8,9 @@
 #include "Globals.h"
 #include "cdd/VericalMovement.h"
 #include <peripherals/CutterDC.h>
-#include <peripherals/SensorHorizontalLeft.h>
 #include <peripherals/Cutter.h>
+
+#include <peripherals/SensorHorizontalLeft.h>
 
 static void HandleEmergencyStop()
 {

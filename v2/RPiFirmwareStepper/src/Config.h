@@ -30,14 +30,12 @@
 #define DC_MOTORS_FREQ_HZ				1000
 #define DC_CUTTER_MOTOR_SPEED			255
 
-
 /* Vertical movement and encoders settings */
 const float STEPS_PER_REVOLUTION		= 400;
 const float MILIMETERS_PER_REVOLUTION 	= 62.45f;
 
 const float VERTICAL_MM_OFFSET 			= 345;	/* 345mm */
 const float VERTICAL_MAX_POSITION_MM 	= 2900;	/* 2.9m */
-
 
 /* Debouncing */
 const int ENCODER_DEBOUNCING_TIME_US 	= 0;

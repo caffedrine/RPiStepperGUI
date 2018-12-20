@@ -174,23 +174,21 @@ int main()
 		/* Handle WAIT_RESET state */
 		else if(g_State.Current.Val == States::WAIT_RESET)
 		{
-			/* Cutter is on initial position */
 			if(g_SensorHorizontalLeft.CurrentState == PushButtonState::DOWN)
-			{
 				g_CutterDC.Stop();
-			}
+			
+			if(g_SensorVerticalMaster.CurrentState == PushButtonState::DOWN)
+				HandleVerticalStop();
 			
 			/* If both are stopped then reset is finished */
-			if(g_SensorHorizontalLeft.CurrentState == PushButtonState::DOWN && !g_Vertical.IsRunning())
+			if( g_SensorHorizontalLeft.CurrentState == PushButtonState::DOWN && g_SensorVerticalMaster.CurrentState == PushButtonState::DOWN)
 			{
-				HandleVerticalStop();
-				
 				console->info("[RESET] Success!");
 				g_State.Set(States::STANDBY);
 			}
 			
-			/* Reset can't take more than 25s */
-			if( g_WaitTimer.ElapsedMs() > 25000)
+			/* Reset can't take more than 30s */
+			if( g_WaitTimer.ElapsedMs() > 30000)
 			{
 				console->info("Elapsed ms: {}", g_WaitTimer.ElapsedMs());
 				Fault("Reset can't take more than 25 seconds");

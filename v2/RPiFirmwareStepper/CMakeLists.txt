@@ -4,8 +4,8 @@ project(RPiFirmware)
 set(CMAKE_CXX_STANDARD 11)
 
 # Enable PiGPIO if installed
-## add_compile_definitions(PIGPIO)
-add_definitions(-DPIGPIO=1)
+add_compile_definitions(PIGPIO)
+#add_definitions(-DPIGPIO=1)
 
 ######################################Include everuthing src##################################
 file(GLOB_RECURSE RPiFirmware_SOURCES "src/*.cpp")

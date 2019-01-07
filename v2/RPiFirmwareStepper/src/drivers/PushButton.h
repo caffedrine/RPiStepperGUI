@@ -19,7 +19,7 @@ class PushButton : public GpioPooling
 public:
     int GpioPin;
     bool ReversedPolarity = false;
-    PushButtonState CurrentState, PreviousState;
+    PushButtonState CurrentState = PushButtonState::UP, PreviousState = PushButtonState::UP;
 	
     PushButton(int GpioPin);
     PushButton(int GpioPin, int DebounceTimeMillis );

@@ -13,7 +13,7 @@ class CutterDC : public DcMotor
 public:
 	CutterDC() : DcMotor(MOTOR_CUTTER_PWM_GPIO, MOTOR_CUTTER_DIR_GPIO)
 	{
-		DcMotor::PwmConfig(DC_MOTORS_FREQ_HZ, DC_CUTTER_MOTOR_SPEED);
+		DcMotor::PwmConfig(DC_MOTORS_FREQ_HZ, DC_CUTTER_MOTOR_SPEED_CUT);
 	}
 private:
 };

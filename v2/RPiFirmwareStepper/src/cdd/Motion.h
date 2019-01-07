@@ -50,6 +50,7 @@ static void HandleReset()
 	if(g_SensorHorizontalLeft.CurrentState == PushButtonState::UP)
 	{
 		g_CutterDC.SetDirection(MotorDcDirection::BACKWARD);
+		g_CutterDC.SetSpeed(DC_CUTTER_MOTOR_SPEED_RETURN);
 		g_CutterDC.Run();
 	}
 	
@@ -93,6 +94,7 @@ static void HandleCut()
 		return;
 	}
 	
+	g_CutterDC.SetSpeed(DC_CUTTER_MOTOR_SPEED_CUT);
 	g_State.Set(States::WAIT_CUT);
 	g_Cutter.On();
 }

@@ -234,6 +234,7 @@ int main()
 					/* If laser does not detect courtain */
 					if( !g_SensorLaser.IsCourtainPresent() )
 					{
+						g_CutterDC.SetSpeed(DC_CUTTER_MOTOR_SPEED_RETURN);
 						g_CutterDC.SetDirection(MotorDcDirection::BACKWARD);
 						g_Cutter.OpenCircuit();
 						g_State.Set(States::WAIT_CUTTER_INIT);

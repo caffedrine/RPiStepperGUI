@@ -28,13 +28,14 @@
 #define LED_CONNECTION_GPIO					22
 
 #define DC_MOTORS_FREQ_HZ				1000
-#define DC_CUTTER_MOTOR_SPEED			255
+#define DC_CUTTER_MOTOR_SPEED_CUT		200
+#define DC_CUTTER_MOTOR_SPEED_RETURN	100
 
 /* Vertical movement and encoders settings */
 const float STEPS_PER_REVOLUTION		= 400;
-const float MILIMETERS_PER_REVOLUTION 	= 62.45f;
+const float MILIMETERS_PER_REVOLUTION 	= 30.00f;
 
-const float VERTICAL_MM_OFFSET 			= 345;	/* 345mm */
+const float VERTICAL_MM_OFFSET 			= 342;	/* 342mm */
 const float VERTICAL_MAX_POSITION_MM 	= 2900;	/* 2.9m */
 
 /* Debouncing */
